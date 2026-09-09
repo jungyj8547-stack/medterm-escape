@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useGame } from '../store/gameStore';
+import { music } from '../audio/music';
 import { ROOM_BY_ID, ROOMS, TERM_BY_ID } from '../data/loadData';
 import { formatTime, SCORE } from '../engine/scoring';
 import { encodeResult } from '../engine/resultCode';
@@ -22,6 +24,13 @@ export default function Debrief() {
   const nextRoom = ROOMS[idx + 1];
 
   const reviewIds = Array.from(new Set([...session.wrongTerms, ...session.hintedTerms])).filter((id) => TERM_BY_ID[id]);
+  useEffect(() => {
+    if (escaped) {
+      const t = window.setTimeout(() => music.fanfare(), 80);
+      return () => window.clearTimeout(t);
+    }
+  }, [escaped]);
+
   const code = r && escaped ? encodeResult({ roomOrder: room.order, score: r.score, timeUsedSec: r.timeUsedSec, stars: r.stars }) : null;
 
   const copy = async () => {

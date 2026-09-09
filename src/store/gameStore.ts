@@ -46,11 +46,13 @@ interface GameState {
   learnedRooms: Record<string, true>;
   session: Session | null;
   muted: boolean;
+  musicOn: boolean;
 
   goto: (s: Screen) => void;
   setMode: (mode: 'solo' | 'team', team?: Team) => void;
   toggleAllUnlocked: () => void;
   setMuted: (m: boolean) => void;
+  setMusicOn: (m: boolean) => void;
 
   startRoom: (roomId: string) => void;
   setPhase: (p: Phase) => void;
@@ -96,11 +98,13 @@ export const useGame = create<GameState>()(
       learnedRooms: {},
       session: null,
       muted: false,
+      musicOn: true,
 
       goto: (screen) => set({ screen }),
       setMode: (mode, team) => set({ mode, team: mode === 'team' ? (team ?? null) : null }),
       toggleAllUnlocked: () => set((s) => ({ allUnlocked: !s.allUnlocked })),
       setMuted: (muted) => set({ muted }),
+      setMusicOn: (musicOn) => set({ musicOn }),
 
       startRoom: (roomId) =>
         set({

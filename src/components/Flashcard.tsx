@@ -11,7 +11,7 @@ export default function Flashcard({ term, autoFlip = false }: { term: Term; auto
       <div
         className={`card ${flipped ? 'flipped' : ''}`}
         onClick={() => {
-          sfx.click();
+          sfx.flip();
           setFlipped((f) => !f);
         }}
       >

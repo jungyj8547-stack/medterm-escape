@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { ROOM_BY_ID, ROOMS, HINTS_PER_ROOM } from '../data/loadData';
 import { generateRoomPuzzles } from '../engine/puzzleGen';
@@ -14,6 +14,7 @@ import OddOneOut from '../puzzles/OddOneOut';
 import SpeedRound from '../puzzles/SpeedRound';
 import Keypad from '../puzzles/Keypad';
 import { sfx } from '../audio/sfx';
+import { music } from '../audio/music';
 
 const TITLES: Record<Hotspot, { icon: string; title: string }> = {
   chart: { icon: '📋', title: '환자 차트 — 어근 조립' },
@@ -31,6 +32,8 @@ export default function RoomScreen() {
   const abandonRoom = useGame((s) => s.abandonRoom);
   const muted = useGame((s) => s.muted);
   const setMuted = useGame((s) => s.setMuted);
+  const musicOn = useGame((s) => s.musicOn);
+  const setMusicOn = useGame((s) => s.setMusicOn);
   const room = ROOM_BY_ID[session.roomId];
   const [active, setActive] = useState<Hotspot | null>(null);
   const [alarm, setAlarm] = useState(false);
@@ -42,6 +45,10 @@ export default function RoomScreen() {
   );
 
   const onAlarm = useCallback((on: boolean) => setAlarm(on), []);
+
+  useEffect(() => {
+    music.play(alarm ? 'alarm' : 'escape');
+  }, [alarm]);
 
   // 개발 모드에서만: 테스트/디버깅용으로 퍼즐 데이터를 노출
   if (import.meta.env.DEV) (window as unknown as { __puzzles: unknown }).__puzzles = puzzles;
@@ -97,7 +104,8 @@ export default function RoomScreen() {
           ))}
         </div>
         <div className="spacer" />
-        <button className="btn small ghost" onClick={() => setMuted(!muted)}>{muted ? '🔇' : '🔊'}</button>
+        <button className="btn small ghost" title="배경음악" onClick={() => setMusicOn(!musicOn)}>{musicOn ? '🎵' : '🎵✕'}</button>
+        <button className="btn small ghost" title="효과음" onClick={() => setMuted(!muted)}>{muted ? '🔇' : '🔊'}</button>
         <button className="btn small" onClick={() => goto('lobby')} title="타이머는 계속 갑니다. 안내도에서 '이어하기'로 돌아올 수 있어요">
           🏠 안내도
         </button>

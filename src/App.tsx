@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useGame } from './store/gameStore';
-import { sfx } from './audio/sfx';
+import { sfx, getAudioContext } from './audio/sfx';
+import { music } from './audio/music';
 import Title from './screens/Title';
 import Lobby from './screens/Lobby';
 import Briefing from './screens/Briefing';
@@ -25,10 +26,37 @@ export default function App() {
   const screen = useGame((s) => s.screen);
   const session = useGame((s) => s.session);
   const muted = useGame((s) => s.muted);
+  const musicOn = useGame((s) => s.musicOn);
 
   useEffect(() => {
     sfx.setMuted(muted);
   }, [muted]);
+
+  useEffect(() => {
+    music.setEnabled(musicOn);
+  }, [musicOn]);
+
+  // 브라우저 자동재생 정책: 첫 클릭/키 입력에서 오디오를 깨운다
+  useEffect(() => {
+    const unlock = () => {
+      getAudioContext();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+    };
+    window.addEventListener('pointerdown', unlock);
+    window.addEventListener('keydown', unlock);
+    return () => {
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+    };
+  }, []);
+
+  // 화면별 배경음악 (탈출 화면은 Room이 직접 제어)
+  useEffect(() => {
+    if (hash === '#host') music.play('none');
+    else if (screen === 'room') return;
+    else music.play('lobby');
+  }, [screen, hash]);
 
   // #reset 으로 접속하면 저장된 진행을 모두 지우고 타이틀로
   useEffect(() => {
