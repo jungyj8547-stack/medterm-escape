@@ -4,6 +4,7 @@ import { formatTime } from '../engine/scoring';
 import { sfx } from '../audio/sfx';
 import ToastHost from '../components/Toast';
 import Avatar from '../components/Avatar';
+import SoundControl from '../components/SoundControl';
 
 export default function Lobby() {
   const s = useGame();
@@ -37,8 +38,7 @@ export default function Lobby() {
             </div>
           </div>
           <div className="row">
-            <button className="btn small ghost" title="배경음악" onClick={() => s.setMusicOn(!s.musicOn)}>{s.musicOn ? '🎵' : '🎵✕'}</button>
-            <button className="btn small ghost" title="효과음" onClick={() => s.setMuted(!s.muted)}>{s.muted ? '🔇' : '🔊'}</button>
+            <SoundControl compact />
             <button className="btn small ghost" onClick={() => s.goto('title')}>← 타이틀</button>
           </div>
         </div>

@@ -85,6 +85,7 @@ PATTERNS.alarm.bass = PATTERNS.escape.bass;
 const midiToHz = (n: number) => 440 * Math.pow(2, (n - 69) / 12);
 
 let enabled = true;
+let volume = 0.6;
 let current: Track = 'none';
 let master: GainNode | null = null;
 let timer = 0;
@@ -95,7 +96,7 @@ let noiseBuf: AudioBuffer | null = null;
 function ensureMaster(ctx: AudioContext) {
   if (!master) {
     master = ctx.createGain();
-    master.gain.value = 0.9;
+    master.gain.value = volume;
     master.connect(ctx.destination);
   }
   if (!noiseBuf) {
@@ -197,6 +198,11 @@ export const music = {
     else if (wanted !== 'none') music.play(wanted);
   },
   isEnabled: () => enabled,
+  /** 0~1 */
+  setVolume(v: number) {
+    volume = Math.max(0, Math.min(1, v));
+    if (master) master.gain.value = volume;
+  },
   /** 화면이 원하는 트랙 (꺼져 있어도 기억해 두었다가 켜면 재생) */
   play(track: Track) {
     wanted = track;

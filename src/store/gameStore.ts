@@ -47,12 +47,15 @@ interface GameState {
   session: Session | null;
   muted: boolean;
   musicOn: boolean;
+  musicVolume: number;
+  sfxVolume: number;
 
   goto: (s: Screen) => void;
   setMode: (mode: 'solo' | 'team', team?: Team) => void;
   toggleAllUnlocked: () => void;
   setMuted: (m: boolean) => void;
   setMusicOn: (m: boolean) => void;
+  setVolumes: (v: { musicVolume?: number; sfxVolume?: number }) => void;
 
   startRoom: (roomId: string) => void;
   setPhase: (p: Phase) => void;
@@ -99,12 +102,15 @@ export const useGame = create<GameState>()(
       session: null,
       muted: false,
       musicOn: true,
+      musicVolume: 0.6,
+      sfxVolume: 0.8,
 
       goto: (screen) => set({ screen }),
       setMode: (mode, team) => set({ mode, team: mode === 'team' ? (team ?? null) : null }),
       toggleAllUnlocked: () => set((s) => ({ allUnlocked: !s.allUnlocked })),
       setMuted: (muted) => set({ muted }),
       setMusicOn: (musicOn) => set({ musicOn }),
+      setVolumes: (v) => set(v),
 
       startRoom: (roomId) =>
         set({

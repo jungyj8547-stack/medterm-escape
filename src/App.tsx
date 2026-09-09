@@ -27,6 +27,8 @@ export default function App() {
   const session = useGame((s) => s.session);
   const muted = useGame((s) => s.muted);
   const musicOn = useGame((s) => s.musicOn);
+  const musicVolume = useGame((s) => s.musicVolume);
+  const sfxVolume = useGame((s) => s.sfxVolume);
 
   useEffect(() => {
     sfx.setMuted(muted);
@@ -35,6 +37,11 @@ export default function App() {
   useEffect(() => {
     music.setEnabled(musicOn);
   }, [musicOn]);
+
+  useEffect(() => {
+    music.setVolume(musicVolume);
+    sfx.setVolume(sfxVolume);
+  }, [musicVolume, sfxVolume]);
 
   // 브라우저 자동재생 정책: 첫 클릭/키 입력에서 오디오를 깨운다
   useEffect(() => {

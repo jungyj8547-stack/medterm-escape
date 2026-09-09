@@ -1,6 +1,17 @@
 /** 외부 파일 없이 WebAudio로 합성한 효과음 */
 let ctx: AudioContext | null = null;
 let muted = false;
+let sfxMaster: GainNode | null = null;
+let volume = 0.8;
+
+function out(c: AudioContext): AudioNode {
+  if (!sfxMaster) {
+    sfxMaster = c.createGain();
+    sfxMaster.gain.value = volume;
+    sfxMaster.connect(c.destination);
+  }
+  return sfxMaster;
+}
 
 export function getAudioContext(): AudioContext | null {
   try {
@@ -23,7 +34,7 @@ function tone(freq: number, dur: number, type: OscillatorType = 'sine', gain = 0
   g.gain.setValueAtTime(0.0001, c.currentTime + when);
   g.gain.linearRampToValueAtTime(gain, c.currentTime + when + 0.01);
   g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + when + dur);
-  o.connect(g).connect(c.destination);
+  o.connect(g).connect(out(c));
   o.start(c.currentTime + when);
   o.stop(c.currentTime + when + dur + 0.02);
 }
@@ -42,7 +53,7 @@ function noise(dur: number, gain = 0.15, when = 0, freq = 2000) {
   const g = c.createGain();
   g.gain.setValueAtTime(gain, c.currentTime + when);
   g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + when + dur);
-  src.connect(f).connect(g).connect(c.destination);
+  src.connect(f).connect(g).connect(out(c));
   src.start(c.currentTime + when);
 }
 
@@ -51,6 +62,11 @@ export const sfx = {
     muted = m;
   },
   isMuted: () => muted,
+  /** 0~1 */
+  setVolume(v: number) {
+    volume = Math.max(0, Math.min(1, v));
+    if (sfxMaster) sfxMaster.gain.value = volume;
+  },
   /** 뽁 — 버튼/타일 클릭 */
   click: () => tone(600, 0.07, 'sine', 0.12, 0, 900),
   /** 딩동 — 정답 */

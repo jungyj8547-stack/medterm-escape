@@ -3,14 +3,13 @@ import { useGame } from '../store/gameStore';
 import { ROOMS, ALL_TERMS } from '../data/loadData';
 import { sfx } from '../audio/sfx';
 import Avatar from '../components/Avatar';
+import SoundControl from '../components/SoundControl';
 
 export default function Title() {
   const setMode = useGame((s) => s.setMode);
   const goto = useGame((s) => s.goto);
   const session = useGame((s) => s.session);
   const team = useGame((s) => s.team);
-  const musicOn = useGame((s) => s.musicOn);
-  const setMusicOn = useGame((s) => s.setMusicOn);
   const [teamForm, setTeamForm] = useState(false);
   const [name, setName] = useState(team?.name ?? '');
   const [members, setMembers] = useState(team?.members ?? 4);
@@ -83,7 +82,7 @@ export default function Title() {
         )}
 
         <div className="center row" style={{ marginTop: 28, justifyContent: 'center' }}>
-          <button className="btn small" onClick={() => setMusicOn(!musicOn)}>{musicOn ? '🎵 음악 켜짐' : '🎵✕ 음악 꺼짐'}</button>
+          <SoundControl />
           <a href="#host" className="muted small">진행자 페이지 →</a>
         </div>
 
