@@ -4,6 +4,8 @@ import { formatTime, SCORE } from '../engine/scoring';
 import { encodeResult } from '../engine/resultCode';
 import { sfx } from '../audio/sfx';
 import ToastHost, { toast } from '../components/Toast';
+import Avatar from '../components/Avatar';
+import Confetti from '../components/Confetti';
 
 export default function Debrief() {
   const session = useGame((s) => s.session)!;
@@ -35,10 +37,15 @@ export default function Debrief() {
   return (
     <div className={`screen theme-${room.theme}`}>
       <ToastHost />
+      {escaped && <Confetti />}
       <div className="container narrow">
         <div className="panel">
           <div className="result-hero">
             <div className="small muted">{room.floor} {room.name}</div>
+            <div className="result-avatars">
+              <Avatar size={70} pose={escaped ? 'cheer' : 'sad'} />
+              {mode === 'team' && <Avatar size={70} pose={escaped ? 'cheer' : 'sad'} shirt="#ec4899" skin="#f9c9a3" />}
+            </div>
             {escaped ? (
               <>
                 <h2>🔓 탈출 성공!</h2>
@@ -92,7 +99,7 @@ export default function Debrief() {
               <button className="btn primary" onClick={() => { sfx.click(); retry(); }}>🔁 재도전 (타이머 리셋)</button>
             )}
             {escaped && nextRoom && (
-              <button className="btn primary" onClick={() => { sfx.click(); startRoom(nextRoom.id); }}>
+              <button className="btn ok bounce" onClick={() => { sfx.click(); startRoom(nextRoom.id); }}>
                 다음: {nextRoom.floor} {nextRoom.name} →
               </button>
             )}

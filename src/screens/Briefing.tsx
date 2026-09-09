@@ -1,6 +1,7 @@
 import { useGame } from '../store/gameStore';
 import { ROOM_BY_ID, LEARN_MINUTES, HINTS_PER_ROOM } from '../data/loadData';
 import { sfx } from '../audio/sfx';
+import Avatar from '../components/Avatar';
 
 export default function Briefing() {
   const session = useGame((s) => s.session)!;
@@ -19,6 +20,7 @@ export default function Briefing() {
               <div className="muted small">{room.subtitle}</div>
             </div>
           </div>
+          <span className="brief-avatar"><Avatar size={80} pose="think" /></span>
           <p className="brief">{room.briefing}</p>
 
           <div className="brief-steps">
@@ -39,7 +41,7 @@ export default function Briefing() {
           <div className="row between" style={{ marginTop: 22 }}>
             <button className="btn ghost" onClick={() => goto('lobby')}>← 안내도</button>
             <button
-              className="btn primary big"
+              className="btn ok big bounce"
               onClick={() => {
                 sfx.click();
                 setPhase('learn');

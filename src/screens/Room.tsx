@@ -74,6 +74,7 @@ export default function RoomScreen() {
       {popDigit && (
         <div className="fragment-pop">
           <div className="digit">{popDigit}</div>
+          <div className="caption">코드 조각 GET!</div>
         </div>
       )}
 
@@ -111,7 +112,7 @@ export default function RoomScreen() {
         <RoomScene solved={session.solved} digits={puzzles.digits} speedDone={session.speedDone} onOpen={open} />
       </div>
       <div className="room-help">
-        빛나는 오브젝트를 눌러 퍼즐을 푸세요. 코드 조각 4개를 모으면 문의 키패드가 열립니다.
+        ✨ 반짝이는 물건을 눌러 퍼즐을 풀자! 코드 조각 4개를 모으면 문이 열린다.
       </div>
 
       {active && (

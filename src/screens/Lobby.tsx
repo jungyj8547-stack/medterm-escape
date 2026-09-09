@@ -4,12 +4,18 @@ import { ROOMS } from '../data/loadData';
 import { formatTime } from '../engine/scoring';
 import { sfx } from '../audio/sfx';
 import ToastHost, { toast } from '../components/Toast';
+import Avatar from '../components/Avatar';
 
 export default function Lobby() {
   const s = useGame();
   const fileRef = useRef<HTMLInputElement>(null);
   const floorsDesc = [...ROOMS].reverse();
   const clearedAll = ROOMS.every((r) => s.bestResults[r.id]?.escaped);
+  // 캐릭터 마커: 진행 중인 병동 > 아직 클리어하지 않은 가장 낮은 열린 병동
+  const markerRoom =
+    (s.session && s.session.phase !== 'debrief' ? s.session.roomId : null) ??
+    ROOMS.find((r) => (s.allUnlocked || s.unlocked.includes(r.id)) && !s.bestResults[r.id]?.escaped)?.id ??
+    ROOMS[ROOMS.length - 1].id;
 
   const enter = (roomId: string) => {
     sfx.click();
@@ -40,7 +46,7 @@ export default function Lobby() {
       <div className="container narrow">
         <div className="row between" style={{ marginBottom: 18 }}>
           <div>
-            <h2>병원 안내도</h2>
+            <h2>🏥 병원 안내도</h2>
             <div className="small muted">
               {s.mode === 'team' ? `👥 팀: ${s.team?.name} (${s.team?.members}명)` : '🧑‍⚕️ 개인 플레이'} · 옥상 헬기장까지 올라가세요
             </div>
@@ -68,10 +74,13 @@ export default function Lobby() {
             return (
               <div
                 key={room.id}
-                className={`floor theme-${room.theme} ${unlocked ? 'playable' : 'locked'}`}
+                className={`floor theme-${room.theme} ${unlocked ? 'playable' : 'locked'} ${best?.escaped ? 'cleared' : ''}`}
                 onClick={() => unlocked && enter(room.id)}
                 role={unlocked ? 'button' : undefined}
               >
+                {markerRoom === room.id && !clearedAll && (
+                  <span className="marker"><Avatar size={44} pose="idle" /></span>
+                )}
                 <div className="fl">{room.floor}</div>
                 <div>
                   <div className="name">{room.name}</div>
@@ -86,7 +95,7 @@ export default function Lobby() {
                       <div className="small mono muted">{best.score}점 · {formatTime(best.timeUsedSec)}</div>
                     </div>
                   )}
-                  {unlocked && !inProgress && !best?.escaped && <span className="accent">▶ 입장</span>}
+                  {unlocked && !inProgress && !best?.escaped && <span className="btn small primary">▶ 입장</span>}
                 </div>
               </div>
             );

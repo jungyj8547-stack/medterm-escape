@@ -73,7 +73,7 @@ export default function Learn() {
             <Flashcard term={term} />
             <div className="learn-actions">
               <button className="btn danger big" onClick={() => answer(false)}>🤔 모르겠어요</button>
-              <button className="btn primary big" onClick={() => answer(true)}>✅ 알아요</button>
+              <button className="btn ok big" onClick={() => answer(true)}>✅ 알아요</button>
             </div>
             <div className="row between" style={{ marginTop: 10 }}>
               <button className="btn small ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>← 이전</button>
@@ -109,7 +109,7 @@ export default function Learn() {
                 <b>모든 차트를 열람했습니다.</b>
                 <div className="small muted">탈출을 시작하면 40분 타이머가 돌아갑니다. 모르겠어요로 표시한 {weakCount}개 단어가 퍼즐에 우선 출제됩니다.</div>
               </div>
-              <button className="btn primary big" onClick={() => { sfx.unlock(); startEscape(); }}>🚪 탈출 시작</button>
+              <button className="btn ok big bounce" onClick={() => { sfx.unlock(); startEscape(); }}>🚪 탈출 시작!</button>
             </div>
           ) : (
             <div className="row between">

@@ -59,7 +59,7 @@ export default function Keypad({ code, onEscaped }: Props) {
         ))}
         <button className="key action" onClick={back}>←</button>
         <button className="key" onClick={() => press('0')}>0</button>
-        <button className="key action" style={{ background: 'var(--accent)', color: '#061018' }} onClick={confirm} disabled={input.length < 4}>
+        <button className="key action go" onClick={confirm} disabled={input.length < 4}>
           열기
         </button>
       </div>
