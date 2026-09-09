@@ -52,6 +52,7 @@ export default function Learn() {
             <div className="small muted">{seenCount} / {terms.length} 열람 · 모르겠어요 {weakCount}개</div>
           </div>
           <div className="row">
+            <button className="btn small" onClick={() => goto('lobby')} title="진행은 저장됩니다">🏠 안내도</button>
             <span className={`timer ${over ? 'warn' : ''}`} style={{ fontSize: 18 }}>
               {formatTime(elapsed)} / {formatTime(target)}
             </span>

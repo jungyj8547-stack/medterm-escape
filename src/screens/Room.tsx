@@ -98,13 +98,16 @@ export default function RoomScreen() {
         </div>
         <div className="spacer" />
         <button className="btn small ghost" onClick={() => setMuted(!muted)}>{muted ? '🔇' : '🔊'}</button>
+        <button className="btn small" onClick={() => goto('lobby')} title="타이머는 계속 갑니다. 안내도에서 '이어하기'로 돌아올 수 있어요">
+          🏠 안내도
+        </button>
         <button
           className="btn small ghost"
           onClick={() => {
-            if (confirm('병동을 나가면 이 병동의 진행이 사라집니다. 나갈까요?')) abandonRoom();
+            if (confirm('병동을 포기하면 이 병동의 진행이 사라집니다. 포기할까요?')) abandonRoom();
           }}
         >
-          나가기
+          포기
         </button>
       </header>
 
