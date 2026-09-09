@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useGame } from '../store/gameStore';
 import { ROOMS } from '../data/loadData';
 import { decodeResult } from '../engine/resultCode';
 import { formatTime } from '../engine/scoring';
@@ -26,7 +27,7 @@ const load = (): Entry[] => {
 };
 
 export default function Host() {
-  const [tab, setTab] = useState<'board' | 'timer'>('board');
+  const [tab, setTab] = useState<'board' | 'timer' | 'settings'>('board');
   return (
     <div className="screen">
       <ToastHost />
@@ -41,8 +42,11 @@ export default function Host() {
         <div className="tabs">
           <button className={tab === 'board' ? 'on' : ''} onClick={() => setTab('board')}>🏆 리더보드</button>
           <button className={tab === 'timer' ? 'on' : ''} onClick={() => setTab('timer')}>⏱ 대형 타이머</button>
+          <button className={tab === 'settings' ? 'on' : ''} onClick={() => setTab('settings')}>⚙️ 교수자 설정</button>
         </div>
-        {tab === 'board' ? <Board /> : <BigTimer />}
+        {tab === 'board' && <Board />}
+        {tab === 'timer' && <BigTimer />}
+        {tab === 'settings' && <Settings />}
       </div>
     </div>
   );
@@ -145,6 +149,64 @@ function Board() {
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Settings() {
+  const s = useGame();
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const exportFile = () => {
+    const blob = new Blob([s.exportProgress()], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `medterm-escape-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  const importFile = (f: File | undefined) => {
+    if (!f) return;
+    f.text().then((t) => toast(s.importProgress(t) ? '진행 상황을 불러왔습니다' : '올바른 진행 파일이 아닙니다'));
+  };
+
+  return (
+    <div className="stack">
+      <div className="panel">
+        <div className="row between">
+          <div>
+            <b>병동 잠금 해제</b>
+            <div className="small muted">기본은 1F부터 차례로 열립니다. 수업 순서에 맞춰 모든 병동을 열 수 있습니다. (이 브라우저에만 적용)</div>
+          </div>
+          <label className="row" style={{ cursor: 'pointer', fontFamily: 'var(--display)' }}>
+            <input type="checkbox" checked={s.allUnlocked} onChange={s.toggleAllUnlocked} /> 모든 병동 열기
+          </label>
+        </div>
+      </div>
+      <div className="panel">
+        <b>학생 진행 데이터</b>
+        <div className="small muted" style={{ marginBottom: 12 }}>이 브라우저에 저장된 진행(잠금 해제, 점수, 약한 단어)을 파일로 백업하거나 불러옵니다.</div>
+        <div className="row">
+          <button className="btn small" onClick={exportFile}>진행 내보내기</button>
+          <button className="btn small" onClick={() => fileRef.current?.click()}>진행 가져오기</button>
+          <input ref={fileRef} type="file" accept="application/json" hidden onChange={(e) => importFile(e.target.files?.[0])} />
+          <span style={{ flex: 1 }} />
+          <button
+            className="btn small danger"
+            onClick={() => {
+              if (confirm('이 브라우저의 모든 진행 상황(점수, 잠금 해제, 약한 단어)을 초기화할까요?')) {
+                s.resetAll();
+                toast('초기화했습니다');
+              }
+            }}
+          >
+            진행 초기화
+          </button>
+        </div>
+      </div>
+      <div className="panel small muted">
+        학생 기기에서 처음부터 시작하게 하려면 주소 뒤에 <b className="mono">#reset</b>을 붙여 접속하게 하세요. 예: <span className="mono">http://주소/#reset</span>
       </div>
     </div>
   );

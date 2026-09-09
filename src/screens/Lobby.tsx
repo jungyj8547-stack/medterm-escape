@@ -1,14 +1,12 @@
-import { useRef } from 'react';
 import { useGame } from '../store/gameStore';
 import { ROOMS } from '../data/loadData';
 import { formatTime } from '../engine/scoring';
 import { sfx } from '../audio/sfx';
-import ToastHost, { toast } from '../components/Toast';
+import ToastHost from '../components/Toast';
 import Avatar from '../components/Avatar';
 
 export default function Lobby() {
   const s = useGame();
-  const fileRef = useRef<HTMLInputElement>(null);
   const floorsDesc = [...ROOMS].reverse();
   const clearedAll = ROOMS.every((r) => s.bestResults[r.id]?.escaped);
   // 캐릭터 마커: 진행 중인 병동 > 아직 클리어하지 않은 가장 낮은 열린 병동
@@ -25,19 +23,6 @@ export default function Lobby() {
     }
     if (s.session && s.session.phase !== 'debrief' && !confirm('진행 중인 다른 병동이 있습니다. 새로 시작할까요? (기존 진행은 사라집니다)')) return;
     s.startRoom(roomId);
-  };
-
-  const exportFile = () => {
-    const blob = new Blob([s.exportProgress()], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `medterm-escape-progress-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-  const importFile = (f: File | undefined) => {
-    if (!f) return;
-    f.text().then((t) => toast(s.importProgress(t) ? '진행 상황을 불러왔습니다' : '올바른 진행 파일이 아닙니다'));
   };
 
   return (
@@ -102,32 +87,6 @@ export default function Lobby() {
           })}
         </div>
 
-        <div className="panel" style={{ marginTop: 24 }}>
-          <div className="row between">
-            <div>
-              <b>교수자 옵션</b>
-              <div className="small muted">수업 순서에 맞춰 병동을 자유롭게 열 수 있습니다.</div>
-            </div>
-            <label className="row small" style={{ cursor: 'pointer' }}>
-              <input type="checkbox" checked={s.allUnlocked} onChange={s.toggleAllUnlocked} /> 모든 병동 열기
-            </label>
-          </div>
-          <div className="row" style={{ marginTop: 14 }}>
-            <button className="btn small" onClick={exportFile}>진행 내보내기</button>
-            <button className="btn small" onClick={() => fileRef.current?.click()}>진행 가져오기</button>
-            <input ref={fileRef} type="file" accept="application/json" hidden onChange={(e) => importFile(e.target.files?.[0])} />
-            <a className="btn small ghost" href="#host">진행자 페이지</a>
-            <span className="spacer" style={{ flex: 1 }} />
-            <button
-              className="btn small danger"
-              onClick={() => {
-                if (confirm('모든 진행 상황(점수, 잠금 해제, 약한 단어)을 초기화할까요?')) s.resetAll();
-              }}
-            >
-              초기화
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
