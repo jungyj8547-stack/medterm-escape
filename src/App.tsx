@@ -30,6 +30,15 @@ export default function App() {
     sfx.setMuted(muted);
   }, [muted]);
 
+  // #reset 으로 접속하면 저장된 진행을 모두 지우고 타이틀로
+  useEffect(() => {
+    if (hash === '#reset') {
+      useGame.getState().resetAll();
+      window.history.replaceState(null, '', window.location.pathname);
+      window.location.reload();
+    }
+  }, [hash]);
+
   if (hash === '#host') return <Host />;
 
   // 세션이 없는데 세션 화면이면 로비로
