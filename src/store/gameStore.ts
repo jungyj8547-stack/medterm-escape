@@ -344,6 +344,13 @@ export const useGame = create<GameState>()(
         }
       },
     }),
-    { name: 'medterm-escape-v1' },
+    {
+      name: 'medterm-escape-v1',
+      // 화면 위치는 저장하지 않는다 → 새로 열면 항상 타이틀부터 (진행 중인 병동은 '이어하기'로 복귀)
+      partialize: (s) => {
+        const { screen: _screen, ...rest } = s;
+        return rest as typeof s;
+      },
+    },
   ),
 );
