@@ -351,6 +351,8 @@ export const useGame = create<GameState>()(
         const { screen: _screen, ...rest } = s;
         return rest as typeof s;
       },
+      // 예전에 저장된 screen 값도 무시
+      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<GameState>), screen: 'title' as Screen }),
     },
   ),
 );
