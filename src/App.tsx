@@ -72,6 +72,11 @@ export default function App() {
       window.history.replaceState(null, '', window.location.pathname);
       window.location.reload();
     }
+    // #unlock 으로 접속하면 모든 병동을 열고 안내도로 (교수자 테스트용)
+    if (hash === '#unlock') {
+      useGame.setState({ allUnlocked: true, screen: 'lobby' });
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   }, [hash]);
 
   if (hash === '#host') return <Host />;
