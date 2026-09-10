@@ -446,3 +446,18 @@ table.board tr.top td:first-child { color: var(--warn-dark); font-family: var(--
 .ending-avatars .avatar { animation: bob 1.2s infinite; }
 .ending-avatars .avatar:nth-child(2) { animation-delay: 0.2s; }
 .ending-avatars .avatar:nth-child(3) { animation-delay: 0.4s; }
+
+/* --- 폰용 핫스팟 버튼 / 가로 안내 --- */
+.hotspot-buttons { display: none; }
+.rotate-hint { display: none; }
+@media (max-width: 700px) {
+  .hotspot-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px 24px; }
+  .hotspot-buttons .btn { font-size: 15px; padding: 10px 8px; justify-content: space-between; }
+  .hotspot-buttons .btn .tag { font-size: 12px; padding: 1px 8px; }
+  .scene-wrap { padding: 8px; }
+  .room-help { font-size: 13px; }
+  .rotate-hint { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+}
+@media (max-width: 700px) and (orientation: landscape) {
+  .rotate-hint { display: none; }
+}

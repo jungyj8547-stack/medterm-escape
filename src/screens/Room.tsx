@@ -120,6 +120,21 @@ export default function RoomScreen() {
       </div>
       <div className="room-help">
         ✨ 반짝이는 물건을 눌러 퍼즐을 풀자! 코드 조각 4개를 모으면 문이 열린다.
+        <span className="rotate-hint">📱 폰은 가로로 돌리면 병실이 더 잘 보여요</span>
+      </div>
+
+      {/* 폰(좁은 화면)용 큰 버튼 — 그림이 작아도 쉽게 누를 수 있게 */}
+      <div className="hotspot-buttons">
+        {(['chart', 'monitor', 'locker', 'records', 'speaker', 'door'] as Hotspot[]).map((h) => {
+          const done = h === 'door' ? session.solved.length === 4 : h === 'speaker' ? session.speedDone : session.solved.includes(h);
+          return (
+            <button key={h} className={`btn ${done ? 'ok' : ''}`} onClick={() => open(h)}>
+              {TITLES[h].icon} {TITLES[h].title.split(' — ')[0]}
+              {done && h !== 'door' && h !== 'speaker' && <span className="tag">{puzzles.digits[h as PuzzleHotspot]}</span>}
+              {done && h === 'speaker' && <span className="tag">완료</span>}
+            </button>
+          );
+        })}
       </div>
 
       {active && (
