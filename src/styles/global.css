@@ -435,3 +435,14 @@ table.board tr.top td:first-child { color: var(--warn-dark); font-family: var(--
 .sound-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; }
 .sound-row input[type=range] { width: 100%; accent-color: var(--accent); }
 .sound-row span { text-align: right; font-size: 13px; color: var(--muted); }
+
+/* --- 엔딩(옥상 헬기장) --- */
+.ending-sky { position: relative; height: 210px; margin-bottom: 10px; }
+.ending-sky .heli { position: absolute; left: 50%; top: 0; width: 260px; transform: translateX(-50%); animation: heli 3s ease-in-out infinite; }
+.ending-sky .heli .rotor { transform-box: fill-box; transform-origin: center; animation: rotor 0.25s linear infinite; }
+@keyframes heli { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-14px); } }
+@keyframes rotor { from { transform: scaleX(1); } 50% { transform: scaleX(0.15); } to { transform: scaleX(1); } }
+.ending-avatars { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; gap: 18px; align-items: flex-end; }
+.ending-avatars .avatar { animation: bob 1.2s infinite; }
+.ending-avatars .avatar:nth-child(2) { animation-delay: 0.2s; }
+.ending-avatars .avatar:nth-child(3) { animation-delay: 0.4s; }

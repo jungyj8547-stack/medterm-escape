@@ -5,7 +5,7 @@ import { ESCAPE_SECONDS, HINTS_PER_ROOM, ROOMS } from '../data/loadData';
 import { computeScore, SCORE } from '../engine/scoring';
 import { randomSeed } from '../engine/seededRandom';
 
-export type Screen = 'title' | 'lobby' | 'briefing' | 'learn' | 'room' | 'debrief' | 'host' | 'review';
+export type Screen = 'title' | 'lobby' | 'briefing' | 'learn' | 'room' | 'debrief' | 'host' | 'review' | 'ending';
 export type Phase = 'briefing' | 'learn' | 'escape' | 'debrief';
 
 export interface Session {

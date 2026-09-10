@@ -10,6 +10,7 @@ import RoomScreen from './screens/Room';
 import Debrief from './screens/Debrief';
 import Review from './screens/Review';
 import Host from './screens/Host';
+import Ending from './screens/Ending';
 
 function useHashRoute() {
   const [hash, setHash] = useState(() => window.location.hash);
@@ -100,6 +101,8 @@ export default function App() {
       return <Debrief />;
     case 'review':
       return <Review />;
+    case 'ending':
+      return <Ending />;
     default:
       return <Title />;
   }

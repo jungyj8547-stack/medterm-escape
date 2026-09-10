@@ -44,13 +44,19 @@ export default function Lobby() {
         </div>
 
         <div className="floors">
-          <div className={`floor roof ${clearedAll ? '' : 'locked'}`}>
+          <div
+            className={`floor roof ${clearedAll || s.allUnlocked ? 'playable' : 'locked'}`}
+            onClick={() => (clearedAll || s.allUnlocked) && (sfx.unlock(), s.goto('ending'))}
+            role={clearedAll || s.allUnlocked ? 'button' : undefined}
+          >
             <div className="fl">RTF</div>
             <div>
               <div className="name">🚁 옥상 헬기장</div>
-              <div className="sub">{clearedAll ? '모든 병동을 통과했습니다. 탈출 성공!' : '8개 병동을 모두 통과하면 열립니다'}</div>
+              <div className="sub">
+                {clearedAll ? '모든 병동을 통과했습니다. 탈출 성공!' : s.allUnlocked ? '교수자 모드: 바로 올라갈 수 있습니다' : '8개 병동을 모두 통과하면 열립니다'}
+              </div>
             </div>
-            <div className="right">{clearedAll ? '🎉' : '🔒'}</div>
+            <div className="right">{clearedAll ? <span className="btn small ok">🎉 탈출</span> : s.allUnlocked ? <span className="btn small primary">▶ 올라가기</span> : '🔒'}</div>
           </div>
 
           {floorsDesc.map((room) => {
