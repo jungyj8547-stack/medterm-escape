@@ -1,0 +1,522 @@
+{
+  "id": "r8",
+  "order": 8,
+  "floor": "8F",
+  "name": "정형외과 병동",
+  "subtitle": "관절과 척추",
+  "theme": "ortho",
+  "briefing": "8층 정형외과. 재활실 창문 너머로 옥상 헬기장의 유도등이 보인다. 마지막 병동이다.\n\n관절과 척추 수술 기록, 재활 계획표 속에 옥상 문을 여는 마지막 코드가 있다.",
+  "escapeMessage": "옥상 문이 열렸다. 차가운 밤바람과 함께 헬기 로터 소리가 들린다. 탈출 성공.",
+  "terms": [
+    {
+      "id": "r8-01",
+      "term": "Arthroscopy",
+      "abbr": "",
+      "korean": "관절경검사·관절경술",
+      "system": "근골격계",
+      "parts": [
+        [
+          "arthr/o",
+          "관절",
+          "r"
+        ],
+        [
+          "-scopy",
+          "들여다보는 검사",
+          "s"
+        ]
+      ],
+      "desc": "작은 구멍으로 카메라를 넣어 관절 안을 보면서 진단하고 치료하는 수술"
+    },
+    {
+      "id": "r8-02",
+      "term": "Carpal Tunnel Syndrome",
+      "abbr": "CTS",
+      "korean": "수근관 증후군",
+      "system": "근골격계",
+      "parts": [
+        [
+          "carp",
+          "손목",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Tunnel",
+          "터널",
+          "w"
+        ],
+        [
+          "Syndrome",
+          "증후군",
+          "w"
+        ]
+      ],
+      "desc": "손목 터널에서 정중신경이 눌려 엄지·검지·중지가 저리고 밤에 심해지는 질환"
+    },
+    {
+      "id": "r8-03",
+      "term": "Gout",
+      "abbr": "",
+      "korean": "통풍",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Gout",
+          "통풍",
+          "w"
+        ]
+      ],
+      "desc": "요산 결정이 관절에 쌓여 엄지발가락 등에 갑작스럽고 극심한 통증을 일으키는 질환"
+    },
+    {
+      "id": "r8-04",
+      "term": "Herniated Nucleus Pulposus",
+      "abbr": "HNP (HIVD)",
+      "korean": "추간판 탈출증",
+      "system": "근골격계",
+      "parts": [
+        [
+          "herni",
+          "돌출",
+          "r"
+        ],
+        [
+          "-ated",
+          "~된",
+          "s"
+        ],
+        [
+          "Nucleus",
+          "핵",
+          "w"
+        ],
+        [
+          "Pulposus",
+          "젤리 같은",
+          "w"
+        ]
+      ],
+      "desc": "척추뼈 사이 디스크의 속 물질이 밀려 나와 신경을 눌러 허리와 다리가 저린 질환"
+    },
+    {
+      "id": "r8-05",
+      "term": "Osteoarthritis",
+      "abbr": "OA",
+      "korean": "골관절염(퇴행성 관절염)",
+      "system": "근골격계",
+      "parts": [
+        [
+          "oste/o",
+          "뼈",
+          "r"
+        ],
+        [
+          "arthr",
+          "관절",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "나이가 들며 관절 연골이 닳아 통증과 뻣뻣함이 생기는 관절염"
+    },
+    {
+      "id": "r8-06",
+      "term": "Rheumatoid Arthritis",
+      "abbr": "RA",
+      "korean": "류마티스 관절염",
+      "system": "근골격계",
+      "parts": [
+        [
+          "rheumat",
+          "류마티스",
+          "r"
+        ],
+        [
+          "-oid",
+          "~와 닮은",
+          "s"
+        ],
+        [
+          "arthr",
+          "관절",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "면역계가 자기 관절을 공격해 아침에 손가락이 뻣뻣하고 붓는 자가면역 관절염"
+    },
+    {
+      "id": "r8-07",
+      "term": "Total Hip Arthroplasty",
+      "abbr": "THA (THR)",
+      "korean": "인공고관절 전치환술",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Total",
+          "전체",
+          "w"
+        ],
+        [
+          "Hip",
+          "엉덩관절",
+          "w"
+        ],
+        [
+          "arthr/o",
+          "관절",
+          "r"
+        ],
+        [
+          "-plasty",
+          "성형술",
+          "s"
+        ]
+      ],
+      "desc": "손상된 엉덩관절 전체를 인공관절로 바꾸는 수술. 수술 후 탈구 자세를 피해야 한다"
+    },
+    {
+      "id": "r8-08",
+      "term": "Total Knee Arthroplasty",
+      "abbr": "TKA (TKR)",
+      "korean": "인공무릎관절 전치환술",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Total",
+          "전체",
+          "w"
+        ],
+        [
+          "Knee",
+          "무릎",
+          "w"
+        ],
+        [
+          "arthr/o",
+          "관절",
+          "r"
+        ],
+        [
+          "-plasty",
+          "성형술",
+          "s"
+        ]
+      ],
+      "desc": "닳은 무릎관절을 인공관절로 바꾸는 수술. 수술 다음 날부터 관절 운동을 시작한다"
+    },
+    {
+      "id": "r8-09",
+      "term": "Anterior Cruciate Ligament Tear",
+      "abbr": "ACL tear",
+      "korean": "전방십자인대 파열",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Anterior",
+          "앞쪽",
+          "w"
+        ],
+        [
+          "Cruciate",
+          "십자 모양",
+          "w"
+        ],
+        [
+          "Ligament",
+          "인대",
+          "w"
+        ],
+        [
+          "Tear",
+          "파열",
+          "w"
+        ]
+      ],
+      "desc": "무릎을 비틀며 방향을 바꿀 때 앞십자인대가 끊어지는 손상. ACL rupture라고도 한다"
+    },
+    {
+      "id": "r8-10",
+      "term": "Avascular Necrosis",
+      "abbr": "AVN",
+      "korean": "무혈성괴사",
+      "system": "근골격계",
+      "parts": [
+        [
+          "a-",
+          "없음",
+          "p"
+        ],
+        [
+          "vascul",
+          "혈관",
+          "r"
+        ],
+        [
+          "-ar",
+          "~의",
+          "s"
+        ],
+        [
+          "necr",
+          "죽음",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "혈류가 끊겨 뼈 조직이 죽는 질환. 대퇴골두에 잘 생긴다"
+    },
+    {
+      "id": "r8-11",
+      "term": "Bone Mineral Density",
+      "abbr": "BMD",
+      "korean": "골밀도",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Bone",
+          "뼈",
+          "w"
+        ],
+        [
+          "Mineral",
+          "무기질",
+          "w"
+        ],
+        [
+          "Density",
+          "밀도",
+          "w"
+        ]
+      ],
+      "desc": "뼈 속 무기질의 양. 이중에너지 X선 흡수계측(DXA)으로 측정해 골다공증을 진단한다"
+    },
+    {
+      "id": "r8-12",
+      "term": "Myalgia",
+      "abbr": "",
+      "korean": "근육통",
+      "system": "근골격계",
+      "parts": [
+        [
+          "my",
+          "근육",
+          "r"
+        ],
+        [
+          "-algia",
+          "통증",
+          "s"
+        ]
+      ],
+      "desc": "근육이 아프고 뻐근한 증상"
+    },
+    {
+      "id": "r8-13",
+      "term": "Osteoporosis",
+      "abbr": "",
+      "korean": "골다공증",
+      "system": "근골격계",
+      "parts": [
+        [
+          "oste/o",
+          "뼈",
+          "r"
+        ],
+        [
+          "por",
+          "구멍",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "뼈의 밀도가 줄어 구멍이 많아지고 쉽게 부러지는 질환"
+    },
+    {
+      "id": "r8-14",
+      "term": "Physical Therapy",
+      "abbr": "PT",
+      "korean": "물리치료",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Physical",
+          "신체의",
+          "w"
+        ],
+        [
+          "Therapy",
+          "치료",
+          "w"
+        ]
+      ],
+      "desc": "운동, 열, 전기 등을 이용해 통증을 줄이고 기능을 회복시키는 치료"
+    },
+    {
+      "id": "r8-15",
+      "term": "Range of Motion",
+      "abbr": "ROM",
+      "korean": "관절가동범위",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Range",
+          "범위",
+          "w"
+        ],
+        [
+          "Motion",
+          "움직임",
+          "w"
+        ]
+      ],
+      "desc": "관절이 움직일 수 있는 각도의 범위. 수술 후 회복 정도를 재는 기준이 된다"
+    },
+    {
+      "id": "r8-16",
+      "term": "Rotator Cuff Tear",
+      "abbr": "RCT",
+      "korean": "회전근개파열",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Rotator",
+          "돌리는",
+          "w"
+        ],
+        [
+          "Cuff",
+          "소매",
+          "w"
+        ],
+        [
+          "Tear",
+          "파열",
+          "w"
+        ]
+      ],
+      "desc": "어깨를 돌리는 힘줄이 찢어져 팔을 들어 올리기 어렵고 밤에 아픈 질환"
+    },
+    {
+      "id": "r8-17",
+      "term": "Scoliosis",
+      "abbr": "",
+      "korean": "척추측만증",
+      "system": "근골격계",
+      "parts": [
+        [
+          "scoli",
+          "굽은",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "척추가 옆으로 휘어 어깨와 골반 높이가 달라지는 상태"
+    },
+    {
+      "id": "r8-18",
+      "term": "Spinal Stenosis",
+      "abbr": "",
+      "korean": "척추관 협착증",
+      "system": "근골격계",
+      "parts": [
+        [
+          "spin",
+          "척추",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "sten",
+          "좁은",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "척추관이 좁아져 신경을 눌러, 걸으면 다리가 저리고 앉으면 나아지는 질환"
+    },
+    {
+      "id": "r8-19",
+      "term": "Tendinitis",
+      "abbr": "",
+      "korean": "건염",
+      "system": "근골격계",
+      "parts": [
+        [
+          "tendin",
+          "힘줄",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "반복된 사용으로 힘줄에 염증이 생겨 움직일 때 아픈 상태"
+    },
+    {
+      "id": "r8-20",
+      "term": "Patient-Controlled Analgesia",
+      "abbr": "PCA",
+      "korean": "자가통증조절법",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Patient-Controlled",
+          "환자 조절",
+          "w"
+        ],
+        [
+          "an-",
+          "없음",
+          "p"
+        ],
+        [
+          "alges",
+          "통증",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "환자가 버튼을 눌러 정해진 양의 진통제를 스스로 투여하는 장치. 수술 후 통증 조절에 쓴다"
+    }
+  ]
+}

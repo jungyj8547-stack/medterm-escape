@@ -1,0 +1,407 @@
+{
+  "id": "r7",
+  "order": 7,
+  "floor": "7F",
+  "name": "외상 병동",
+  "subtitle": "뼈와 골절",
+  "theme": "trauma",
+  "briefing": "7층 외상 병동. 석고와 부목 재료가 바닥에 흩어져 있고, 견인 장치가 걸린 침대가 복도까지 밀려나와 있다.\n\nX선 필름 상자 안에 마지막 두 조각 중 하나가 숨어 있다. 뼈 이름을 정확히 읽어야 찾을 수 있다.",
+  "escapeMessage": "외상 병동의 문이 열렸다. 옥상까지 한 층. 8층 정형외과만 지나면 헬기장이다.",
+  "terms": [
+    {
+      "id": "r7-01",
+      "term": "Humerus",
+      "abbr": "",
+      "korean": "상완골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Humerus",
+          "상완골",
+          "w"
+        ]
+      ],
+      "desc": "어깨와 팔꿈치 사이에 있는 위팔의 긴 뼈"
+    },
+    {
+      "id": "r7-02",
+      "term": "Radius",
+      "abbr": "",
+      "korean": "요골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Radius",
+          "요골",
+          "w"
+        ]
+      ],
+      "desc": "아래팔에서 엄지손가락 쪽에 있는 뼈"
+    },
+    {
+      "id": "r7-03",
+      "term": "Ulna",
+      "abbr": "",
+      "korean": "척골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Ulna",
+          "척골",
+          "w"
+        ]
+      ],
+      "desc": "아래팔에서 새끼손가락 쪽에 있는 뼈"
+    },
+    {
+      "id": "r7-04",
+      "term": "Femur",
+      "abbr": "",
+      "korean": "대퇴골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Femur",
+          "대퇴골",
+          "w"
+        ]
+      ],
+      "desc": "엉덩이에서 무릎까지 이어지는, 몸에서 가장 길고 튼튼한 뼈"
+    },
+    {
+      "id": "r7-05",
+      "term": "Fibula",
+      "abbr": "",
+      "korean": "비골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Fibula",
+          "비골",
+          "w"
+        ]
+      ],
+      "desc": "종아리 바깥쪽에 있는 가늘고 긴 뼈"
+    },
+    {
+      "id": "r7-06",
+      "term": "Tibia",
+      "abbr": "",
+      "korean": "경골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Tibia",
+          "경골",
+          "w"
+        ]
+      ],
+      "desc": "종아리 안쪽에서 체중을 지탱하는 굵은 정강이뼈"
+    },
+    {
+      "id": "r7-07",
+      "term": "Patella",
+      "abbr": "",
+      "korean": "슬개골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Patella",
+          "슬개골",
+          "w"
+        ]
+      ],
+      "desc": "무릎 앞을 덮는 접시 모양의 작은 뼈"
+    },
+    {
+      "id": "r7-08",
+      "term": "Clavicle",
+      "abbr": "",
+      "korean": "쇄골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Clavicle",
+          "쇄골",
+          "w"
+        ]
+      ],
+      "desc": "가슴 위쪽에서 어깨까지 가로로 이어지는 빗장뼈"
+    },
+    {
+      "id": "r7-09",
+      "term": "Coccyx",
+      "abbr": "",
+      "korean": "미골",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Coccyx",
+          "미골",
+          "w"
+        ]
+      ],
+      "desc": "척추 맨 아래 끝에 있는 꼬리뼈"
+    },
+    {
+      "id": "r7-10",
+      "term": "Malleolus",
+      "abbr": "",
+      "korean": "복사뼈",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Malleolus",
+          "복사뼈",
+          "w"
+        ]
+      ],
+      "desc": "발목 안팎으로 볼록 튀어나온 뼈. 발목 골절이 잘 생기는 부위다"
+    },
+    {
+      "id": "r7-11",
+      "term": "Buttock",
+      "abbr": "",
+      "korean": "엉덩이",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Buttock",
+          "엉덩이",
+          "w"
+        ]
+      ],
+      "desc": "골반 뒤쪽의 두툼한 부위. 근육주사와 욕창 관찰 부위로 쓰인다"
+    },
+    {
+      "id": "r7-12",
+      "term": "Fracture",
+      "abbr": "Fx",
+      "korean": "골절",
+      "system": "근골격계",
+      "parts": [
+        [
+          "fract",
+          "부수다",
+          "r"
+        ],
+        [
+          "-ure",
+          "결과",
+          "s"
+        ]
+      ],
+      "desc": "외부 충격으로 뼈가 부러지거나 금이 간 상태. 피부가 뚫렸는지에 따라 개방과 폐쇄로 나눈다"
+    },
+    {
+      "id": "r7-13",
+      "term": "Compression Fracture",
+      "abbr": "",
+      "korean": "압박골절",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Compression",
+          "압박",
+          "w"
+        ],
+        [
+          "Fracture",
+          "골절",
+          "w"
+        ]
+      ],
+      "desc": "척추뼈가 위아래로 눌려 납작하게 주저앉는 골절. 골다공증 노인에게 흔하다"
+    },
+    {
+      "id": "r7-14",
+      "term": "Dislocation",
+      "abbr": "",
+      "korean": "탈구",
+      "system": "근골격계",
+      "parts": [
+        [
+          "dis-",
+          "벗어남",
+          "p"
+        ],
+        [
+          "locat",
+          "위치",
+          "r"
+        ],
+        [
+          "-ion",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "관절을 이루는 뼈가 제자리에서 빠져나간 상태"
+    },
+    {
+      "id": "r7-15",
+      "term": "Reduction",
+      "abbr": "",
+      "korean": "정복",
+      "system": "근골격계",
+      "parts": [
+        [
+          "re-",
+          "다시",
+          "p"
+        ],
+        [
+          "duct",
+          "이끌다",
+          "r"
+        ],
+        [
+          "-ion",
+          "행위",
+          "s"
+        ]
+      ],
+      "desc": "부러지거나 빠진 뼈를 원래 위치로 되돌려 맞추는 처치"
+    },
+    {
+      "id": "r7-16",
+      "term": "Open Reduction and Internal Fixation",
+      "abbr": "ORIF",
+      "korean": "개방정복 및 내고정",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Open",
+          "개방",
+          "w"
+        ],
+        [
+          "Reduction",
+          "정복",
+          "w"
+        ],
+        [
+          "Internal",
+          "내부",
+          "w"
+        ],
+        [
+          "Fixation",
+          "고정",
+          "w"
+        ]
+      ],
+      "desc": "피부를 절개해 골절 부위를 맞춘 뒤 금속판과 나사로 뼈 안쪽에서 고정하는 수술"
+    },
+    {
+      "id": "r7-17",
+      "term": "Closed Reduction and Internal Fixation",
+      "abbr": "CRIF",
+      "korean": "폐쇄정복 및 내고정",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Closed",
+          "폐쇄",
+          "w"
+        ],
+        [
+          "Reduction",
+          "정복",
+          "w"
+        ],
+        [
+          "Internal",
+          "내부",
+          "w"
+        ],
+        [
+          "Fixation",
+          "고정",
+          "w"
+        ]
+      ],
+      "desc": "크게 절개하지 않고 뼈를 맞춘 뒤 핀이나 나사로 고정하는 수술"
+    },
+    {
+      "id": "r7-18",
+      "term": "Amputation",
+      "abbr": "",
+      "korean": "절단술",
+      "system": "근골격계",
+      "parts": [
+        [
+          "ampu",
+          "잘라내다",
+          "r"
+        ],
+        [
+          "-ation",
+          "행위",
+          "s"
+        ]
+      ],
+      "desc": "괴사나 외상으로 살릴 수 없는 팔다리의 일부를 잘라내는 수술"
+    },
+    {
+      "id": "r7-19",
+      "term": "Hematoma",
+      "abbr": "",
+      "korean": "혈종",
+      "system": "근골격계",
+      "parts": [
+        [
+          "hemat",
+          "혈액",
+          "r"
+        ],
+        [
+          "-oma",
+          "덩어리",
+          "s"
+        ]
+      ],
+      "desc": "조직 안에 피가 고여 멍울처럼 만져지는 것"
+    },
+    {
+      "id": "r7-20",
+      "term": "Suture Removal",
+      "abbr": "",
+      "korean": "봉합사 제거",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Suture",
+          "봉합사",
+          "w"
+        ],
+        [
+          "Removal",
+          "제거",
+          "w"
+        ]
+      ],
+      "desc": "상처가 아문 뒤 꿰맨 실을 뽑는 처치. 병동에서는 stitch out(S/O)이라고도 한다"
+    },
+    {
+      "id": "r7-21",
+      "term": "Incision and Drainage",
+      "abbr": "I&D",
+      "korean": "절개 및 배농",
+      "system": "근골격계",
+      "parts": [
+        [
+          "Incision",
+          "절개",
+          "w"
+        ],
+        [
+          "Drainage",
+          "배농",
+          "w"
+        ]
+      ],
+      "desc": "고름이 찬 곳을 째서 고름을 빼내는 처치"
+    }
+  ]
+}

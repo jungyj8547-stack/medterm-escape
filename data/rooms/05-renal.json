@@ -1,0 +1,857 @@
+{
+  "id": "r5",
+  "order": 5,
+  "floor": "5F",
+  "name": "신장·내분비 병동",
+  "subtitle": "콩팥과 대사",
+  "theme": "renal",
+  "briefing": "5층 인공신장실. 투석기 열두 대가 나란히 멈춰 있고, 화면마다 마지막 투석 기록이 그대로 떠 있다.\n\n옆 병동은 내분비내과다. 혈당 기록지와 투석 차트를 함께 읽어야 다음 코드가 나온다.",
+  "escapeMessage": "투석기 화면이 하나씩 꺼졌다. 신장·내분비 병동의 문이 열린다. 6층은 신경과다.",
+  "terms": [
+    {
+      "id": "r5-01",
+      "term": "Acute Kidney Injury",
+      "abbr": "AKI",
+      "korean": "급성신손상",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Acute",
+          "급성",
+          "w"
+        ],
+        [
+          "Kidney",
+          "콩팥",
+          "w"
+        ],
+        [
+          "Injury",
+          "손상",
+          "w"
+        ]
+      ],
+      "desc": "콩팥 기능이 며칠 안에 급격히 떨어져 소변량이 줄고 노폐물이 쌓이는 상태. 과거에는 급성신부전(ARF)이라 불렀다"
+    },
+    {
+      "id": "r5-02",
+      "term": "Benign Prostatic Hyperplasia",
+      "abbr": "BPH",
+      "korean": "전립선비대증",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Benign",
+          "양성",
+          "w"
+        ],
+        [
+          "prostat",
+          "전립선",
+          "r"
+        ],
+        [
+          "-ic",
+          "~의",
+          "s"
+        ],
+        [
+          "hyper-",
+          "과다",
+          "p"
+        ],
+        [
+          "plas",
+          "형성",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "전립선이 커져 요도를 눌러 소변 줄기가 가늘어지고 자주 마려운 질환"
+    },
+    {
+      "id": "r5-03",
+      "term": "Chronic Kidney Disease",
+      "abbr": "CKD",
+      "korean": "만성신장질환",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Chronic",
+          "만성",
+          "w"
+        ],
+        [
+          "Kidney",
+          "콩팥",
+          "w"
+        ],
+        [
+          "Disease",
+          "질환",
+          "w"
+        ]
+      ],
+      "desc": "콩팥 기능이 3개월 이상 서서히 떨어진 상태. 단계에 따라 관리가 달라지며, 과거의 만성신부전(CRF)을 대신하는 표준 용어다"
+    },
+    {
+      "id": "r5-04",
+      "term": "End-Stage Kidney Disease",
+      "abbr": "ESKD (ESRD)",
+      "korean": "말기신부전",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "End-Stage",
+          "말기",
+          "w"
+        ],
+        [
+          "Kidney",
+          "콩팥",
+          "w"
+        ],
+        [
+          "Disease",
+          "질환",
+          "w"
+        ]
+      ],
+      "desc": "콩팥이 거의 기능하지 못해 투석이나 이식이 필요한 마지막 단계. 기존 표기는 ESRD"
+    },
+    {
+      "id": "r5-05",
+      "term": "Extracorporeal Shock Wave Lithotripsy",
+      "abbr": "ESWL",
+      "korean": "체외충격파쇄석술",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "extra-",
+          "바깥",
+          "p"
+        ],
+        [
+          "corpor",
+          "몸",
+          "r"
+        ],
+        [
+          "-eal",
+          "~의",
+          "s"
+        ],
+        [
+          "lith/o",
+          "돌",
+          "r"
+        ],
+        [
+          "-tripsy",
+          "부수기",
+          "s"
+        ]
+      ],
+      "desc": "몸 밖에서 충격파를 쏘아 콩팥이나 요관의 돌을 잘게 깨뜨려 소변으로 배출시키는 시술"
+    },
+    {
+      "id": "r5-06",
+      "term": "Hematuria",
+      "abbr": "",
+      "korean": "혈뇨",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "hemat",
+          "혈액",
+          "r"
+        ],
+        [
+          "-uria",
+          "소변 상태",
+          "s"
+        ]
+      ],
+      "desc": "소변에 피가 섞여 나오는 것. 눈으로 보이는 경우와 현미경으로만 보이는 경우가 있다"
+    },
+    {
+      "id": "r5-07",
+      "term": "Hemodialysis",
+      "abbr": "HD",
+      "korean": "혈액투석",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "hem/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "dia-",
+          "통하여",
+          "p"
+        ],
+        [
+          "-lysis",
+          "분리",
+          "s"
+        ]
+      ],
+      "desc": "혈액을 기계로 빼내 인공막으로 노폐물과 수분을 걸러 되돌려주는 치료"
+    },
+    {
+      "id": "r5-08",
+      "term": "Peritoneal Dialysis",
+      "abbr": "PD",
+      "korean": "복막투석",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "periton",
+          "복막",
+          "r"
+        ],
+        [
+          "-eal",
+          "~의",
+          "s"
+        ],
+        [
+          "Dialysis",
+          "투석",
+          "w"
+        ]
+      ],
+      "desc": "복강에 투석액을 넣고 복막을 걸름막으로 이용해 노폐물을 빼내는 치료"
+    },
+    {
+      "id": "r5-09",
+      "term": "Urinary Tract Infection",
+      "abbr": "UTI",
+      "korean": "요로감염",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "urin",
+          "소변",
+          "r"
+        ],
+        [
+          "-ary",
+          "~의",
+          "s"
+        ],
+        [
+          "Tract",
+          "길",
+          "w"
+        ],
+        [
+          "Infection",
+          "감염",
+          "w"
+        ]
+      ],
+      "desc": "요도·방광·콩팥 등 소변길에 생긴 감염. 배뇨통과 빈뇨가 나타난다"
+    },
+    {
+      "id": "r5-10",
+      "term": "Acute Pyelonephritis",
+      "abbr": "APN",
+      "korean": "급성신우신염",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Acute",
+          "급성",
+          "w"
+        ],
+        [
+          "pyel/o",
+          "신우",
+          "r"
+        ],
+        [
+          "nephr",
+          "콩팥",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "세균이 방광에서 콩팥까지 올라가 고열과 옆구리 통증을 일으키는 감염"
+    },
+    {
+      "id": "r5-11",
+      "term": "Anuria",
+      "abbr": "",
+      "korean": "무뇨",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "an-",
+          "없음",
+          "p"
+        ],
+        [
+          "-uria",
+          "소변 상태",
+          "s"
+        ]
+      ],
+      "desc": "하루 소변량이 거의 없는 상태. 대개 100mL 미만을 말한다"
+    },
+    {
+      "id": "r5-12",
+      "term": "Chronic Renal Failure",
+      "abbr": "CRF",
+      "korean": "만성신부전(구용어)",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Chronic",
+          "만성",
+          "w"
+        ],
+        [
+          "ren",
+          "콩팥",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Failure",
+          "기능부전",
+          "w"
+        ]
+      ],
+      "desc": "콩팥 기능이 오랜 기간에 걸쳐 회복되지 않게 떨어진 상태. 현재는 만성콩팥병(CKD)으로 부르며, CRF는 현장에서 남아 있는 표현이다"
+    },
+    {
+      "id": "r5-13",
+      "term": "Continuous Renal Replacement Therapy",
+      "abbr": "CRRT",
+      "korean": "지속적 신대체요법",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Continuous",
+          "지속적",
+          "w"
+        ],
+        [
+          "ren",
+          "콩팥",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Replacement",
+          "대체",
+          "w"
+        ],
+        [
+          "Therapy",
+          "요법",
+          "w"
+        ]
+      ],
+      "desc": "혈압이 불안정한 중환자에게 24시간 천천히 노폐물과 수분을 걸러내는 투석"
+    },
+    {
+      "id": "r5-14",
+      "term": "Cystitis",
+      "abbr": "",
+      "korean": "방광염",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "cyst",
+          "방광",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "방광 점막에 생긴 염증. 소변볼 때 따갑고 자주 마렵다"
+    },
+    {
+      "id": "r5-15",
+      "term": "Cystoscopy",
+      "abbr": "",
+      "korean": "방광경검사",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "cyst/o",
+          "방광",
+          "r"
+        ],
+        [
+          "-scopy",
+          "들여다보는 검사",
+          "s"
+        ]
+      ],
+      "desc": "요도로 내시경을 넣어 방광 안을 직접 보는 검사"
+    },
+    {
+      "id": "r5-16",
+      "term": "Dysuria",
+      "abbr": "",
+      "korean": "배뇨통",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "dys-",
+          "어려운",
+          "p"
+        ],
+        [
+          "-uria",
+          "소변 상태",
+          "s"
+        ]
+      ],
+      "desc": "소변을 볼 때 따갑거나 아픈 증상. 소변이 잘 나오지 않는 배뇨곤란(voiding difficulty)과는 다르다"
+    },
+    {
+      "id": "r5-17",
+      "term": "Flank Pain",
+      "abbr": "",
+      "korean": "옆구리 통증",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "Flank",
+          "옆구리",
+          "w"
+        ],
+        [
+          "Pain",
+          "통증",
+          "w"
+        ]
+      ],
+      "desc": "등 아래 갈비뼈 옆이 아픈 것. 콩팥과 요관 질환에서 흔하다"
+    },
+    {
+      "id": "r5-18",
+      "term": "Nephrectomy",
+      "abbr": "",
+      "korean": "신장절제술",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "nephr",
+          "콩팥",
+          "r"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "콩팥 전체 또는 일부를 잘라내는 수술"
+    },
+    {
+      "id": "r5-19",
+      "term": "Oliguria",
+      "abbr": "",
+      "korean": "핍뇨",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "olig/o",
+          "적은",
+          "p"
+        ],
+        [
+          "-uria",
+          "소변 상태",
+          "s"
+        ]
+      ],
+      "desc": "소변량이 크게 줄어든 상태. 보통 하루 400mL 미만을 말한다"
+    },
+    {
+      "id": "r5-20",
+      "term": "Urinary Frequency",
+      "abbr": "",
+      "korean": "빈뇨",
+      "system": "신장비뇨기계",
+      "parts": [
+        [
+          "urin",
+          "소변",
+          "r"
+        ],
+        [
+          "-ary",
+          "~의",
+          "s"
+        ],
+        [
+          "Frequency",
+          "잦음",
+          "w"
+        ]
+      ],
+      "desc": "소변을 보는 횟수가 비정상적으로 늘어난 상태"
+    },
+    {
+      "id": "r5-21",
+      "term": "Pelvic Inflammatory Disease",
+      "abbr": "PID",
+      "korean": "골반 염증성 질환",
+      "system": "여성생식기계",
+      "parts": [
+        [
+          "pelv",
+          "골반",
+          "r"
+        ],
+        [
+          "-ic",
+          "~의",
+          "s"
+        ],
+        [
+          "Inflammatory",
+          "염증성",
+          "w"
+        ],
+        [
+          "Disease",
+          "질환",
+          "w"
+        ]
+      ],
+      "desc": "자궁·난관 등 골반 장기에 생긴 감염. 아랫배 통증과 발열, 질 분비물이 나타난다"
+    },
+    {
+      "id": "r5-22",
+      "term": "Diabetes Mellitus",
+      "abbr": "DM",
+      "korean": "당뇨병",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "Diabetes",
+          "당뇨병",
+          "w"
+        ],
+        [
+          "Mellitus",
+          "꿀 같은",
+          "w"
+        ]
+      ],
+      "desc": "인슐린이 부족하거나 잘 듣지 않아 혈당이 높게 유지되는 대사 질환"
+    },
+    {
+      "id": "r5-23",
+      "term": "Diabetic Ketoacidosis",
+      "abbr": "DKA",
+      "korean": "당뇨병성 케톤산증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "Diabetic",
+          "당뇨의",
+          "w"
+        ],
+        [
+          "ket/o",
+          "케톤",
+          "r"
+        ],
+        [
+          "acid",
+          "산",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "인슐린이 부족해 지방이 분해되며 케톤이 쌓여 혈액이 산성으로 기우는 급성 합병증"
+    },
+    {
+      "id": "r5-24",
+      "term": "Hyperthyroidism",
+      "abbr": "",
+      "korean": "갑상선기능항진증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyper-",
+          "과다",
+          "p"
+        ],
+        [
+          "thyr",
+          "갑상선",
+          "r"
+        ],
+        [
+          "-oid",
+          "~모양",
+          "s"
+        ],
+        [
+          "-ism",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "갑상선호르몬이 많이 분비돼 체중이 줄고 더위를 타며 가슴이 두근거리는 질환"
+    },
+    {
+      "id": "r5-25",
+      "term": "Dehydration",
+      "abbr": "",
+      "korean": "탈수",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "de-",
+          "제거",
+          "p"
+        ],
+        [
+          "hydr",
+          "물",
+          "r"
+        ],
+        [
+          "-ation",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "체내 수분이 부족해 입이 마르고 피부 탄력이 떨어지며 소변이 진해지는 상태"
+    },
+    {
+      "id": "r5-26",
+      "term": "Fasting Blood Sugar",
+      "abbr": "FBS",
+      "korean": "공복 혈당",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "Fasting",
+          "금식",
+          "w"
+        ],
+        [
+          "Blood",
+          "혈액",
+          "w"
+        ],
+        [
+          "Sugar",
+          "당",
+          "w"
+        ]
+      ],
+      "desc": "8시간 이상 금식한 뒤 잰 혈당. 당뇨 진단의 기본 검사다"
+    },
+    {
+      "id": "r5-27",
+      "term": "Hyperkalemia",
+      "abbr": "",
+      "korean": "고칼륨혈증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyper-",
+          "높은",
+          "p"
+        ],
+        [
+          "kal",
+          "칼륨",
+          "r"
+        ],
+        [
+          "-emia",
+          "혈액 상태",
+          "s"
+        ]
+      ],
+      "desc": "혈액 속 칼륨이 높아진 상태. 부정맥과 심정지를 일으킬 수 있다"
+    },
+    {
+      "id": "r5-28",
+      "term": "Hyperlipidemia",
+      "abbr": "HLD",
+      "korean": "고지혈증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyper-",
+          "높은",
+          "p"
+        ],
+        [
+          "lip",
+          "지방",
+          "r"
+        ],
+        [
+          "-emia",
+          "혈액 상태",
+          "s"
+        ]
+      ],
+      "desc": "혈액 속 콜레스테롤과 중성지방이 높은 상태. 동맥경화의 위험요인이다"
+    },
+    {
+      "id": "r5-29",
+      "term": "Hypoglycemia",
+      "abbr": "",
+      "korean": "저혈당",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyp/o",
+          "낮은",
+          "p"
+        ],
+        [
+          "glyc",
+          "당",
+          "r"
+        ],
+        [
+          "-emia",
+          "혈액 상태",
+          "s"
+        ]
+      ],
+      "desc": "혈당이 떨어져 식은땀, 손떨림, 혼돈이 나타나는 상태. 즉시 당을 공급해야 한다"
+    },
+    {
+      "id": "r5-30",
+      "term": "Hyponatremia",
+      "abbr": "",
+      "korean": "저나트륨혈증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyp/o",
+          "낮은",
+          "p"
+        ],
+        [
+          "natr",
+          "나트륨",
+          "r"
+        ],
+        [
+          "-emia",
+          "혈액 상태",
+          "s"
+        ]
+      ],
+      "desc": "혈액 속 나트륨이 낮아져 무기력, 두통, 심하면 경련이 생기는 상태"
+    },
+    {
+      "id": "r5-31",
+      "term": "Hypothyroidism",
+      "abbr": "",
+      "korean": "갑상선기능저하증",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "hyp/o",
+          "낮은",
+          "p"
+        ],
+        [
+          "thyr",
+          "갑상선",
+          "r"
+        ],
+        [
+          "-oid",
+          "~모양",
+          "s"
+        ],
+        [
+          "-ism",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "갑상선호르몬이 부족해 추위를 타고 몸이 붓고 쉽게 피로해지는 질환"
+    },
+    {
+      "id": "r5-32",
+      "term": "Polyuria",
+      "abbr": "",
+      "korean": "다뇨",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "poly-",
+          "많은",
+          "p"
+        ],
+        [
+          "-uria",
+          "소변 상태",
+          "s"
+        ]
+      ],
+      "desc": "소변량이 비정상적으로 많아진 상태. 당뇨의 대표 증상 가운데 하나다"
+    },
+    {
+      "id": "r5-33",
+      "term": "Thyroidectomy",
+      "abbr": "",
+      "korean": "갑상선절제술",
+      "system": "내분비·대사계",
+      "parts": [
+        [
+          "thyr",
+          "갑상선",
+          "r"
+        ],
+        [
+          "-oid",
+          "~모양",
+          "s"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "갑상선의 전부 또는 일부를 잘라내는 수술. 수술 후 목소리 변화와 저칼슘을 관찰한다"
+    }
+  ]
+}

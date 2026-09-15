@@ -1,0 +1,542 @@
+{
+  "id": "r3",
+  "order": 3,
+  "floor": "3F",
+  "name": "소화기내과 병동",
+  "subtitle": "간·담도·췌장",
+  "theme": "gi",
+  "briefing": "3층 소화기내과. 내시경실 문이 반쯤 열린 채 멈춰 있고, 복도에는 배액백을 매단 수액 걸이가 줄지어 서 있다.\n\n간과 담도, 췌장을 다루는 병동이다. 검사 기록지와 배액 차트 속에 다음 코드 조각이 있다.",
+  "escapeMessage": "배액관 알람이 꺼졌다. 소화기내과 병동의 문이 열리고 4층으로 가는 계단이 보인다.",
+  "terms": [
+    {
+      "id": "r3-01",
+      "term": "Ascites",
+      "abbr": "",
+      "korean": "복수",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Ascites",
+          "복수",
+          "w"
+        ]
+      ],
+      "desc": "복강에 액체가 고여 배가 불러오고 체중이 느는 상태. 간경화에서 흔하다"
+    },
+    {
+      "id": "r3-02",
+      "term": "Cholecystitis",
+      "abbr": "",
+      "korean": "담낭염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "chol/e",
+          "담즙",
+          "r"
+        ],
+        [
+          "cyst",
+          "주머니",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "담낭에 염증이 생겨 오른쪽 윗배가 아프고 열이 나는 질환"
+    },
+    {
+      "id": "r3-03",
+      "term": "Endoscopic Retrograde Cholangiopancreatography",
+      "abbr": "ERCP",
+      "korean": "내시경 역행성 담췌관 조영술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "endo-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "scop",
+          "보다",
+          "r"
+        ],
+        [
+          "cholangi/o",
+          "담관",
+          "r"
+        ],
+        [
+          "pancreat/o",
+          "췌장",
+          "r"
+        ],
+        [
+          "-graphy",
+          "촬영술",
+          "s"
+        ]
+      ],
+      "desc": "내시경을 십이지장까지 넣어 담관과 췌관에 조영제를 넣고 결석 제거나 스텐트 삽입까지 하는 시술"
+    },
+    {
+      "id": "r3-04",
+      "term": "Hepatocellular Carcinoma",
+      "abbr": "HCC",
+      "korean": "간세포암",
+      "system": "소화기계",
+      "parts": [
+        [
+          "hepat/o",
+          "간",
+          "r"
+        ],
+        [
+          "cellul",
+          "세포",
+          "r"
+        ],
+        [
+          "-ar",
+          "~의",
+          "s"
+        ],
+        [
+          "carcin",
+          "암",
+          "r"
+        ],
+        [
+          "-oma",
+          "종양",
+          "s"
+        ]
+      ],
+      "desc": "간세포에서 생기는 원발성 암. 만성 간염과 간경화가 주요 위험요인이다"
+    },
+    {
+      "id": "r3-05",
+      "term": "Jaundice",
+      "abbr": "",
+      "korean": "황달",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Jaundice",
+          "황달",
+          "w"
+        ]
+      ],
+      "desc": "빌리루빈이 쌓여 피부와 눈 흰자가 노랗게 되는 징후"
+    },
+    {
+      "id": "r3-06",
+      "term": "Liver Cirrhosis",
+      "abbr": "LC",
+      "korean": "간경변증",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Liver",
+          "간",
+          "w"
+        ],
+        [
+          "cirrh",
+          "황갈색",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "간이 반복 손상으로 딱딱하게 굳어 기능을 잃는 만성 질환"
+    },
+    {
+      "id": "r3-07",
+      "term": "Pancreatitis",
+      "abbr": "",
+      "korean": "췌장염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "pancreat",
+          "췌장",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "췌장 효소가 췌장 자신을 소화시켜 명치 통증이 등으로 뻗치는 염증"
+    },
+    {
+      "id": "r3-08",
+      "term": "Percutaneous Transhepatic Biliary Drainage",
+      "abbr": "PTBD",
+      "korean": "경피경간 담도배액술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "per-",
+          "통하여",
+          "p"
+        ],
+        [
+          "cutane",
+          "피부",
+          "r"
+        ],
+        [
+          "trans-",
+          "가로질러",
+          "p"
+        ],
+        [
+          "hepat",
+          "간",
+          "r"
+        ],
+        [
+          "Biliary",
+          "담도의",
+          "w"
+        ],
+        [
+          "Drainage",
+          "배액",
+          "w"
+        ]
+      ],
+      "desc": "피부에서 간을 통과해 담관에 관을 넣고 막힌 담즙을 몸 밖으로 빼주는 시술"
+    },
+    {
+      "id": "r3-09",
+      "term": "Percutaneous Transhepatic Gallbladder Drainage",
+      "abbr": "PTGBD",
+      "korean": "경피경간 담낭배액술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "per-",
+          "통하여",
+          "p"
+        ],
+        [
+          "cutane",
+          "피부",
+          "r"
+        ],
+        [
+          "trans-",
+          "가로질러",
+          "p"
+        ],
+        [
+          "hepat",
+          "간",
+          "r"
+        ],
+        [
+          "Gallbladder",
+          "담낭",
+          "w"
+        ],
+        [
+          "Drainage",
+          "배액",
+          "w"
+        ]
+      ],
+      "desc": "수술이 어려운 급성 담낭염에서 담낭에 직접 관을 넣어 고름과 담즙을 빼내는 시술"
+    },
+    {
+      "id": "r3-10",
+      "term": "Cholelithiasis",
+      "abbr": "",
+      "korean": "담석증",
+      "system": "소화기계",
+      "parts": [
+        [
+          "chol/e",
+          "담즙",
+          "r"
+        ],
+        [
+          "lith",
+          "돌",
+          "r"
+        ],
+        [
+          "-iasis",
+          "형성된 상태",
+          "s"
+        ]
+      ],
+      "desc": "담낭이나 담관에 돌이 생겨 기름진 음식 후 윗배가 아픈 질환"
+    },
+    {
+      "id": "r3-11",
+      "term": "Common Bile Duct",
+      "abbr": "CBD",
+      "korean": "총담관",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Common",
+          "공통의",
+          "w"
+        ],
+        [
+          "Bile",
+          "담즙",
+          "w"
+        ],
+        [
+          "Duct",
+          "관",
+          "w"
+        ]
+      ],
+      "desc": "간과 담낭에서 나온 담즙이 합쳐져 십이지장으로 내려가는 관"
+    },
+    {
+      "id": "r3-12",
+      "term": "Fatty Liver",
+      "abbr": "",
+      "korean": "지방간",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Fatty",
+          "지방의",
+          "w"
+        ],
+        [
+          "Liver",
+          "간",
+          "w"
+        ]
+      ],
+      "desc": "간세포에 지방이 과도하게 쌓인 상태. 음주와 비만이 주요 원인이다"
+    },
+    {
+      "id": "r3-13",
+      "term": "Hepatitis",
+      "abbr": "",
+      "korean": "간염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "hepat",
+          "간",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "바이러스나 약물, 음주로 간에 염증이 생겨 피로와 황달이 나타나는 질환"
+    },
+    {
+      "id": "r3-14",
+      "term": "Magnetic Resonance Cholangiopancreatography",
+      "abbr": "MRCP",
+      "korean": "자기공명 담췌관 조영술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Magnetic",
+          "자기",
+          "w"
+        ],
+        [
+          "Resonance",
+          "공명",
+          "w"
+        ],
+        [
+          "cholangi/o",
+          "담관",
+          "r"
+        ],
+        [
+          "pancreat/o",
+          "췌장",
+          "r"
+        ],
+        [
+          "-graphy",
+          "촬영술",
+          "s"
+        ]
+      ],
+      "desc": "자기공명영상으로 담관과 췌관을 그려내는 비침습 검사. 내시경 없이 결석과 협착을 본다"
+    },
+    {
+      "id": "r3-15",
+      "term": "Paracentesis",
+      "abbr": "",
+      "korean": "복수천자",
+      "system": "소화기계",
+      "parts": [
+        [
+          "para-",
+          "옆",
+          "p"
+        ],
+        [
+          "-centesis",
+          "천자",
+          "s"
+        ]
+      ],
+      "desc": "복벽에 바늘을 넣어 고인 복수를 빼내는 시술. 검사와 복부 팽만 완화에 쓴다"
+    },
+    {
+      "id": "r3-16",
+      "term": "Generalized Peritonitis",
+      "abbr": "",
+      "korean": "범복막염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Generalized",
+          "전반적인",
+          "w"
+        ],
+        [
+          "periton",
+          "복막",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "복막 전체로 염증이 퍼진 상태. 배가 널빤지처럼 단단해지고 응급수술이 필요하다. 원자료 표기는 panperitonitis"
+    },
+    {
+      "id": "r3-17",
+      "term": "Peritonitis",
+      "abbr": "",
+      "korean": "복막염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "periton",
+          "복막",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "복강을 싸는 막에 염증이 생겨 심한 복통과 반동 압통이 나타나는 상태"
+    },
+    {
+      "id": "r3-18",
+      "term": "Hernia",
+      "abbr": "",
+      "korean": "탈장",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Hernia",
+          "탈장",
+          "w"
+        ]
+      ],
+      "desc": "복벽의 약한 부위로 장이 밀려 나와 덩어리로 만져지는 상태"
+    },
+    {
+      "id": "r3-19",
+      "term": "Percutaneous Endoscopic Gastrostomy",
+      "abbr": "PEG",
+      "korean": "경피적 내시경 위루술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "per-",
+          "통하여",
+          "p"
+        ],
+        [
+          "cutane",
+          "피부",
+          "r"
+        ],
+        [
+          "endo-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "scop",
+          "보다",
+          "r"
+        ],
+        [
+          "gastr/o",
+          "위",
+          "r"
+        ],
+        [
+          "-stomy",
+          "구멍 만들기",
+          "s"
+        ]
+      ],
+      "desc": "내시경을 보면서 배에서 위로 관을 내어 장기간 영양을 공급하는 시술"
+    },
+    {
+      "id": "r3-20",
+      "term": "Total Parenteral Nutrition",
+      "abbr": "TPN",
+      "korean": "완전비경구영양",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Total",
+          "전체",
+          "w"
+        ],
+        [
+          "par-",
+          "벗어나",
+          "p"
+        ],
+        [
+          "enter",
+          "장",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Nutrition",
+          "영양",
+          "w"
+        ]
+      ],
+      "desc": "장을 쓰지 못할 때 필요한 영양소를 모두 정맥으로 공급하는 방법"
+    }
+  ]
+}

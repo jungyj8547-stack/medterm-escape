@@ -1,0 +1,457 @@
+{
+  "id": "r4",
+  "order": 4,
+  "floor": "4F",
+  "name": "소화기 병동",
+  "subtitle": "위와 장",
+  "theme": "gi",
+  "briefing": "4층. 금식 표지가 붙은 병실이 늘어서 있고, 내시경 세척실에서 소독약 냄새가 난다.\n\n위와 장을 다루는 병동이다. 내시경 결과지와 수술 기록 속에서 코드 조각을 찾아야 한다.",
+  "escapeMessage": "소화기 병동의 문이 열렸다. 5층으로 오르는 계단에 비상등이 하나씩 켜진다.",
+  "terms": [
+    {
+      "id": "r4-01",
+      "term": "Appendectomy",
+      "abbr": "",
+      "korean": "충수절제술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "append",
+          "충수",
+          "r"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "염증이 생긴 막창자꼬리를 잘라내는 수술"
+    },
+    {
+      "id": "r4-02",
+      "term": "Appendicitis",
+      "abbr": "",
+      "korean": "충수돌기염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "appendic",
+          "충수",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "막창자꼬리에 염증이 생겨 배꼽 주위 통증이 오른쪽 아랫배로 옮겨가는 질환"
+    },
+    {
+      "id": "r4-03",
+      "term": "Appendix",
+      "abbr": "",
+      "korean": "충수돌기",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Appendix",
+          "충수돌기",
+          "w"
+        ]
+      ],
+      "desc": "맹장 끝에 매달린 가느다란 관 모양의 구조물"
+    },
+    {
+      "id": "r4-04",
+      "term": "Gastroesophageal Reflux Disease",
+      "abbr": "GERD",
+      "korean": "위식도역류질환",
+      "system": "소화기계",
+      "parts": [
+        [
+          "gastr/o",
+          "위",
+          "r"
+        ],
+        [
+          "esophag",
+          "식도",
+          "r"
+        ],
+        [
+          "-eal",
+          "~의",
+          "s"
+        ],
+        [
+          "Reflux",
+          "역류",
+          "w"
+        ],
+        [
+          "Disease",
+          "질환",
+          "w"
+        ]
+      ],
+      "desc": "위산이 식도로 거꾸로 올라와 가슴쓰림과 신물이 반복되는 질환"
+    },
+    {
+      "id": "r4-05",
+      "term": "Hematemesis",
+      "abbr": "",
+      "korean": "토혈",
+      "system": "소화기계",
+      "parts": [
+        [
+          "hemat",
+          "혈액",
+          "r"
+        ],
+        [
+          "-emesis",
+          "구토",
+          "s"
+        ]
+      ],
+      "desc": "위나 식도에서 난 피를 입으로 토하는 것. 커피 찌꺼기 모양일 수 있다"
+    },
+    {
+      "id": "r4-06",
+      "term": "Hematochezia",
+      "abbr": "",
+      "korean": "혈변",
+      "system": "소화기계",
+      "parts": [
+        [
+          "hemat/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "chez",
+          "배변",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "항문으로 선홍색 피가 섞여 나오는 것. 하부위장관 출혈을 시사한다"
+    },
+    {
+      "id": "r4-07",
+      "term": "Melena",
+      "abbr": "",
+      "korean": "흑색변",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Melena",
+          "흑색변",
+          "w"
+        ]
+      ],
+      "desc": "위장관 윗부분에서 난 피가 소화되어 짜장처럼 검고 끈적한 변으로 나오는 것"
+    },
+    {
+      "id": "r4-08",
+      "term": "Colitis",
+      "abbr": "",
+      "korean": "대장염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "col",
+          "결장",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "큰창자 점막에 염증이 생겨 복통과 설사가 나타나는 상태"
+    },
+    {
+      "id": "r4-09",
+      "term": "Colonoscopy",
+      "abbr": "",
+      "korean": "대장내시경",
+      "system": "소화기계",
+      "parts": [
+        [
+          "colon/o",
+          "결장",
+          "r"
+        ],
+        [
+          "-scopy",
+          "들여다보는 검사",
+          "s"
+        ]
+      ],
+      "desc": "항문으로 내시경을 넣어 큰창자 안을 보고 용종을 떼어내기도 하는 검사"
+    },
+    {
+      "id": "r4-10",
+      "term": "Duodenal Ulcer",
+      "abbr": "DU",
+      "korean": "십이지장궤양",
+      "system": "소화기계",
+      "parts": [
+        [
+          "duoden",
+          "십이지장",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Ulcer",
+          "궤양",
+          "w"
+        ]
+      ],
+      "desc": "십이지장 점막이 패인 상태. 공복에 명치가 아프고 음식을 먹으면 나아진다"
+    },
+    {
+      "id": "r4-11",
+      "term": "Dysphagia",
+      "abbr": "",
+      "korean": "연하곤란",
+      "system": "소화기계",
+      "parts": [
+        [
+          "dys-",
+          "어려운",
+          "p"
+        ],
+        [
+          "phag",
+          "삼키다",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "음식을 삼키기 어렵거나 사레가 자주 드는 상태. 흡인성 폐렴 위험이 있다"
+    },
+    {
+      "id": "r4-12",
+      "term": "Esophagogastroduodenoscopy",
+      "abbr": "EGD",
+      "korean": "상부위장관 내시경 검사",
+      "system": "소화기계",
+      "parts": [
+        [
+          "esophag/o",
+          "식도",
+          "r"
+        ],
+        [
+          "gastr/o",
+          "위",
+          "r"
+        ],
+        [
+          "duoden/o",
+          "십이지장",
+          "r"
+        ],
+        [
+          "-scopy",
+          "들여다보는 검사",
+          "s"
+        ]
+      ],
+      "desc": "입으로 내시경을 넣어 식도·위·십이지장을 차례로 보는 검사"
+    },
+    {
+      "id": "r4-13",
+      "term": "Gastrectomy",
+      "abbr": "",
+      "korean": "위절제술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "gastr",
+          "위",
+          "r"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "위의 전부 또는 일부를 잘라내는 수술. 위암과 비만 수술에 쓴다"
+    },
+    {
+      "id": "r4-14",
+      "term": "Gastric Ulcer",
+      "abbr": "GU",
+      "korean": "위궤양",
+      "system": "소화기계",
+      "parts": [
+        [
+          "gastr",
+          "위",
+          "r"
+        ],
+        [
+          "-ic",
+          "~의",
+          "s"
+        ],
+        [
+          "Ulcer",
+          "궤양",
+          "w"
+        ]
+      ],
+      "desc": "위 점막이 깊게 패인 상태. 식후에 명치 통증이 심해진다"
+    },
+    {
+      "id": "r4-15",
+      "term": "Gastritis",
+      "abbr": "",
+      "korean": "위염",
+      "system": "소화기계",
+      "parts": [
+        [
+          "gastr",
+          "위",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "위 점막에 생긴 염증. 속쓰림과 더부룩함이 나타난다"
+    },
+    {
+      "id": "r4-16",
+      "term": "Gastrointestinal Bleeding",
+      "abbr": "",
+      "korean": "위장관 출혈",
+      "system": "소화기계",
+      "parts": [
+        [
+          "gastr/o",
+          "위",
+          "r"
+        ],
+        [
+          "intestin",
+          "장",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Bleeding",
+          "출혈",
+          "w"
+        ]
+      ],
+      "desc": "식도에서 항문까지 소화관 어딘가에서 피가 나는 것. 토혈이나 흑색변으로 확인된다"
+    },
+    {
+      "id": "r4-17",
+      "term": "Irritable Bowel Syndrome",
+      "abbr": "IBS",
+      "korean": "과민성대장증후군",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Irritable",
+          "과민한",
+          "w"
+        ],
+        [
+          "Bowel",
+          "장",
+          "w"
+        ],
+        [
+          "Syndrome",
+          "증후군",
+          "w"
+        ]
+      ],
+      "desc": "검사에서 이상이 없는데도 복통과 설사·변비가 반복되는 기능성 장질환"
+    },
+    {
+      "id": "r4-18",
+      "term": "Nausea",
+      "abbr": "",
+      "korean": "오심",
+      "system": "소화기계",
+      "parts": [
+        [
+          "Nausea",
+          "오심",
+          "w"
+        ]
+      ],
+      "desc": "토할 것 같은 메스꺼운 느낌. 구토에 앞서 나타난다"
+    },
+    {
+      "id": "r4-19",
+      "term": "Polypectomy",
+      "abbr": "",
+      "korean": "용종절제술",
+      "system": "소화기계",
+      "parts": [
+        [
+          "polyp",
+          "용종",
+          "r"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "내시경으로 점막에 돋아난 혹을 잘라내는 시술"
+    },
+    {
+      "id": "r4-20",
+      "term": "Vomiting",
+      "abbr": "",
+      "korean": "구토",
+      "system": "소화기계",
+      "parts": [
+        [
+          "vomit",
+          "토하다",
+          "r"
+        ],
+        [
+          "-ing",
+          "~하는 것",
+          "s"
+        ]
+      ],
+      "desc": "위 내용물이 입으로 강하게 밀려 나오는 것"
+    }
+  ]
+}

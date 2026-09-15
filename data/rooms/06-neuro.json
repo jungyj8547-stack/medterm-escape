@@ -1,0 +1,997 @@
+{
+  "id": "r6",
+  "order": 6,
+  "floor": "6F",
+  "name": "신경과·신경외과 병동",
+  "subtitle": "뇌와 신경",
+  "theme": "neuro",
+  "briefing": "6층. 신경계 중환자실의 뇌압 감시 장치가 아직 깜빡이고 있다. 벽에는 뇌혈관 조영 필름이 줄지어 붙어 있다.\n\n의식 수준을 적은 기록지와 수술 기록이 뒤섞여 있다. 정확히 읽어야 코드가 맞춰진다.",
+  "escapeMessage": "뇌압 모니터가 조용해졌다. 신경과 병동의 문이 열리고 7층으로 이어진 계단이 드러난다.",
+  "terms": [
+    {
+      "id": "r6-01",
+      "term": "Cerebral Aneurysm",
+      "abbr": "",
+      "korean": "뇌동맥류",
+      "system": "신경계",
+      "parts": [
+        [
+          "cerebr",
+          "대뇌",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "aneurysm",
+          "넓어짐",
+          "r"
+        ]
+      ],
+      "desc": "뇌혈관 벽이 약해져 꽈리처럼 부풀어 오른 것. 터지면 지주막하출혈이 된다"
+    },
+    {
+      "id": "r6-02",
+      "term": "Craniectomy",
+      "abbr": "",
+      "korean": "두개골 절제술",
+      "system": "신경계",
+      "parts": [
+        [
+          "crani",
+          "머리뼈",
+          "r"
+        ],
+        [
+          "-ectomy",
+          "절제술",
+          "s"
+        ]
+      ],
+      "desc": "부어오른 뇌의 압력을 낮추기 위해 머리뼈 일부를 떼어내고 덮지 않는 수술"
+    },
+    {
+      "id": "r6-03",
+      "term": "Craniotomy",
+      "abbr": "",
+      "korean": "개두술",
+      "system": "신경계",
+      "parts": [
+        [
+          "crani/o",
+          "머리뼈",
+          "r"
+        ],
+        [
+          "-tomy",
+          "절개",
+          "s"
+        ]
+      ],
+      "desc": "머리뼈를 열어 뇌를 수술한 뒤 뼈를 다시 덮는 수술"
+    },
+    {
+      "id": "r6-04",
+      "term": "Dementia",
+      "abbr": "",
+      "korean": "치매",
+      "system": "신경계",
+      "parts": [
+        [
+          "de-",
+          "벗어남",
+          "p"
+        ],
+        [
+          "ment",
+          "정신",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "기억력과 판단력이 서서히 떨어져 일상생활이 어려워지는 상태"
+    },
+    {
+      "id": "r6-05",
+      "term": "Dysarthria",
+      "abbr": "",
+      "korean": "구음장애",
+      "system": "신경계",
+      "parts": [
+        [
+          "dys-",
+          "어려운",
+          "p"
+        ],
+        [
+          "arthr",
+          "관절·발음",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "입과 혀 근육을 조절하지 못해 발음이 뭉개지는 증상. 뇌졸중에서 흔하다"
+    },
+    {
+      "id": "r6-06",
+      "term": "Epidural Hematoma",
+      "abbr": "EDH",
+      "korean": "경막외혈종",
+      "system": "신경계",
+      "parts": [
+        [
+          "epi-",
+          "위",
+          "p"
+        ],
+        [
+          "dur",
+          "경막",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "hemat",
+          "혈액",
+          "r"
+        ],
+        [
+          "-oma",
+          "덩어리",
+          "s"
+        ]
+      ],
+      "desc": "머리뼈와 경막 사이에 피가 고인 것. 외상 직후 잠깐 맑았다가 급격히 나빠진다"
+    },
+    {
+      "id": "r6-07",
+      "term": "Headache",
+      "abbr": "HA",
+      "korean": "두통",
+      "system": "신경계",
+      "parts": [
+        [
+          "Head",
+          "머리",
+          "w"
+        ],
+        [
+          "ache",
+          "통증",
+          "w"
+        ]
+      ],
+      "desc": "머리가 아픈 증상. 벼락처럼 시작되면 지주막하출혈을 의심한다"
+    },
+    {
+      "id": "r6-08",
+      "term": "Increased Intracranial Pressure",
+      "abbr": "ICP",
+      "korean": "두개내압상승",
+      "system": "신경계",
+      "parts": [
+        [
+          "Increased",
+          "증가된",
+          "w"
+        ],
+        [
+          "intra-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "crani",
+          "머리뼈",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Pressure",
+          "압력",
+          "w"
+        ]
+      ],
+      "desc": "머리뼈 안의 압력이 올라간 상태. 두통, 구토, 의식저하가 함께 나타난다"
+    },
+    {
+      "id": "r6-09",
+      "term": "Intracerebral Hemorrhage",
+      "abbr": "ICH",
+      "korean": "뇌내출혈",
+      "system": "신경계",
+      "parts": [
+        [
+          "intra-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "cerebr",
+          "대뇌",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "hem/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "-rrhage",
+          "터져 나옴",
+          "s"
+        ]
+      ],
+      "desc": "뇌 실질 안에서 혈관이 터져 피가 고인 상태. 고혈압이 주요 원인이다"
+    },
+    {
+      "id": "r6-10",
+      "term": "Intraventricular Hemorrhage",
+      "abbr": "IVH",
+      "korean": "뇌실내출혈",
+      "system": "신경계",
+      "parts": [
+        [
+          "intra-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "ventricul",
+          "뇌실",
+          "r"
+        ],
+        [
+          "-ar",
+          "~의",
+          "s"
+        ],
+        [
+          "hem/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "-rrhage",
+          "터져 나옴",
+          "s"
+        ]
+      ],
+      "desc": "뇌척수액이 흐르는 뇌실 안으로 출혈이 들어간 상태. 수두증을 잘 일으킨다"
+    },
+    {
+      "id": "r6-11",
+      "term": "Meningitis",
+      "abbr": "",
+      "korean": "뇌수막염",
+      "system": "신경계",
+      "parts": [
+        [
+          "mening",
+          "수막",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "뇌와 척수를 싸는 막에 생긴 염증. 고열, 두통, 목 경직이 특징이다"
+    },
+    {
+      "id": "r6-12",
+      "term": "Subarachnoid Hemorrhage",
+      "abbr": "SAH",
+      "korean": "지주막하출혈",
+      "system": "신경계",
+      "parts": [
+        [
+          "sub-",
+          "아래",
+          "p"
+        ],
+        [
+          "arachn",
+          "거미막",
+          "r"
+        ],
+        [
+          "-oid",
+          "~모양",
+          "s"
+        ],
+        [
+          "hem/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "-rrhage",
+          "터져 나옴",
+          "s"
+        ]
+      ],
+      "desc": "거미막 아래 공간으로 피가 퍼진 출혈. 망치로 맞은 듯한 갑작스러운 두통이 특징이다"
+    },
+    {
+      "id": "r6-13",
+      "term": "Subdural Hematoma",
+      "abbr": "SDH",
+      "korean": "경막하혈종",
+      "system": "신경계",
+      "parts": [
+        [
+          "sub-",
+          "아래",
+          "p"
+        ],
+        [
+          "dur",
+          "경막",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "hemat",
+          "혈액",
+          "r"
+        ],
+        [
+          "-oma",
+          "덩어리",
+          "s"
+        ]
+      ],
+      "desc": "경막과 거미막 사이에 피가 고인 것. 노인은 가벼운 외상 뒤 서서히 나타나기도 한다"
+    },
+    {
+      "id": "r6-14",
+      "term": "Transfemoral Cerebral Angiography",
+      "abbr": "TFCA",
+      "korean": "경대퇴 뇌혈관조영술",
+      "system": "신경계",
+      "parts": [
+        [
+          "trans-",
+          "가로질러",
+          "p"
+        ],
+        [
+          "femor",
+          "넙다리",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "cerebr",
+          "대뇌",
+          "r"
+        ],
+        [
+          "angi/o",
+          "혈관",
+          "r"
+        ],
+        [
+          "-graphy",
+          "촬영술",
+          "s"
+        ]
+      ],
+      "desc": "사타구니 동맥으로 관을 넣어 뇌혈관을 조영하는 검사. 시술 후 천자 부위 출혈을 관찰한다"
+    },
+    {
+      "id": "r6-15",
+      "term": "Ventriculoperitoneal Shunt",
+      "abbr": "VP shunt",
+      "korean": "뇌실복강 단락술",
+      "system": "신경계",
+      "parts": [
+        [
+          "ventricul/o",
+          "뇌실",
+          "r"
+        ],
+        [
+          "periton",
+          "복막",
+          "r"
+        ],
+        [
+          "-eal",
+          "~의",
+          "s"
+        ],
+        [
+          "Shunt",
+          "우회로",
+          "w"
+        ]
+      ],
+      "desc": "고인 뇌척수액을 뇌실에서 복강으로 흘려보내는 관을 넣는 수술"
+    },
+    {
+      "id": "r6-16",
+      "term": "Aphasia",
+      "abbr": "",
+      "korean": "실어증",
+      "system": "신경계",
+      "parts": [
+        [
+          "a-",
+          "없음",
+          "p"
+        ],
+        [
+          "phas",
+          "말",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "뇌 언어중추 손상으로 말을 만들거나 알아듣지 못하는 상태"
+    },
+    {
+      "id": "r6-17",
+      "term": "Concussion",
+      "abbr": "",
+      "korean": "뇌진탕",
+      "system": "신경계",
+      "parts": [
+        [
+          "concuss",
+          "심하게 흔들다",
+          "r"
+        ],
+        [
+          "-ion",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "머리 충격 후 구조적 손상 없이 일시적으로 의식이나 기억에 문제가 생기는 것. brain concussion으로도 쓴다"
+    },
+    {
+      "id": "r6-18",
+      "term": "Cerebral Infarction",
+      "abbr": "",
+      "korean": "뇌경색",
+      "system": "신경계",
+      "parts": [
+        [
+          "cerebr",
+          "대뇌",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "infarct",
+          "막혀 죽다",
+          "r"
+        ],
+        [
+          "-ion",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "뇌혈관이 막혀 그 부위 뇌조직이 죽는 것. 한쪽 마비와 언어장애로 나타난다"
+    },
+    {
+      "id": "r6-19",
+      "term": "Stroke (Cerebrovascular Accident)",
+      "abbr": "CVA",
+      "korean": "뇌졸중",
+      "system": "신경계",
+      "parts": [
+        [
+          "Stroke",
+          "뇌졸중",
+          "w"
+        ],
+        [
+          "cerebr/o",
+          "대뇌",
+          "r"
+        ],
+        [
+          "vascul",
+          "혈관",
+          "r"
+        ],
+        [
+          "-ar",
+          "~의",
+          "s"
+        ],
+        [
+          "Accident",
+          "사고",
+          "w"
+        ]
+      ],
+      "desc": "뇌혈관이 막히거나 터져 갑자기 신경 증상이 생기는 것을 통틀어 이르는 말"
+    },
+    {
+      "id": "r6-20",
+      "term": "Cerebrospinal Fluid",
+      "abbr": "CSF",
+      "korean": "뇌척수액",
+      "system": "신경계",
+      "parts": [
+        [
+          "cerebr/o",
+          "대뇌",
+          "r"
+        ],
+        [
+          "spin",
+          "척수",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Fluid",
+          "액체",
+          "w"
+        ]
+      ],
+      "desc": "뇌와 척수를 감싸 충격을 흡수하는 맑은 액체"
+    },
+    {
+      "id": "r6-21",
+      "term": "Diplopia",
+      "abbr": "",
+      "korean": "복시",
+      "system": "신경계",
+      "parts": [
+        [
+          "dipl/o",
+          "두 개",
+          "p"
+        ],
+        [
+          "op",
+          "보다",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "하나의 사물이 둘로 겹쳐 보이는 증상. 뇌신경 마비에서 나타난다"
+    },
+    {
+      "id": "r6-22",
+      "term": "Dizziness",
+      "abbr": "",
+      "korean": "어지러움",
+      "system": "신경계",
+      "parts": [
+        [
+          "Dizzi",
+          "어질한",
+          "w"
+        ],
+        [
+          "-ness",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "머리가 아찔하고 중심을 잡기 어려운 느낌"
+    },
+    {
+      "id": "r6-23",
+      "term": "Epilepsy",
+      "abbr": "",
+      "korean": "뇌전증",
+      "system": "신경계",
+      "parts": [
+        [
+          "epi-",
+          "위에",
+          "p"
+        ],
+        [
+          "leps",
+          "붙잡다",
+          "r"
+        ],
+        [
+          "-y",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "뇌의 비정상적 전기 활동으로 발작이 반복되는 질환"
+    },
+    {
+      "id": "r6-24",
+      "term": "External Ventricular Drainage",
+      "abbr": "EVD",
+      "korean": "뇌실배액술",
+      "system": "신경계",
+      "parts": [
+        [
+          "External",
+          "바깥",
+          "w"
+        ],
+        [
+          "ventricul",
+          "뇌실",
+          "r"
+        ],
+        [
+          "-ar",
+          "~의",
+          "s"
+        ],
+        [
+          "Drainage",
+          "배액",
+          "w"
+        ]
+      ],
+      "desc": "뇌실에 관을 넣어 뇌척수액을 몸 밖으로 빼내며 뇌압을 조절하는 처치"
+    },
+    {
+      "id": "r6-25",
+      "term": "Glasgow Coma Scale",
+      "abbr": "GCS",
+      "korean": "글래스고 혼수척도",
+      "system": "신경계",
+      "parts": [
+        [
+          "Glasgow",
+          "글래스고",
+          "w"
+        ],
+        [
+          "Coma",
+          "혼수",
+          "w"
+        ],
+        [
+          "Scale",
+          "척도",
+          "w"
+        ]
+      ],
+      "desc": "눈뜸, 언어, 운동 반응에 점수를 매겨 의식 수준을 3~15점으로 표시하는 평가도구"
+    },
+    {
+      "id": "r6-26",
+      "term": "Hemiparesis",
+      "abbr": "",
+      "korean": "반부전마비",
+      "system": "신경계",
+      "parts": [
+        [
+          "hemi-",
+          "절반",
+          "p"
+        ],
+        [
+          "-paresis",
+          "부분 마비",
+          "s"
+        ]
+      ],
+      "desc": "몸 한쪽의 힘이 약해졌으나 완전히 마비되지는 않은 상태"
+    },
+    {
+      "id": "r6-27",
+      "term": "Hemiplegia",
+      "abbr": "",
+      "korean": "반신 마비",
+      "system": "신경계",
+      "parts": [
+        [
+          "hemi-",
+          "절반",
+          "p"
+        ],
+        [
+          "-plegia",
+          "마비",
+          "s"
+        ]
+      ],
+      "desc": "몸 한쪽이 완전히 움직이지 않는 마비"
+    },
+    {
+      "id": "r6-28",
+      "term": "Hydrocephalus",
+      "abbr": "",
+      "korean": "수두증",
+      "system": "신경계",
+      "parts": [
+        [
+          "hydr/o",
+          "물",
+          "r"
+        ],
+        [
+          "cephal",
+          "머리",
+          "r"
+        ],
+        [
+          "-us",
+          "명사 어미",
+          "s"
+        ]
+      ],
+      "desc": "뇌척수액이 빠져나가지 못해 뇌실이 커지고 뇌압이 오르는 상태"
+    },
+    {
+      "id": "r6-29",
+      "term": "Internal Carotid Artery",
+      "abbr": "ICA",
+      "korean": "내경동맥",
+      "system": "신경계",
+      "parts": [
+        [
+          "Internal",
+          "안쪽",
+          "w"
+        ],
+        [
+          "carot",
+          "목동맥",
+          "r"
+        ],
+        [
+          "-id",
+          "~의",
+          "s"
+        ],
+        [
+          "Artery",
+          "동맥",
+          "w"
+        ]
+      ],
+      "desc": "목에서 갈라져 뇌 앞쪽에 피를 공급하는 큰 동맥"
+    },
+    {
+      "id": "r6-30",
+      "term": "Level of Consciousness",
+      "abbr": "LOC",
+      "korean": "의식상태",
+      "system": "신경계",
+      "parts": [
+        [
+          "Level",
+          "수준",
+          "w"
+        ],
+        [
+          "Consciousness",
+          "의식",
+          "w"
+        ]
+      ],
+      "desc": "명료·기면·혼미·반혼수·혼수로 나누어 기록하는 환자의 각성 정도"
+    },
+    {
+      "id": "r6-31",
+      "term": "Middle Cerebral Artery",
+      "abbr": "MCA",
+      "korean": "중대뇌동맥",
+      "system": "신경계",
+      "parts": [
+        [
+          "Middle",
+          "중간",
+          "w"
+        ],
+        [
+          "cerebr",
+          "대뇌",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Artery",
+          "동맥",
+          "w"
+        ]
+      ],
+      "desc": "대뇌 가쪽을 먹여 살리는 동맥. 막히면 반대쪽 마비와 실어증이 생긴다"
+    },
+    {
+      "id": "r6-32",
+      "term": "Transient Ischemic Attack",
+      "abbr": "TIA",
+      "korean": "일과성 허혈발작",
+      "system": "신경계",
+      "parts": [
+        [
+          "Transient",
+          "일시적",
+          "w"
+        ],
+        [
+          "isch",
+          "막다",
+          "r"
+        ],
+        [
+          "-emic",
+          "혈액의",
+          "s"
+        ],
+        [
+          "Attack",
+          "발작",
+          "w"
+        ]
+      ],
+      "desc": "뇌 혈류가 일시적으로 줄어 마비나 언어장애가 생겼다가 회복되는 것. 급성 경색이 남지 않는다는 점이 뇌경색과의 차이다"
+    },
+    {
+      "id": "r6-33",
+      "term": "Vertebral Artery",
+      "abbr": "VA",
+      "korean": "척추동맥",
+      "system": "신경계",
+      "parts": [
+        [
+          "vertebr",
+          "척추",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Artery",
+          "동맥",
+          "w"
+        ]
+      ],
+      "desc": "목뼈를 따라 올라가 뇌 뒤쪽에 피를 공급하는 동맥"
+    },
+    {
+      "id": "r6-34",
+      "term": "Vertigo",
+      "abbr": "",
+      "korean": "현훈",
+      "system": "신경계",
+      "parts": [
+        [
+          "Vertigo",
+          "현훈",
+          "w"
+        ]
+      ],
+      "desc": "주변이 빙글빙글 도는 듯한 어지럼. 중추성은 걷지 못할 정도로 균형을 잃는다"
+    },
+    {
+      "id": "r6-35",
+      "term": "Weakness",
+      "abbr": "",
+      "korean": "근력저하",
+      "system": "신경계",
+      "parts": [
+        [
+          "Weak",
+          "약한",
+          "w"
+        ],
+        [
+          "-ness",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "근육에 힘이 들어가지 않는 상태. 한쪽에만 오면 뇌졸중을 의심한다"
+    },
+    {
+      "id": "r6-36",
+      "term": "Delirium",
+      "abbr": "",
+      "korean": "섬망",
+      "system": "신경계",
+      "parts": [
+        [
+          "de-",
+          "벗어남",
+          "p"
+        ],
+        [
+          "lir",
+          "고랑에서 벗어나다",
+          "r"
+        ],
+        [
+          "-ium",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "갑자기 시작돼 하루 중에도 변동하는 의식과 주의력 장애. 밤에 심해지고 환시가 나타난다"
+    },
+    {
+      "id": "r6-37",
+      "term": "Depression",
+      "abbr": "",
+      "korean": "우울",
+      "system": "신경계",
+      "parts": [
+        [
+          "de-",
+          "아래로",
+          "p"
+        ],
+        [
+          "press",
+          "누르다",
+          "r"
+        ],
+        [
+          "-ion",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "지속적인 우울감과 흥미 상실로 수면·식욕·의욕이 떨어지는 상태"
+    }
+  ]
+}

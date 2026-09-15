@@ -1,0 +1,607 @@
+{
+  "id": "r1",
+  "order": 1,
+  "floor": "1F",
+  "name": "호흡기내과 병동",
+  "subtitle": "숨과 감염",
+  "theme": "medicine",
+  "briefing": "정전과 함께 병원 전체가 봉쇄됐다. 1층 출입구에는 방화 셔터가 내려와 있고, 유일한 탈출로는 옥상 헬기장뿐이다.\n\n당신은 호흡기내과 병동에서 눈을 떴다. 산소 배관 경보음이 울리고, 격리실 문마다 감염 주의 스티커가 붙어 있다. 계단으로 통하는 문은 4자리 코드로 잠겨 있고, 코드 조각은 병동에 남겨진 차트와 기록 속에 흩어져 있다.",
+  "escapeMessage": "철컥. 호흡기내과 병동의 문이 열렸다. 비상등이 2층 심장내과를 가리킨다.",
+  "terms": [
+    {
+      "id": "r1-01",
+      "term": "Admission",
+      "abbr": "Adm",
+      "korean": "입원",
+      "system": "간호기록·인계",
+      "parts": [
+        [
+          "ad-",
+          "~쪽으로",
+          "p"
+        ],
+        [
+          "miss",
+          "보내다",
+          "r"
+        ],
+        [
+          "-ion",
+          "행위",
+          "s"
+        ]
+      ],
+      "desc": "환자가 치료를 위해 병원에 들어와 병상을 배정받는 것"
+    },
+    {
+      "id": "r1-02",
+      "term": "Due to",
+      "abbr": "d/t",
+      "korean": "~때문에",
+      "system": "간호기록·인계",
+      "parts": [
+        [
+          "Due",
+          "기인한",
+          "w"
+        ],
+        [
+          "to",
+          "~에",
+          "w"
+        ]
+      ],
+      "desc": "기록에서 원인을 밝힐 때 쓰는 표현. 'fever d/t pneumonia'처럼 쓴다"
+    },
+    {
+      "id": "r1-03",
+      "term": "Status Post",
+      "abbr": "s/p",
+      "korean": "~후 상태",
+      "system": "간호기록·인계",
+      "parts": [
+        [
+          "Status",
+          "상태",
+          "w"
+        ],
+        [
+          "Post",
+          "이후",
+          "w"
+        ]
+      ],
+      "desc": "어떤 수술이나 처치를 받고 난 뒤의 상태를 가리키는 기록 표현"
+    },
+    {
+      "id": "r1-04",
+      "term": "Acute Respiratory Distress Syndrome",
+      "abbr": "ARDS",
+      "korean": "급성호흡곤란증후군",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Acute",
+          "급성",
+          "w"
+        ],
+        [
+          "Respiratory",
+          "호흡의",
+          "w"
+        ],
+        [
+          "Distress",
+          "곤란",
+          "w"
+        ],
+        [
+          "Syndrome",
+          "증후군",
+          "w"
+        ]
+      ],
+      "desc": "폐포가 광범위하게 손상돼 산소를 줘도 저산소증이 교정되지 않는 위중한 호흡부전"
+    },
+    {
+      "id": "r1-05",
+      "term": "Asthma",
+      "abbr": "",
+      "korean": "천식",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Asthma",
+          "천식",
+          "w"
+        ]
+      ],
+      "desc": "기도가 과민하게 좁아져 쌕쌕거림과 발작적 호흡곤란이 반복되는 만성 질환"
+    },
+    {
+      "id": "r1-06",
+      "term": "Chronic Obstructive Pulmonary Disease",
+      "abbr": "COPD",
+      "korean": "만성폐쇄성폐질환",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Chronic",
+          "만성",
+          "w"
+        ],
+        [
+          "Obstructive",
+          "폐쇄성",
+          "w"
+        ],
+        [
+          "Pulmonary",
+          "폐의",
+          "w"
+        ],
+        [
+          "Disease",
+          "질환",
+          "w"
+        ]
+      ],
+      "desc": "오랜 흡연 등으로 기도가 좁아져 숨을 내쉬기 어려워지는 비가역적 폐질환"
+    },
+    {
+      "id": "r1-07",
+      "term": "Pleural Effusion",
+      "abbr": "",
+      "korean": "흉막삼출",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "pleur",
+          "흉막",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Effusion",
+          "새어 나옴",
+          "w"
+        ]
+      ],
+      "desc": "폐를 싸는 두 막 사이 공간에 액체가 고여 숨이 차는 상태"
+    },
+    {
+      "id": "r1-08",
+      "term": "Pneumonia",
+      "abbr": "",
+      "korean": "폐렴",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "pneumon",
+          "폐",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "폐포에 염증이 생겨 발열·기침·가래가 나타나는 감염. 음식물이나 분비물이 기도로 넘어가 생기면 흡인성 폐렴(aspiration pneumonia)이라 한다"
+    },
+    {
+      "id": "r1-09",
+      "term": "Pneumothorax",
+      "abbr": "",
+      "korean": "기흉",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "pneum/o",
+          "공기",
+          "r"
+        ],
+        [
+          "thorax",
+          "가슴",
+          "r"
+        ]
+      ],
+      "desc": "흉막강에 공기가 차 폐가 쭈그러들면서 갑작스러운 흉통과 호흡곤란이 생기는 상태"
+    },
+    {
+      "id": "r1-10",
+      "term": "Pulmonary Embolism (Pulmonary Thromboembolism)",
+      "abbr": "PE (PTE)",
+      "korean": "폐색전증",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Pulmonary",
+          "폐의",
+          "w"
+        ],
+        [
+          "embol",
+          "마개",
+          "r"
+        ],
+        [
+          "-ism",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "떨어져 나온 혈전이 폐동맥을 막아 갑자기 숨이 차고 가슴이 아픈 응급 상황"
+    },
+    {
+      "id": "r1-11",
+      "term": "Pulmonary Function Test",
+      "abbr": "PFT",
+      "korean": "폐기능검사",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Pulmonary",
+          "폐의",
+          "w"
+        ],
+        [
+          "Function",
+          "기능",
+          "w"
+        ],
+        [
+          "Test",
+          "검사",
+          "w"
+        ]
+      ],
+      "desc": "숨을 힘껏 들이쉬고 내쉬게 해 폐활량과 기류 제한 정도를 측정하는 검사"
+    },
+    {
+      "id": "r1-12",
+      "term": "Tuberculosis",
+      "abbr": "TB",
+      "korean": "결핵",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "tubercul",
+          "작은 결절",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "결핵균이 폐에 결절을 만들어 2주 이상 기침·발열·체중감소를 일으키는 공기매개 감염병"
+    },
+    {
+      "id": "r1-13",
+      "term": "Atelectasis",
+      "abbr": "",
+      "korean": "무기폐",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "atel",
+          "불완전한",
+          "r"
+        ],
+        [
+          "-ectasis",
+          "확장",
+          "s"
+        ]
+      ],
+      "desc": "폐의 일부가 펴지지 않고 쭈그러들어 환기가 되지 않는 상태. 수술 후 흔하다"
+    },
+    {
+      "id": "r1-14",
+      "term": "Bronchiectasis",
+      "abbr": "",
+      "korean": "기관지 확장증",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "bronchi",
+          "기관지",
+          "r"
+        ],
+        [
+          "-ectasis",
+          "확장",
+          "s"
+        ]
+      ],
+      "desc": "기관지 벽이 늘어난 채 굳어 가래가 고이고 반복 감염이 생기는 질환"
+    },
+    {
+      "id": "r1-15",
+      "term": "Bronchitis",
+      "abbr": "",
+      "korean": "기관지염",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "bronch",
+          "기관지",
+          "r"
+        ],
+        [
+          "-itis",
+          "염증",
+          "s"
+        ]
+      ],
+      "desc": "기관지 점막에 염증이 생겨 기침과 가래가 이어지는 상태"
+    },
+    {
+      "id": "r1-16",
+      "term": "Cyanosis",
+      "abbr": "",
+      "korean": "청색증",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "cyan/o",
+          "푸른",
+          "r"
+        ],
+        [
+          "-osis",
+          "비정상 상태",
+          "s"
+        ]
+      ],
+      "desc": "산소가 부족해 입술과 손톱 밑이 푸르스름하게 보이는 징후"
+    },
+    {
+      "id": "r1-17",
+      "term": "Dyspnea",
+      "abbr": "",
+      "korean": "호흡곤란",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "dys-",
+          "어려운",
+          "p"
+        ],
+        [
+          "-pnea",
+          "호흡",
+          "s"
+        ]
+      ],
+      "desc": "숨쉬기가 힘들다고 느끼는 주관적 증상. 안정 시와 활동 시를 구분해 기록한다"
+    },
+    {
+      "id": "r1-18",
+      "term": "Endotracheal Intubation",
+      "abbr": "",
+      "korean": "기관내삽관",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "endo-",
+          "안쪽",
+          "p"
+        ],
+        [
+          "trache",
+          "기관",
+          "r"
+        ],
+        [
+          "-al",
+          "~의",
+          "s"
+        ],
+        [
+          "Intubation",
+          "관 넣기",
+          "w"
+        ]
+      ],
+      "desc": "입이나 코를 통해 기관에 관을 넣어 기도를 확보하고 인공호흡을 준비하는 처치"
+    },
+    {
+      "id": "r1-19",
+      "term": "Hemothorax",
+      "abbr": "",
+      "korean": "혈흉",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "hem/o",
+          "혈액",
+          "r"
+        ],
+        [
+          "thorax",
+          "가슴",
+          "r"
+        ]
+      ],
+      "desc": "외상 등으로 흉막강에 피가 고여 폐를 누르는 상태"
+    },
+    {
+      "id": "r1-20",
+      "term": "Hypoxia",
+      "abbr": "",
+      "korean": "저산소증",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "hyp/o",
+          "낮은",
+          "p"
+        ],
+        [
+          "ox",
+          "산소",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "조직에 공급되는 산소가 부족한 상태. 안절부절, 빈맥, 청색증으로 나타난다"
+    },
+    {
+      "id": "r1-21",
+      "term": "Thoracentesis",
+      "abbr": "",
+      "korean": "흉강천자",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "thorac/o",
+          "가슴",
+          "r"
+        ],
+        [
+          "-centesis",
+          "천자",
+          "s"
+        ]
+      ],
+      "desc": "흉벽에 바늘을 넣어 고인 흉수를 뽑아내는 시술. 진단과 증상 완화에 쓴다"
+    },
+    {
+      "id": "r1-22",
+      "term": "Upper Respiratory Infection",
+      "abbr": "URI",
+      "korean": "상기도 감염",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Upper",
+          "위쪽",
+          "w"
+        ],
+        [
+          "Respiratory",
+          "호흡의",
+          "w"
+        ],
+        [
+          "Infection",
+          "감염",
+          "w"
+        ]
+      ],
+      "desc": "코와 인후 등 윗숨길에 생기는 감염. 흔히 감기라고 부른다"
+    },
+    {
+      "id": "r1-23",
+      "term": "Wheezing",
+      "abbr": "",
+      "korean": "천명음, 쌕쌕거림",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "wheez",
+          "쌕쌕거리다",
+          "r"
+        ],
+        [
+          "-ing",
+          "~하는 것",
+          "s"
+        ]
+      ],
+      "desc": "좁아진 기도를 공기가 지나며 나는 고음의 호흡음. 청진으로 확인한다"
+    },
+    {
+      "id": "r1-24",
+      "term": "Asphyxia",
+      "abbr": "",
+      "korean": "질식",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "a-",
+          "없음",
+          "p"
+        ],
+        [
+          "sphyx",
+          "맥박",
+          "r"
+        ],
+        [
+          "-ia",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "기도가 막혀 산소가 들어가지 못해 의식을 잃는 응급 상태"
+    },
+    {
+      "id": "r1-25",
+      "term": "Infection",
+      "abbr": "",
+      "korean": "감염",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "in-",
+          "안으로",
+          "p"
+        ],
+        [
+          "fect",
+          "침입하다",
+          "r"
+        ],
+        [
+          "-ion",
+          "상태",
+          "s"
+        ]
+      ],
+      "desc": "세균·바이러스가 몸에 들어와 증식하며 염증 반응을 일으킨 상태"
+    },
+    {
+      "id": "r1-26",
+      "term": "Sepsis",
+      "abbr": "",
+      "korean": "패혈증",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Sepsis",
+          "패혈증",
+          "w"
+        ]
+      ],
+      "desc": "감염에 대한 몸의 반응이 조절되지 않아 혈압이 떨어지고 장기 기능이 무너지는 위중한 상태"
+    },
+    {
+      "id": "r1-27",
+      "term": "Urticaria",
+      "abbr": "",
+      "korean": "두드러기",
+      "system": "호흡기계",
+      "parts": [
+        [
+          "Urticaria",
+          "두드러기",
+          "w"
+        ]
+      ],
+      "desc": "알레르기 반응으로 피부가 붉게 부풀고 심하게 가려운 발진"
+    }
+  ]
+}

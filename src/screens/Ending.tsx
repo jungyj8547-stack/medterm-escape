@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useGame } from '../store/gameStore';
-import { ROOMS } from '../data/loadData';
+import { ROOMS, ALL_TERMS } from '../data/loadData';
 import { formatTime } from '../engine/scoring';
 import { music } from '../audio/music';
 import Avatar from '../components/Avatar';
@@ -54,7 +54,7 @@ export default function Ending() {
           <h2 style={{ fontSize: 40, margin: '6px 0' }}>🚁 봉쇄 병원 탈출 성공!</h2>
           <p className="brief" style={{ fontSize: 17 }}>
             {allCleared
-              ? '8개 병동, 200개의 의학용어를 모두 통과했다. 헬기의 바람이 얼굴을 때린다. 당신은 자유다!'
+              ? `${ROOMS.length}개 병동, ${ALL_TERMS.length}개의 의학용어를 모두 통과했다. 헬기의 바람이 얼굴을 때린다. 당신은 자유다!`
               : `${cleared.length}개 병동을 통과한 상태로 헬기장에 올라왔다. (교수자 모드) 남은 병동 ${ROOMS.length - cleared.length}개도 정복해 보자.`}
           </p>
           {mode === 'team' && team && <div className="tag accent" style={{ marginTop: 8 }}>👥 {team.name}</div>}
