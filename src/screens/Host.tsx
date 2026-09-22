@@ -5,6 +5,8 @@ import { decodeResult } from '../engine/resultCode';
 import { formatTime } from '../engine/scoring';
 import ToastHost, { toast } from '../components/Toast';
 import { sfx } from '../audio/sfx';
+import { askConfirm } from '../components/ConfirmDialog';
+import ConfirmHost from '../components/ConfirmDialog';
 
 interface Entry {
   id: string;
@@ -31,6 +33,7 @@ export default function Host() {
   return (
     <div className="screen">
       <ToastHost />
+      <ConfirmHost />
       <div className="container">
         <div className="row between" style={{ marginBottom: 14 }}>
           <div>
@@ -123,7 +126,7 @@ function Board() {
           </div>
           <div className="row">
             <button className="btn small" onClick={exportCsv} disabled={!entries.length}>CSV 내보내기</button>
-            <button className="btn small danger" disabled={!entries.length} onClick={() => confirm('리더보드를 비울까요?') && setEntries([])}>비우기</button>
+            <button className="btn small danger" disabled={!entries.length} onClick={async () => (await askConfirm('리더보드를 모두 비울까요?', { okLabel: '비우기', danger: true })) && setEntries([])}>비우기</button>
           </div>
         </div>
         <div className="table-wrap">
@@ -194,8 +197,8 @@ function Settings() {
           <span style={{ flex: 1 }} />
           <button
             className="btn small danger"
-            onClick={() => {
-              if (confirm('이 브라우저의 모든 진행 상황(점수, 잠금 해제, 약한 단어)을 초기화할까요?')) {
+            onClick={async () => {
+              if (await askConfirm('이 브라우저의 모든 진행 상황(점수, 잠금 해제, 약한 단어)을 초기화할까요?', { okLabel: '초기화', danger: true })) {
                 s.resetAll();
                 toast('초기화했습니다');
               }

@@ -461,3 +461,6 @@ table.board tr.top td:first-child { color: var(--warn-dark); font-family: var(--
 @media (max-width: 700px) and (orientation: landscape) {
   .rotate-hint { display: none; }
 }
+
+/* --- 확인창 --- */
+.modal.confirm { max-width: 440px; }

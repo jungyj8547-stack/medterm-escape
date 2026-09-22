@@ -11,6 +11,7 @@ import Debrief from './screens/Debrief';
 import Review from './screens/Review';
 import Host from './screens/Host';
 import Ending from './screens/Ending';
+import ConfirmHost from './components/ConfirmDialog';
 
 function useHashRoute() {
   const [hash, setHash] = useState(() => window.location.hash);
@@ -23,6 +24,15 @@ function useHashRoute() {
 }
 
 export default function App() {
+  return (
+    <>
+      <ConfirmHost />
+      <Screens />
+    </>
+  );
+}
+
+function Screens() {
   const hash = useHashRoute();
   const screen = useGame((s) => s.screen);
   const session = useGame((s) => s.session);

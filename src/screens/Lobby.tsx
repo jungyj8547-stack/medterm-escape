@@ -5,6 +5,7 @@ import { sfx } from '../audio/sfx';
 import ToastHost from '../components/Toast';
 import Avatar from '../components/Avatar';
 import SoundControl from '../components/SoundControl';
+import { askConfirm } from '../components/ConfirmDialog';
 
 export default function Lobby() {
   const s = useGame();
@@ -16,13 +17,16 @@ export default function Lobby() {
     ROOMS.find((r) => (s.allUnlocked || s.unlocked.includes(r.id)) && !s.bestResults[r.id]?.escaped)?.id ??
     ROOMS[ROOMS.length - 1].id;
 
-  const enter = (roomId: string) => {
+  const enter = async (roomId: string) => {
     sfx.click();
     if (s.session && s.session.roomId === roomId && s.session.phase !== 'debrief') {
       s.goto(s.session.phase === 'escape' ? 'room' : s.session.phase === 'learn' ? 'learn' : 'briefing');
       return;
     }
-    if (s.session && s.session.phase !== 'debrief' && !confirm('진행 중인 다른 병동이 있습니다. 새로 시작할까요? (기존 진행은 사라집니다)')) return;
+    if (s.session && s.session.phase !== 'debrief') {
+      const ok = await askConfirm('진행 중인 다른 병동이 있습니다. 새로 시작하면 그 진행은 사라집니다.', { okLabel: '새로 시작', danger: true });
+      if (!ok) return;
+    }
     s.startRoom(roomId);
   };
 

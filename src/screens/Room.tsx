@@ -16,6 +16,7 @@ import Keypad from '../puzzles/Keypad';
 import { sfx } from '../audio/sfx';
 import { music } from '../audio/music';
 import SoundControl from '../components/SoundControl';
+import { askConfirm } from '../components/ConfirmDialog';
 
 const TITLES: Record<Hotspot, { icon: string; title: string }> = {
   chart: { icon: '📋', title: '환자 차트 — 어근 조립' },
@@ -107,8 +108,8 @@ export default function RoomScreen() {
         </button>
         <button
           className="btn small ghost"
-          onClick={() => {
-            if (confirm('병동을 포기하면 이 병동의 진행이 사라집니다. 포기할까요?')) abandonRoom();
+          onClick={async () => {
+            if (await askConfirm('병동을 포기하면 이 병동의 진행(퍼즐, 코드 조각)이 사라집니다.\n정말 포기할까요?', { okLabel: '포기하기', danger: true, title: '🚪 병동 포기' })) abandonRoom();
           }}
         >
           포기
