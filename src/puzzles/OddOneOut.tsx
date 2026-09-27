@@ -81,14 +81,14 @@ export default function OddOneOut({ items, roomId, onSolved }: Props) {
             onClick={() => pick(o.termId)}
           >
             <div>{o.term}</div>
-            <div className="small muted">{o.korean}</div>
+            {(hintLevel >= 1 || correct) && <div className="small muted">{o.korean}</div>}
           </button>
         ))}
       </div>
 
       {hintLevel >= 1 && (
         <div className="hint-box">
-          💡 침입한 기록은 <b>{item.intruderRoomName}</b>에서 온 것입니다.
+          💡 한글 뜻이 표시됩니다. 침입한 기록은 <b>{item.intruderRoomName}</b>에서 온 것입니다.
           {hintLevel >= 2 && <div>💡 확실히 아닌 것 2개를 지웠습니다.</div>}
           {hintLevel >= 3 && <div>💡 정답: <b>{intruder.term}</b></div>}
         </div>

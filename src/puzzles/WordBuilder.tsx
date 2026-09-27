@@ -69,7 +69,7 @@ export default function WordBuilder({ items, onSolved }: Props) {
 
   return (
     <div>
-      <p className="puzzle-intro">한글 뜻을 보고 형태소 타일을 <b>순서대로</b> 눌러 영어 용어를 조립하세요. 오답 타일도 섞여 있습니다.</p>
+      <p className="puzzle-intro">한글 뜻을 보고 형태소 타일을 <b>순서대로</b> 눌러 영어 용어를 조립하세요. 오답 타일도 섞여 있습니다. (힌트를 쓰면 타일의 뜻이 보입니다)</p>
       <div className="puzzle-progress">
         {items.map((_, i) => (
           <span key={i} className={i < idx ? 'done' : i === idx ? 'cur' : ''} />
@@ -98,14 +98,14 @@ export default function WordBuilder({ items, onSolved }: Props) {
             title={PART_LABEL[t.type]}
           >
             {t.text}
-            <small>{t.meaning}</small>
+            {hintLevel >= 1 && <small>{t.meaning}</small>}
           </button>
         ))}
       </div>
 
       {hintLevel >= 1 && (
         <div className="hint-box">
-          💡 구조: {answerParts.map((p) => `${PART_LABEL[p.type]}(${p.meaning})`).join(' + ')}
+          💡 타일에 뜻이 표시됩니다. 구조: {answerParts.map((p) => PART_LABEL[p.type]).join(' + ')}
           {hintLevel >= 2 && <div>💡 첫 타일: <b className="mono">{item.answer[0]}</b></div>}
           {hintLevel >= 3 && <div>💡 정답: <b className="mono">{item.answer.join(' + ')}</b> = {item.term}</div>}
         </div>
