@@ -347,12 +347,13 @@ export const useGame = create<GameState>()(
     {
       name: 'medterm-escape-v1',
       // 화면 위치는 저장하지 않는다 → 새로 열면 항상 타이틀부터 (진행 중인 병동은 '이어하기'로 복귀)
+      // 화면 위치와 '모든 병동 열기'(교수자 모드)는 저장하지 않는다 → 새로 열면 항상 타이틀, 잠금 상태로
       partialize: (s) => {
-        const { screen: _screen, ...rest } = s;
+        const { screen: _screen, allUnlocked: _all, ...rest } = s;
         return rest as typeof s;
       },
-      // 예전에 저장된 screen 값도 무시
-      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<GameState>), screen: 'title' as Screen }),
+      // 예전에 저장된 값도 무시
+      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<GameState>), screen: 'title' as Screen, allUnlocked: false }),
     },
   ),
 );

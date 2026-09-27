@@ -180,7 +180,7 @@ function Settings() {
         <div className="row between">
           <div>
             <b>병동 잠금 해제</b>
-            <div className="small muted">기본은 1F부터 차례로 열립니다. 수업 순서에 맞춰 모든 병동을 열 수 있습니다. (이 브라우저에만 적용)</div>
+            <div className="small muted">기본은 1F부터 차례로 열립니다. 수업 순서에 맞춰 모든 병동을 열 수 있습니다. 이 설정은 저장되지 않아 페이지를 새로 열면 다시 잠깁니다. 주소 뒤에 #unlock을 붙여 접속해도 같은 효과입니다.</div>
           </div>
           <label className="row" style={{ cursor: 'pointer', fontFamily: 'var(--display)' }}>
             <input type="checkbox" checked={s.allUnlocked} onChange={s.toggleAllUnlocked} /> 모든 병동 열기
