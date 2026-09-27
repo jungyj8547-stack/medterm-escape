@@ -89,6 +89,13 @@ function Screens() {
       window.history.replaceState(null, '', window.location.pathname);
       window.location.reload();
     }
+    // #join=반코드 → 가입 화면에 반 코드 미리 채우기
+    const m = hash.match(/^#join=([A-Za-z0-9]{6})$/);
+    if (m) {
+      sessionStorage.setItem('medterm-join', m[1].toUpperCase());
+      useGame.setState({ screen: 'title' });
+      window.history.replaceState(null, '', window.location.pathname);
+    }
     // #unlock 으로 접속하면 모든 병동을 열고 안내도로 (교수자 테스트용)
     if (hash === '#unlock') {
       useGame.setState({ allUnlocked: true, screen: 'lobby' });

@@ -11,11 +11,12 @@ import { askConfirm } from '../components/ConfirmDialog';
 export default function StudentLogin({ onDone }: { onDone: () => void }) {
   const student = useGame((s) => s.student);
   const setStudent = useGame((s) => s.setStudent);
-  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const invited = sessionStorage.getItem('medterm-join') ?? '';
+  const [mode, setMode] = useState<'login' | 'register'>(invited ? 'register' : 'login');
   const [studentId, setStudentId] = useState('');
   const [pin, setPin] = useState('');
   const [nickname, setNickname] = useState('');
-  const [joinCode, setJoinCode] = useState('');
+  const [joinCode, setJoinCode] = useState(invited);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +52,7 @@ export default function StudentLogin({ onDone }: { onDone: () => void }) {
           ? await loginStudent(studentId, pin)
           : await registerStudent({ studentId, nickname, pin, joinCode });
       setStudent(profile);
+      sessionStorage.removeItem('medterm-join');
       await startSync();
       sfx.correct();
       onDone();
