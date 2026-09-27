@@ -20,17 +20,17 @@ function snapshot(): CloudProgress {
   return { unlocked: s.unlocked, bestResults: s.bestResults, weak: s.weak, learnedRooms: s.learnedRooms };
 }
 
-export function mergeProgress(cloud: CloudProgress) {
-  const s = useGame.getState();
-  const best: Record<string, RoomResult> = { ...s.bestResults };
-  for (const [roomId, r] of Object.entries(cloud.bestResults ?? {})) {
-    if (!best[roomId] || (r.escaped && (!best[roomId].escaped || r.score > best[roomId].score))) best[roomId] = r;
-  }
+const EMPTY: CloudProgress = { unlocked: [], bestResults: {}, weak: {}, learnedRooms: {} };
+
+/** 클라우드 기록으로 이 기기의 상태를 덮어쓴다 (브라우저에 남아 있던 다른 사람의 기록은 버림) */
+export function applyProgress(cloud: CloudProgress) {
+  const best: Record<string, RoomResult> = { ...(cloud.bestResults ?? {}) };
   useGame.setState({
-    unlocked: Array.from(new Set([...(cloud.unlocked ?? []), ...s.unlocked])),
+    unlocked: Array.from(new Set([ROOMS[0]?.id ?? 'r1', ...(cloud.unlocked ?? [])])),
     bestResults: best,
-    weak: { ...(cloud.weak ?? {}), ...s.weak },
-    learnedRooms: { ...(cloud.learnedRooms ?? {}), ...s.learnedRooms },
+    weak: { ...(cloud.weak ?? {}) },
+    learnedRooms: { ...(cloud.learnedRooms ?? {}) },
+    session: null,
   });
 }
 
@@ -42,8 +42,7 @@ export async function startSync() {
   stopSync();
 
   const cloud = await loadProgress(student.studentId).catch(() => null);
-  if (cloud) mergeProgress(cloud);
-  await saveProgress(student.studentId, snapshot()).catch(() => undefined);
+  applyProgress(cloud ?? EMPTY);
   lastResultDate = useGame.getState().session?.result?.date ?? null;
 
   unsubStore = useGame.subscribe((state, prev) => {
@@ -90,6 +89,13 @@ export function stopSync() {
   unsubAuth?.();
   unsubAuth = null;
   window.clearTimeout(saveTimer);
+}
+
+/** 내 클라우드 기록을 완전히 지우고 처음부터 (학생 본인이 요청할 때) */
+export async function resetMyProgress() {
+  const student = useGame.getState().student;
+  applyProgress(EMPTY);
+  if (student && isFirebaseConfigured) await saveProgress(student.studentId, EMPTY).catch(() => undefined);
 }
 
 export async function signOutStudent() {

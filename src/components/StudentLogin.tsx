@@ -3,7 +3,7 @@ import { useGame } from '../store/gameStore';
 import { isFirebaseConfigured } from '../firebase/config';
 import { loginStudent, registerStudent } from '../firebase/student';
 import { friendlyError } from '../firebase/app';
-import { startSync, signOutStudent } from '../firebase/sync';
+import { startSync, signOutStudent, resetMyProgress } from '../firebase/sync';
 import { sfx } from '../audio/sfx';
 import { askConfirm } from '../components/ConfirmDialog';
 
@@ -28,16 +28,28 @@ export default function StudentLogin({ onDone }: { onDone: () => void }) {
           <b>👤 {student.nickname}</b> <span className="muted small">({student.studentId})</span>
           <div className="small muted">🏫 {student.className} · 진행 기록이 자동 저장됩니다</div>
         </div>
-        <button
-          className="btn small"
-          onClick={async () => {
-            if (await askConfirm('로그아웃할까요? 기록은 클라우드에 남아 있고, 다시 로그인하면 이어할 수 있습니다.', { okLabel: '로그아웃' })) {
-              await signOutStudent();
-            }
-          }}
-        >
-          로그아웃
-        </button>
+        <div className="row">
+          <button
+            className="btn small ghost"
+            onClick={async () => {
+              if (await askConfirm('내 기록(열린 병동, 점수, 약한 단어)을 모두 지우고 1F부터 다시 시작할까요? 되돌릴 수 없습니다.', { okLabel: '기록 초기화', danger: true })) {
+                await resetMyProgress();
+              }
+            }}
+          >
+            내 기록 초기화
+          </button>
+          <button
+            className="btn small"
+            onClick={async () => {
+              if (await askConfirm('로그아웃할까요? 기록은 클라우드에 남아 있고, 다시 로그인하면 이어할 수 있습니다.', { okLabel: '로그아웃' })) {
+                await signOutStudent();
+              }
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
       </div>
     );
   }
