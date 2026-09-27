@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { isFirebaseConfigured } from '../firebase/config';
 import { loginStudent, registerStudent } from '../firebase/student';
@@ -13,6 +13,19 @@ export default function StudentLogin({ onDone }: { onDone: () => void }) {
   const setStudent = useGame((s) => s.setStudent);
   const invited = sessionStorage.getItem('medterm-join') ?? '';
   const [mode, setMode] = useState<'login' | 'register'>(invited ? 'register' : 'login');
+  // 초대 링크(#join=코드)로 들어오면 가입 모드로 전환하고 반 코드를 채운다
+  useEffect(() => {
+    const apply = () => {
+      const code = sessionStorage.getItem('medterm-join');
+      if (code) {
+        setJoinCode(code);
+        setMode('register');
+      }
+    };
+    apply();
+    window.addEventListener('medterm-join', apply);
+    return () => window.removeEventListener('medterm-join', apply);
+  }, []);
   const [studentId, setStudentId] = useState('');
   const [pin, setPin] = useState('');
   const [nickname, setNickname] = useState('');
