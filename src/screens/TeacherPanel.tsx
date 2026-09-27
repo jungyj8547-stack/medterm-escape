@@ -155,7 +155,7 @@ function Classes({ teacher, classes, onChange }: { teacher: TeacherProfile; clas
     <div className="stack">
       <div className="panel">
         <b>반 만들기</b>
-        <div className="small muted" style={{ marginBottom: 10 }}>반을 만들면 6자리 반 코드가 생깁니다. 학생은 이 코드로 가입합니다. "초대 링크 복사"로 만든 링크를 단톡방이나 LMS에 올리면 학생은 링크만 눌러 가입할 수 있습니다.</div>
+        <div className="small muted" style={{ marginBottom: 10 }}>반을 만들면 6자리 반 코드가 생깁니다. 학생은 이 코드로 가입합니다.</div>
         <div className="row">
           <input className="input" style={{ flex: 1, minWidth: 200 }} placeholder="예: 2026-1 간호학과 2학년 A반" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && name.trim() && createClass(teacher.uid, name).then(() => { setName(''); onChange(); })} />
           <button className="btn primary" disabled={!name.trim()} onClick={() => createClass(teacher.uid, name).then(() => { setName(''); onChange(); toast('반을 만들었습니다'); }).catch((e) => toast(friendlyError(e)))}>만들기</button>
@@ -173,8 +173,7 @@ function Classes({ teacher, classes, onChange }: { teacher: TeacherProfile; clas
                   <td><b>{c.name}</b></td>
                   <td><span className="result-code" style={{ fontSize: 22, padding: '4px 12px', display: 'inline-block' }}>{c.joinCode}</span></td>
                   <td>
-                    <button className="btn small" onClick={() => navigator.clipboard?.writeText(c.joinCode).then(() => toast('반 코드를 복사했습니다'))}>코드 복사</button>{' '}
-                    <button className="btn small primary" onClick={() => { const url = `${location.origin}${location.pathname}#join=${c.joinCode}`; navigator.clipboard?.writeText(url).then(() => toast('학생 초대 링크를 복사했습니다: ' + url)); }}>초대 링크 복사</button>{' '}
+                    <button className="btn small" onClick={() => navigator.clipboard?.writeText(c.joinCode).then(() => toast('반 코드를 복사했습니다'))}>복사</button>{' '}
                     <button className="btn small danger" onClick={async () => { if (await askConfirm(`"${c.name}" 반을 삭제할까요? 학생 기록은 남지만 새로 가입할 수 없게 됩니다.`, { okLabel: '삭제', danger: true })) { await deleteClass(c.id); onChange(); } }}>삭제</button>
                   </td>
                 </tr>
