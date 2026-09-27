@@ -94,6 +94,16 @@ export function stopSync() {
 
 export async function signOutStudent() {
   stopSync();
-  useGame.getState().setStudent(null);
+  const g = useGame.getState();
+  g.setStudent(null);
+  // 공용 컴퓨터를 위해 이 기기의 진행 기록은 비운다 (클라우드에는 남아 있음)
+  useGame.setState({
+    unlocked: [ROOMS[0]?.id ?? 'r1'],
+    bestResults: {},
+    weak: {},
+    learnedRooms: {},
+    session: null,
+    screen: 'title',
+  });
   if (isFirebaseConfigured) await logoutStudent().catch(() => undefined);
 }
