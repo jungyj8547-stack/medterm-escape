@@ -7,6 +7,7 @@ import ToastHost, { toast } from '../components/Toast';
 import { sfx } from '../audio/sfx';
 import { askConfirm } from '../components/ConfirmDialog';
 import ConfirmHost from '../components/ConfirmDialog';
+import TeacherPanel from './TeacherPanel';
 
 interface Entry {
   id: string;
@@ -29,7 +30,7 @@ const load = (): Entry[] => {
 };
 
 export default function Host() {
-  const [tab, setTab] = useState<'board' | 'timer' | 'settings'>('board');
+  const [tab, setTab] = useState<'teacher' | 'board' | 'timer' | 'settings'>('teacher');
   return (
     <div className="screen">
       <ToastHost />
@@ -43,10 +44,12 @@ export default function Host() {
           <a className="btn small ghost" href="#" onClick={() => (window.location.hash = '')}>← 게임으로</a>
         </div>
         <div className="tabs">
-          <button className={tab === 'board' ? 'on' : ''} onClick={() => setTab('board')}>🏆 리더보드</button>
+          <button className={tab === 'teacher' ? 'on' : ''} onClick={() => setTab('teacher')}>👩‍🏫 교수자 (반·학생·결과)</button>
+          <button className={tab === 'board' ? 'on' : ''} onClick={() => setTab('board')}>🏆 결과 코드 입력</button>
           <button className={tab === 'timer' ? 'on' : ''} onClick={() => setTab('timer')}>⏱ 대형 타이머</button>
           <button className={tab === 'settings' ? 'on' : ''} onClick={() => setTab('settings')}>⚙️ 교수자 설정</button>
         </div>
+        {tab === 'teacher' && <TeacherPanel />}
         {tab === 'board' && <Board />}
         {tab === 'timer' && <BigTimer />}
         {tab === 'settings' && <Settings />}
@@ -97,8 +100,8 @@ function Board() {
   return (
     <div className="stack">
       <div className="panel">
-        <b>결과 코드 등록</b>
-        <div className="small muted" style={{ marginBottom: 10 }}>팀이 탈출 후 화면에 표시된 코드(예: R3-2K7QX-M)를 입력하세요.</div>
+        <b>결과 코드 등록 (로그인 없이 플레이한 팀용)</b>
+        <div className="small muted" style={{ marginBottom: 10 }}>팀이 탈출 후 화면에 표시된 코드(예: R3-2K7QX-M)를 입력하세요. 로그인한 학생의 결과는 교수자 탭에 자동으로 모입니다.</div>
         <div className="row">
           <input className="input" style={{ flex: 1, minWidth: 160 }} placeholder="팀 이름" value={team} onChange={(e) => setTeam(e.target.value)} />
           <input

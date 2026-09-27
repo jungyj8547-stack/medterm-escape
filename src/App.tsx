@@ -12,6 +12,7 @@ import Review from './screens/Review';
 import Host from './screens/Host';
 import Ending from './screens/Ending';
 import ConfirmHost from './components/ConfirmDialog';
+import { startSync } from './firebase/sync';
 
 function useHashRoute() {
   const [hash, setHash] = useState(() => window.location.hash);
@@ -53,6 +54,11 @@ function Screens() {
     music.setVolume(musicVolume);
     sfx.setVolume(sfxVolume);
   }, [musicVolume, sfxVolume]);
+
+  // 로그인된 학생이면 클라우드 동기화 재개
+  useEffect(() => {
+    if (useGame.getState().student) void startSync();
+  }, []);
 
   // 브라우저 자동재생 정책: 첫 클릭/키 입력에서 오디오를 깨운다
   useEffect(() => {

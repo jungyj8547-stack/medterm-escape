@@ -4,6 +4,7 @@ import type { PuzzleHotspot, RoomResult } from '../types';
 import { ESCAPE_SECONDS, HINTS_PER_ROOM, ROOMS } from '../data/loadData';
 import { computeScore, SCORE } from '../engine/scoring';
 import { randomSeed } from '../engine/seededRandom';
+import type { StudentProfile } from '../firebase/student';
 
 export type Screen = 'title' | 'lobby' | 'briefing' | 'learn' | 'room' | 'debrief' | 'host' | 'review' | 'ending';
 export type Phase = 'briefing' | 'learn' | 'escape' | 'debrief';
@@ -49,8 +50,10 @@ interface GameState {
   musicOn: boolean;
   musicVolume: number;
   sfxVolume: number;
+  student: StudentProfile | null;
 
   goto: (s: Screen) => void;
+  setStudent: (p: StudentProfile | null) => void;
   setMode: (mode: 'solo' | 'team', team?: Team) => void;
   toggleAllUnlocked: () => void;
   setMuted: (m: boolean) => void;
@@ -104,8 +107,10 @@ export const useGame = create<GameState>()(
       musicOn: true,
       musicVolume: 0.6,
       sfxVolume: 0.8,
+      student: null,
 
       goto: (screen) => set({ screen }),
+      setStudent: (student) => set({ student }),
       setMode: (mode, team) => set({ mode, team: mode === 'team' ? (team ?? null) : null }),
       toggleAllUnlocked: () => set((s) => ({ allUnlocked: !s.allUnlocked })),
       setMuted: (muted) => set({ muted }),

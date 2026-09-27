@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isTeacher() { return signedIn() && exists(/databases/$(database)/documents/teachers/$(request.auth.uid)); }
+    function inviteOk() {
+      return request.resource.data.inviteCode == get(/databases/$(database)/documents/config/teacher).data.inviteCode;
+    }
+
+    // 교수자 가입 코드 (콘솔에서 직접 만든다: config/teacher { inviteCode: "..." }). 클라이언트는 읽을 수 없음
+    match /config/{docId} {
+      allow read, write: if false;
+    }
+
+    // 교수자: 본인만 읽기. 가입은 가입 코드가 맞을 때만
+    match /teachers/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid && inviteOk();
+      allow update: if signedIn() && request.auth.uid == uid;
+    }
+
+    // 반: 로그인한 누구나 조회(반 코드로 찾기). 만들기/수정/삭제는 담당 교수자만
+    match /classes/{classId} {
+      allow read: if signedIn();
+      allow create: if isTeacher() && request.resource.data.teacherUid == request.auth.uid;
+      allow update, delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+    }
+
+    // 로그인 세대 정보: 누구나 읽기(로그인 전에 필요). 생성은 가입하는 본인, 초기화는 교수자
+    match /logins/{studentId} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if isTeacher()
+        || (signedIn() && resource.data.resetPending == true && request.resource.data.uid == request.auth.uid);
+    }
+
+    // 학생: 본인 또는 담당 교수자만 읽기. 본인 생성/수정. PIN 초기화 후 재가입한 새 uid가 이어받기 허용
+    match /users/{studentId} {
+      allow read: if signedIn() && (resource.data.uid == request.auth.uid || resource.data.teacherUid == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if signedIn() && (
+        resource.data.uid == request.auth.uid
+        || (get(/databases/$(database)/documents/logins/$(studentId)).data.resetPending == true && request.resource.data.uid == request.auth.uid)
+        || (isTeacher() && resource.data.teacherUid == request.auth.uid)
+      );
+    }
+
+    // 결과: 본인 생성. 본인 또는 담당 교수자 읽기
+    match /results/{id} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow read: if signedIn() && (resource.data.uid == request.auth.uid || resource.data.teacherUid == request.auth.uid);
+    }
+  }
+}

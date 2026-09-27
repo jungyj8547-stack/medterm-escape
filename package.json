@@ -10,6 +10,7 @@
     "import:terms": "tsx scripts/import-terms.ts"
   },
   "dependencies": {
+    "firebase": "^12.19.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zustand": "^5.0.5"

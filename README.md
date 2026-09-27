@@ -58,3 +58,20 @@ src/screens/              Title, Lobby, Briefing, Learn, Room, Debrief, Review, 
 src/puzzles/              WordBuilder, Diagnosis, Matching, OddOneOut, SpeedRound, Keypad
 src/components/RoomScene  병동 SVG 장면(핫스팟)
 ```
+
+## 클라우드(Firebase) 연결 — 학생 로그인 · 교수자 대시보드
+
+`src/firebase/config.ts` 에 Firebase 웹 앱 설정값을 넣으면 활성화됩니다. 비어 있으면 로그인 없이(브라우저 저장) 동작합니다.
+
+### Firebase 콘솔에서 할 일
+1. 프로젝트 만들기 → Authentication → 로그인 방법 → **이메일/비밀번호** 사용
+2. Firestore Database 만들기 (프로덕션 모드, 서울 리전)
+3. Firestore **규칙** 탭에 `firestore.rules` 파일 내용을 붙여 넣고 게시
+4. Firestore 데이터 탭에서 문서 하나 생성: 컬렉션 `config` → 문서 ID `teacher` → 필드 `inviteCode` (문자열) = 교수자 가입 코드
+5. 프로젝트 설정 → 웹 앱 추가 → firebaseConfig 값을 `src/firebase/config.ts` 에 복사
+
+### 구조
+- 교수자: 진행자 페이지(`#host`)에서 이메일+비밀번호로 가입(가입 코드 필요) → 반 만들기 → 6자리 반 코드
+- 학생: 타이틀에서 반 코드 + 학번 + 별명 + PIN 으로 가입, 이후 학번 + PIN 로그인. 진행 기록이 클라우드에 저장됨
+- 교수자 대시보드: 내 반 학생 현황(진행/점수/약한 단어), 실시간 결과·리더보드, CSV, PIN 초기화
+- 컬렉션: `teachers`, `classes`, `logins`(학번→세대), `users`(학번→프로필+progress), `results`(탈출 기록)

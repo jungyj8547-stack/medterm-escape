@@ -464,3 +464,6 @@ table.board tr.top td:first-child { color: var(--warn-dark); font-family: var(--
 
 /* --- 확인창 --- */
 .modal.confirm { max-width: 440px; }
+
+/* --- 로그인 --- */
+.login-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }

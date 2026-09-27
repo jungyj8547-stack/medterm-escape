@@ -5,6 +5,8 @@ import { sfx } from '../audio/sfx';
 import Avatar from '../components/Avatar';
 import SoundControl from '../components/SoundControl';
 import { askConfirm } from '../components/ConfirmDialog';
+import StudentLogin from '../components/StudentLogin';
+import { isFirebaseConfigured } from '../firebase/config';
 
 export default function Title() {
   const setMode = useGame((s) => s.setMode);
@@ -12,7 +14,9 @@ export default function Title() {
   const session = useGame((s) => s.session);
   const abandonRoom = useGame((s) => s.abandonRoom);
   const team = useGame((s) => s.team);
+  const student = useGame((s) => s.student);
   const [teamForm, setTeamForm] = useState(false);
+  const [skipLogin, setSkipLogin] = useState(false);
   const [name, setName] = useState(team?.name ?? '');
   const [members, setMembers] = useState(team?.members ?? 4);
 
@@ -42,6 +46,13 @@ export default function Title() {
           </div>
         </div>
 
+        {(student || !skipLogin) && <StudentLogin onDone={() => undefined} />}
+        {isFirebaseConfigured && !student && !skipLogin && (
+          <div className="center" style={{ marginBottom: 16 }}>
+            <button className="btn small ghost" onClick={() => setSkipLogin(true)}>로그인 없이 해보기 (기록은 이 브라우저에만 저장)</button>
+          </div>
+        )}
+
         {session && (
           <div className="panel row between" style={{ marginBottom: 16 }}>
             <div>
@@ -70,7 +81,7 @@ export default function Title() {
             <button className="mode-card" onClick={startSolo}>
               <div className="emoji">🧑‍⚕️</div>
               <h3>개인 플레이</h3>
-              <p className="muted small">혼자 학습하고 탈출합니다. 진행 상황은 이 브라우저에 저장됩니다.</p>
+              <p className="muted small">{student ? '혼자 학습하고 탈출합니다. 진행은 내 계정에 저장됩니다.' : '혼자 학습하고 탈출합니다. 진행 상황은 이 브라우저에 저장됩니다.'}</p>
             </button>
             <button className="mode-card team" onClick={() => setTeamForm(true)}>
               <div className="emoji">👥</div>
