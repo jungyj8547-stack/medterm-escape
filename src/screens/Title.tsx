@@ -4,11 +4,13 @@ import { ROOMS, ALL_TERMS } from '../data/loadData';
 import { sfx } from '../audio/sfx';
 import Avatar from '../components/Avatar';
 import SoundControl from '../components/SoundControl';
+import { askConfirm } from '../components/ConfirmDialog';
 
 export default function Title() {
   const setMode = useGame((s) => s.setMode);
   const goto = useGame((s) => s.goto);
   const session = useGame((s) => s.session);
+  const abandonRoom = useGame((s) => s.abandonRoom);
   const team = useGame((s) => s.team);
   const [teamForm, setTeamForm] = useState(false);
   const [name, setName] = useState(team?.name ?? '');
@@ -46,7 +48,20 @@ export default function Title() {
               <b>진행 중인 병동이 있습니다</b>
               <div className="small muted">{ROOMS.find((r) => r.id === session.roomId)?.name} · {session.phase === 'escape' ? '탈출 진행 중' : session.phase === 'learn' ? '학습 단계' : '브리핑'}</div>
             </div>
-            <button className="btn primary" onClick={() => goto(session.phase === 'escape' ? 'room' : session.phase === 'learn' ? 'learn' : session.phase === 'debrief' ? 'debrief' : 'briefing')}>이어하기</button>
+            <div className="row">
+              <button
+                className="btn small"
+                onClick={async () => {
+                  if (await askConfirm('진행 중인 병동을 버리고 처음부터 시작할까요? (클리어한 병동 기록과 점수는 남습니다)', { okLabel: '새로 시작', danger: true })) {
+                    abandonRoom();
+                    goto('title');
+                  }
+                }}
+              >
+                새로 시작
+              </button>
+              <button className="btn primary" onClick={() => goto(session.phase === 'escape' ? 'room' : session.phase === 'learn' ? 'learn' : session.phase === 'debrief' ? 'debrief' : 'briefing')}>이어하기</button>
+            </div>
           </div>
         )}
 
