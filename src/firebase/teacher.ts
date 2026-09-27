@@ -65,13 +65,25 @@ const makeJoinCode = () => Array.from({ length: 6 }, () => JOIN_ALPHA[Math.floor
 
 export async function registerTeacher(email: string, password: string, name: string, inviteCode: string): Promise<TeacherProfile> {
   const { auth, db } = fb();
-  const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
+  let cred;
+  let createdNow = false;
+  try {
+    cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
+    createdNow = true;
+  } catch (e) {
+    // 이전에 가입 코드가 틀려 계정만 남은 경우: 비밀번호가 맞으면 이어서 교수자 등록
+    if ((e as { code?: string })?.code !== 'auth/email-already-in-use') throw e;
+    cred = await signInWithEmailAndPassword(auth, email.trim(), password);
+    const exists = await getDoc(doc(db, 'teachers', cred.user.uid));
+    if (exists.exists()) throw new Error('이미 가입된 교수자입니다. 로그인해 주세요.');
+  }
   const uid = cred.user.uid;
   try {
     await setDoc(doc(db, 'teachers', uid), { email: email.trim(), name: name.trim() || email, inviteCode: inviteCode.trim(), createdAt: serverTimestamp() });
-  } catch (e) {
-    // 가입 코드가 틀리면 규칙이 거부 → 방금 만든 계정은 쓸 수 없으므로 로그아웃
-    await signOut(auth);
+  } catch {
+    // 가입 코드가 틀리면 규칙이 거부 → 방금 만든 계정은 지우고, 기존 계정이면 로그아웃만
+    if (createdNow) await cred.user.delete().catch(() => undefined);
+    await signOut(auth).catch(() => undefined);
     throw new Error('교수자 가입 코드가 맞지 않습니다.');
   }
   return { uid, email: email.trim(), name: name.trim() || email };
