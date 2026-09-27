@@ -93,7 +93,6 @@ function Screens() {
     const m = hash.match(/^#join=([A-Za-z0-9]{6})$/);
     if (m) {
       sessionStorage.setItem('medterm-join', m[1].toUpperCase());
-      window.dispatchEvent(new Event('medterm-join'));
       useGame.setState({ screen: 'title' });
       window.history.replaceState(null, '', window.location.pathname);
     }
