@@ -37,7 +37,11 @@ service cloud.firestore {
 
     // 학생: 본인 또는 담당 교수자만 읽기. 본인 생성/수정. PIN 초기화 후 재가입한 새 uid가 이어받기 허용
     match /users/{studentId} {
-      allow read: if signedIn() && (resource.data.uid == request.auth.uid || resource.data.teacherUid == request.auth.uid);
+      allow read: if signedIn() && (
+        resource.data.uid == request.auth.uid
+        || resource.data.teacherUid == request.auth.uid
+        || get(/databases/$(database)/documents/logins/$(studentId)).data.resetPending == true
+      );
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
       allow update: if signedIn() && (
         resource.data.uid == request.auth.uid

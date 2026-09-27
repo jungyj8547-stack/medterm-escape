@@ -12,7 +12,6 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
-  orderBy,
   query,
   serverTimestamp,
   setDoc,
@@ -135,8 +134,10 @@ export function watchStudents(teacherUid: string, cb: (rows: StudentRow[]) => vo
 /** 내 반 결과 (실시간, 최신순) */
 export function watchResults(teacherUid: string, cb: (rows: ResultRow[]) => void) {
   const { db } = fb();
-  return onSnapshot(query(collection(db, 'results'), where('teacherUid', '==', teacherUid), orderBy('createdAt', 'desc')), (snap) => {
-    cb(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ResultRow, 'id'>) })));
+  return onSnapshot(query(collection(db, 'results'), where('teacherUid', '==', teacherUid)), (snap) => {
+    const rows = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ResultRow, 'id'>) }));
+    rows.sort((a, b) => (a.date < b.date ? 1 : -1));
+    cb(rows);
   });
 }
 

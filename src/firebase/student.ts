@@ -69,22 +69,31 @@ export async function registerStudent(input: { studentId: string; nickname: stri
   const studentId = normalizeId(input.studentId);
   if (!/^[0-9A-Za-z_-]{3,20}$/.test(studentId)) throw new Error('학번은 3~20자의 숫자/영문으로 입력하세요.');
   if (!/^\d{4,6}$/.test(input.pin.trim())) throw new Error('PIN은 4~6자리 숫자로 입력하세요.');
-  const cls = await findClassByCode(input.joinCode);
-  if (!cls) throw new Error('반 코드를 찾을 수 없습니다. 교수자에게 확인하세요.');
+  if (!/^[A-Z0-9]{6}$/.test(input.joinCode.trim().toUpperCase())) throw new Error('반 코드는 6자리입니다.');
 
-  // 이미 가입된 학번인지 확인 (초기화 대기 상태면 재가입 허용)
-  const userRef = doc(db, 'users', studentId);
-  const existing = await getDoc(userRef).catch(() => null);
+  // 이미 가입된 학번인지 확인 (logins 는 로그인 전에도 읽을 수 있음). 초기화 대기 상태면 재가입 허용
   const loginRef = doc(db, 'logins', studentId);
   const loginSnap = await getDoc(loginRef);
-  const gen = loginSnap.exists() ? (loginSnap.data().gen as number) : 0;
+  const gen = loginSnap.exists() ? (loginSnap.data().gen as number) ?? 0 : 0;
   const resetPending = loginSnap.exists() && loginSnap.data().resetPending === true;
   if (loginSnap.exists() && !resetPending) {
     throw new Error('이미 가입된 학번입니다. PIN을 잊었다면 교수자에게 PIN 초기화를 요청하세요.');
   }
 
+  // 계정을 먼저 만들고(로그인 상태가 되어야 반을 조회할 수 있음), 반 코드가 틀리면 계정을 되돌린다
   const cred = await createUserWithEmailAndPassword(auth, emailFor(studentId, gen), passwordFor(input.pin));
   const uid = cred.user.uid;
+  let cls: Awaited<ReturnType<typeof findClassByCode>> = null;
+  try {
+    cls = await findClassByCode(input.joinCode);
+  } catch {
+    cls = null;
+  }
+  if (!cls) {
+    await cred.user.delete().catch(() => undefined);
+    throw new Error('반 코드를 찾을 수 없습니다. 교수자에게 확인하세요.');
+  }
+
   const profile: StudentProfile = {
     uid,
     studentId,
@@ -93,8 +102,9 @@ export async function registerStudent(input: { studentId: string; nickname: stri
     className: cls.name,
     teacherUid: cls.teacherUid,
   };
+  const userRef = doc(db, 'users', studentId);
+  const existing = resetPending ? await getDoc(userRef).catch(() => null) : null;
   const prevProgress = existing?.exists() ? existing.data().progress : undefined;
-  await setDoc(loginRef, { gen, resetPending: false, uid }, { merge: true });
   await setDoc(
     userRef,
     {
@@ -110,6 +120,7 @@ export async function registerStudent(input: { studentId: string; nickname: stri
     },
     { merge: true },
   );
+  await setDoc(loginRef, { gen, resetPending: false, uid }, { merge: true });
   return profile;
 }
 
