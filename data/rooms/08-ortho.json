@@ -81,14 +81,9 @@
       "system": "근골격계",
       "parts": [
         [
-          "herni",
-          "돌출",
-          "r"
-        ],
-        [
-          "-ated",
-          "~된",
-          "s"
+          "Herniated",
+          "탈출된",
+          "w"
         ],
         [
           "Nucleus",
