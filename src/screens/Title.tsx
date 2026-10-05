@@ -115,7 +115,7 @@ export default function Title() {
         <div className="panel" style={{ marginTop: 28 }}>
           <h3 style={{ marginBottom: 10 }}>🎮 게임 방법</h3>
           <ol style={{ margin: 0, paddingLeft: 20, color: 'var(--muted)', lineHeight: 1.8, fontSize: 15 }}>
-            <li><b style={{ color: 'var(--text)' }}>환자 차트 열람 (18분)</b> — 병동의 의학용어 25개를 플래시카드로 익힙니다. "모르겠어요"로 표시한 단어는 퍼즐에 우선 출제됩니다.</li>
+            <li><b style={{ color: 'var(--text)' }}>환자 차트 열람 (18분)</b> — 병동의 의학용어를 플래시카드로 익힙니다. "모르겠어요"로 표시한 단어는 퍼즐에 우선 출제됩니다.</li>
             <li><b style={{ color: 'var(--text)' }}>탈출 (40분)</b> — 병동 안 오브젝트 4개의 퍼즐을 풀어 코드 조각을 모으고, 4자리 코드로 문을 엽니다.</li>
             <li><b style={{ color: 'var(--text)' }}>힌트 3개</b> — 막히면 힌트를 쓸 수 있지만 100점씩 깎입니다. 오답은 20점.</li>
             <li><b style={{ color: 'var(--text)' }}>긴급 방송</b> — 스피드 라운드에 응답하면 보너스 점수를 얻습니다.</li>
