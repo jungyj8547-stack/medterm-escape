@@ -134,6 +134,11 @@ export async function loginStudent(studentId: string, pin: string): Promise<Stud
   return profile;
 }
 
+/** UID index permits class-scoped rules without exposing other students' profiles. */
+export async function ensureStudentClass(profile: StudentProfile) {
+  await setDoc(doc(fb().db, 'studentClasses', profile.uid), { studentId: profile.studentId, classId: profile.classId });
+}
+
 export async function loadProfile(studentId: string): Promise<StudentProfile | null> {
   const { db } = fb();
   const snap = await getDoc(doc(db, 'users', normalizeId(studentId)));
