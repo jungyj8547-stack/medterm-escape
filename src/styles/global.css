@@ -467,3 +467,17 @@ table.board tr.top td:first-child { color: var(--warn-dark); font-family: var(--
 
 /* --- 로그인 --- */
 .login-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.certificate-backdrop { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(18,35,50,.65); }
+.certificate-backdrop .modal { width: min(700px,100%); max-height: 90vh; overflow: auto; }
+@media print {
+  body:has(.learning-certificate) * { visibility: hidden; }
+  body:has(.learning-certificate) .learning-certificate,
+  body:has(.learning-certificate) .learning-certificate * { visibility: visible; }
+  body:has(.learning-certificate) .certificate-backdrop,
+  body:has(.learning-certificate) .certificate-backdrop .modal,
+  body:has(.learning-certificate) .certificate-backdrop .modal-body {
+    position: static; background: white; border: 0; box-shadow: none;
+    max-height: none; overflow: visible;
+  }
+  .learning-certificate { position: absolute; inset: 20mm 12mm auto; break-inside: avoid; }
+}

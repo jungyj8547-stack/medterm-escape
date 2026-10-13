@@ -61,7 +61,7 @@ export async function startSync() {
     }
     // 새 탈출 결과 → results 에 기록
     const r = state.session?.result;
-    if (r && r.escaped && r.date !== lastResultDate) {
+    if (r && r.escaped && !state.session?.lesson && r.date !== lastResultDate) {
       lastResultDate = r.date;
       const room = ROOMS.find((x) => x.id === r.roomId);
       pushResult(st, r, {
@@ -76,7 +76,7 @@ export async function startSync() {
 
   // Firebase 세션이 끊기면(다른 곳에서 로그아웃 등) 로컬 로그인도 해제
   unsubAuth = watchAuth((user) => {
-    if (!user && useGame.getState().student) {
+    if ((!user || user.uid !== useGame.getState().student?.uid) && useGame.getState().student) {
       useGame.getState().setStudent(null);
       stopSync();
     }

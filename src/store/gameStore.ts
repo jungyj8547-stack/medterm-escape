@@ -10,6 +10,8 @@ export type Screen = 'title' | 'lobby' | 'briefing' | 'learn' | 'room' | 'debrie
 export type Phase = 'briefing' | 'learn' | 'escape' | 'debrief';
 
 export interface Session {
+  lesson?: { id: string; classId: string; teamId: string; teamName: string };
+  classWeak?: string[];
   roomId: string;
   seed: number;
   phase: Phase;
@@ -61,6 +63,7 @@ interface GameState {
   setVolumes: (v: { musicVolume?: number; sfxVolume?: number }) => void;
 
   startRoom: (roomId: string) => void;
+  startLesson: (roomId: string, lesson: NonNullable<Session['lesson']>) => void;
   setPhase: (p: Phase) => void;
   markSeen: (termId: string, known: boolean) => void;
   startEscape: () => void;
@@ -156,9 +159,18 @@ export const useGame = create<GameState>()(
           return next;
         }),
 
+      startLesson: (roomId, lesson) => {
+        get().startRoom(roomId);
+        set(s => ({ mode: 'solo', team: null, session: s.session ? { ...s.session, lesson, classWeak: [] } : null }));
+      },
+
       markSeen: (termId, known) =>
         set((s) => {
           if (!s.session) return {};
+          if (s.session.lesson) {
+            const classWeak = known ? (s.session.classWeak ?? []).filter(id => id !== termId) : uniq([...(s.session.classWeak ?? []), termId]);
+            return { session: { ...s.session, classWeak, seen: uniq([...s.session.seen, termId]) } };
+          }
           const weak = { ...s.weak };
           if (known) delete weak[termId];
           else weak[termId] = true;
@@ -169,10 +181,10 @@ export const useGame = create<GameState>()(
         set((s) => {
           if (!s.session) return {};
           const room = ROOMS.find((r) => r.id === s.session!.roomId);
-          const weakSnapshot = room ? room.terms.filter((t) => s.weak[t.id]).map((t) => t.id) : [];
+          const weakSnapshot = s.session.lesson ? (s.session.classWeak ?? []) : room ? room.terms.filter((t) => s.weak[t.id]).map((t) => t.id) : [];
           return {
             screen: 'room',
-            learnedRooms: { ...s.learnedRooms, [s.session.roomId]: true },
+            learnedRooms: s.session.lesson ? s.learnedRooms : { ...s.learnedRooms, [s.session.roomId]: true },
             session: {
               ...s.session,
               phase: 'escape',
@@ -198,12 +210,13 @@ export const useGame = create<GameState>()(
       addWrong: (termId) =>
         set((s) => {
           if (!s.session) return {};
-          const weak = termId ? { ...s.weak, [termId]: true as const } : s.weak;
+          const weak = termId && !s.session.lesson ? { ...s.weak, [termId]: true as const } : s.weak;
           return {
             weak,
             session: {
               ...s.session,
               wrong: s.session.wrong + 1,
+              classWeak: s.session.lesson && termId ? uniq([...(s.session.classWeak ?? []), termId]) : s.session.classWeak,
               wrongTerms: termId ? uniq([...s.session.wrongTerms, termId]) : s.session.wrongTerms,
             },
           };
@@ -249,8 +262,8 @@ export const useGame = create<GameState>()(
           const prev = state.bestResults[s.roomId];
           set({
             screen: 'debrief',
-            unlocked: uniq([...state.unlocked, ...(nextRoom ? [nextRoom.id] : [])]),
-            bestResults: {
+            unlocked: s.lesson ? state.unlocked : uniq([...state.unlocked, ...(nextRoom ? [nextRoom.id] : [])]),
+            bestResults: s.lesson ? state.bestResults : {
               ...state.bestResults,
               [s.roomId]: !prev || prev.score < score ? result : prev,
             },

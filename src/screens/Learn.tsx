@@ -8,7 +8,8 @@ import { sfx } from '../audio/sfx';
 
 export default function Learn() {
   const session = useGame((s) => s.session)!;
-  const weak = useGame((s) => s.weak);
+  const savedWeak = useGame((s) => s.weak);
+  const weak = session.lesson ? Object.fromEntries((session.classWeak ?? []).map(id => [id, true])) : savedWeak;
   const markSeen = useGame((s) => s.markSeen);
   const startEscape = useGame((s) => s.startEscape);
   const goto = useGame((s) => s.goto);

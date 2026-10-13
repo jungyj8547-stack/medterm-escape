@@ -8,6 +8,24 @@ service cloud.firestore {
       return request.resource.data.inviteCode == get(/databases/$(database)/documents/config/teacher).data.inviteCode;
     }
 
+    function classTeacher(classId) {
+      return isTeacher() && get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid;
+    }
+    function classStudent(classId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/studentClasses/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data.uid == request.auth.uid
+        && get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data.classId == classId;
+    }
+
+    match /studentClasses/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['studentId', 'classId'])
+        && get(/databases/$(database)/documents/users/$(request.resource.data.studentId)).data.uid == uid
+        && get(/databases/$(database)/documents/users/$(request.resource.data.studentId)).data.classId == request.resource.data.classId;
+    }
+
     // 교수자 가입 코드 (콘솔에서 직접 만든다: config/teacher { inviteCode: "..." }). 클라이언트는 읽을 수 없음
     match /config/{docId} {
       allow read, write: if false;
@@ -25,6 +43,50 @@ service cloud.firestore {
       allow read: if signedIn();
       allow create: if isTeacher() && request.resource.data.teacherUid == request.auth.uid;
       allow update, delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+
+      match /teamDraw/{stateId} {
+        allow read: if stateId == 'state' && (classTeacher(classId) || classStudent(classId));
+        allow create, update: if classTeacher(classId);
+        allow update: if stateId == 'state' && classStudent(classId)
+          && !(request.auth.uid in resource.data.assignments)
+          && resource.data.nextIndex < resource.data.slots.size()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nextIndex', 'assignments'])
+          && request.resource.data.nextIndex == resource.data.nextIndex + 1
+          && request.resource.data.assignments.size() == resource.data.assignments.size() + 1
+          && request.resource.data.assignments.diff(resource.data.assignments).affectedKeys().hasOnly([request.auth.uid])
+          && request.resource.data.assignments[request.auth.uid].keys().hasOnly(['teamId'])
+          && request.resource.data.assignments[request.auth.uid].teamId == resource.data.slots[resource.data.nextIndex]
+          && (!('lesson' in get(/databases/$(database)/documents/classes/$(classId)).data)
+            || get(/databases/$(database)/documents/classes/$(classId)).data.lesson.status != 'active');
+      }
+      match /lessons/{lessonId} {
+        allow read: if classTeacher(classId) || classStudent(classId);
+        allow create, update: if classTeacher(classId);
+        match /points/{uid} {
+          allow read: if classTeacher(classId) || classStudent(classId);
+          allow create: if classStudent(classId) && uid == request.auth.uid
+            && request.resource.data.keys().hasOnly(['uid', 'teamId', 'score', 'timeUsedSec', 'escaped'])
+            && request.resource.data.uid == uid
+            && request.resource.data.teamId == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.teamId
+            && request.resource.data.score == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.score
+            && request.resource.data.timeUsedSec == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.timeUsedSec
+            && request.resource.data.escaped == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.escaped;
+        }
+        match /scores/{uid} {
+          allow read: if classTeacher(classId) || (classStudent(classId) && uid == request.auth.uid);
+          allow create: if classStudent(classId) && uid == request.auth.uid
+            && request.resource.data.keys().hasOnly(['uid', 'nickname', 'lessonId', 'teamId', 'roomId', 'score', 'timeUsedSec', 'escaped', 'date'])
+            && request.resource.data.uid == uid
+            && request.resource.data.lessonId == lessonId
+            && get(/databases/$(database)/documents/classes/$(classId)).data.lesson.id == lessonId
+            && get(/databases/$(database)/documents/classes/$(classId)).data.lesson.status == 'active'
+            && get(/databases/$(database)/documents/classes/$(classId)).data.lesson.roomId == request.resource.data.roomId
+            && get(/databases/$(database)/documents/classes/$(classId)).data.lesson.members[uid] == request.resource.data.teamId
+            && request.resource.data.score is int && request.resource.data.score >= 0 && request.resource.data.score <= 2400
+            && request.resource.data.timeUsedSec is int && request.resource.data.timeUsedSec >= 0 && request.resource.data.timeUsedSec <= 2400
+            && request.resource.data.escaped is bool;
+        }
+      }
     }
 
     // 로그인 세대 정보: 누구나 읽기(로그인 전에 필요). 생성은 가입하는 본인, 초기화는 교수자
