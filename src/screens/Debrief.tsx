@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { music } from '../audio/music';
 import { ROOM_BY_ID, ROOMS, TERM_BY_ID } from '../data/loadData';
@@ -8,6 +8,8 @@ import { sfx } from '../audio/sfx';
 import ToastHost, { toast } from '../components/Toast';
 import Avatar from '../components/Avatar';
 import Confetti from '../components/Confetti';
+import { saveLessonScore } from '../firebase/classroom';
+import { friendlyError } from '../firebase/app';
 
 export default function Debrief() {
   const session = useGame((s) => s.session)!;
@@ -18,8 +20,19 @@ export default function Debrief() {
   const goto = useGame((s) => s.goto);
   const abandonRoom = useGame((s) => s.abandonRoom);
   const room = ROOM_BY_ID[session.roomId];
+  const student = useGame(s => s.student);
+  const [submitted, setSubmitted] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [saving, setSaving] = useState(false);
   const r = session.result;
   const escaped = !!r?.escaped;
+  const submit = async () => {
+    if (!session.lesson || !student || !r) return;
+    setSaving(true); setSaveError('');
+    try { await saveLessonScore(student, session.lesson.id, session.lesson.teamId, r); setSubmitted(true); }
+    catch (e) { setSaveError(friendlyError(e)); } finally { setSaving(false); }
+  };
+  useEffect(() => { if (session.lesson && r) void submit(); }, [r?.date]);
   const idx = ROOMS.findIndex((x) => x.id === room.id);
   const nextRoom = ROOMS[idx + 1];
 
@@ -57,10 +70,10 @@ export default function Debrief() {
             </div>
             {escaped ? (
               <>
-                <h2>🔓 탈출 성공!</h2>
+                <h2>{session.lesson ? '수업 병동 탈출 완료!' : '🔓 탈출 성공!'}</h2>
                 <div className="stars">{'★'.repeat(r!.stars)}{'☆'.repeat(3 - r!.stars)}</div>
                 <div className="score">{r!.score}<span className="small muted" style={{ fontSize: 18 }}> 점</span></div>
-                <p className="brief muted" style={{ fontSize: 16, marginTop: 10 }}>{room.escapeMessage}</p>
+                <p className="brief muted" style={{ fontSize: 16, marginTop: 10 }}>{session.lesson ? `${session.lesson.teamName} · 오늘 수업은 여기서 끝입니다.` : room.escapeMessage}</p>
               </>
             ) : (
               <>
@@ -86,6 +99,11 @@ export default function Debrief() {
               <button className="btn small" onClick={copy}>📋 팀명 + 코드 복사</button>
             </div>
           )}
+          {session.lesson && <div className="panel">
+            <b>{submitted ? '이번 수업 점수가 저장되었습니다.' : saving ? '수업 점수를 저장하고 있습니다…' : '수업 결과 저장 확인이 필요합니다.'}</b>
+            <p className="small muted">개인 복습의 최고 점수와 열린 층은 바뀌지 않습니다. 수업 화면에서 내 개인 순위와 우리 팀 순위를 확인하세요.</p>
+            {saveError && <><p className="feedback bad">{saveError}</p><button className="btn" disabled={saving} onClick={() => void submit()}>저장 다시 시도</button></>}
+          </div>}
 
           <div style={{ marginBottom: 18 }}>
             <b>복습이 필요한 단어 {reviewIds.length}개</b>
@@ -102,17 +120,17 @@ export default function Debrief() {
           </div>
 
           <div className="row" style={{ justifyContent: 'flex-end', gap: 10 }}>
-            <button className="btn ghost" onClick={abandonRoom}>안내도로</button>
+            <button className="btn ghost" disabled={!!session.lesson && !submitted} onClick={() => { abandonRoom(); if (session.lesson) goto('title'); }}>{session.lesson ? '내 수업 결과·순위 보기' : '안내도로'}</button>
             <button className="btn" onClick={() => goto('review')}>🃏 복습 카드</button>
-            {!escaped && (
+            {!escaped && !session.lesson && (
               <button className="btn primary" onClick={() => { sfx.click(); retry(); }}>🔁 재도전 (타이머 리셋)</button>
             )}
-            {escaped && nextRoom && (
+            {escaped && nextRoom && !session.lesson && (
               <button className="btn ok bounce" onClick={() => { sfx.click(); startRoom(nextRoom.id); }}>
                 다음: {nextRoom.floor} {nextRoom.name} →
               </button>
             )}
-            {escaped && !nextRoom && (
+            {escaped && !nextRoom && !session.lesson && (
               <button className="btn primary" onClick={abandonRoom}>🚁 옥상 헬기장으로</button>
             )}
           </div>

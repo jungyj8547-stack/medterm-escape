@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar';
 import SoundControl from '../components/SoundControl';
 import { askConfirm } from '../components/ConfirmDialog';
 import StudentLogin from '../components/StudentLogin';
+import ClassroomStudent from '../components/ClassroomStudent';
 import { isFirebaseConfigured } from '../firebase/config';
 
 export default function Title() {
@@ -47,6 +48,7 @@ export default function Title() {
         </div>
 
         {(student || !skipLogin) && <StudentLogin onDone={() => undefined} />}
+        {student && <ClassroomStudent />}
         {isFirebaseConfigured && !student && !skipLogin && (
           <div className="center" style={{ marginBottom: 16 }}>
             <button className="btn small ghost" onClick={() => setSkipLogin(true)}>로그인 없이 해보기 (기록은 이 브라우저에만 저장)</button>
@@ -85,7 +87,7 @@ export default function Title() {
             </button>
             <button className="mode-card team" onClick={() => setTeamForm(true)}>
               <div className="emoji">👥</div>
-              <h3>팀 플레이</h3>
+              <h3>함께 플레이 · 한 기기</h3>
               <p className="muted small">한 기기로 팀이 함께 풉니다. 탈출 후 결과 코드를 진행자에게 제출합니다.</p>
             </button>
           </div>

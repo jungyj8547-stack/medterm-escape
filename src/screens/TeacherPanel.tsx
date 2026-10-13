@@ -22,6 +22,7 @@ import {
 } from '../firebase/teacher';
 import { toast } from '../components/Toast';
 import { askConfirm } from '../components/ConfirmDialog';
+import ClassroomTeacher from './ClassroomTeacher';
 
 /** 진행자 페이지의 교수자 영역: 로그인 → 반 관리 / 학생 현황 / 결과 */
 export default function TeacherPanel() {
@@ -99,7 +100,7 @@ function TeacherAuth({ onLogin }: { onLogin: (t: TeacherProfile) => void }) {
 }
 
 function Dashboard({ teacher, onLogout }: { teacher: TeacherProfile; onLogout: () => void }) {
-  const [tab, setTab] = useState<'classes' | 'students' | 'results'>('students');
+  const [tab, setTab] = useState<'classes' | 'students' | 'results' | 'classroom'>('students');
   const [classes, setClasses] = useState<ClassInfo[]>([]);
   const [students, setStudents] = useState<StudentRow[]>([]);
   const [results, setResults] = useState<ResultRow[]>([]);
@@ -138,11 +139,13 @@ function Dashboard({ teacher, onLogout }: { teacher: TeacherProfile; onLogout: (
         </div>
       </div>
       <div className="tabs">
+        <button className={tab === 'classroom' ? 'on' : ''} onClick={() => setTab('classroom')}>🎴 반별 수업·팀·점수</button>
         <button className={tab === 'students' ? 'on' : ''} onClick={() => setTab('students')}>👥 학생 현황 ({filteredStudents.length})</button>
         <button className={tab === 'results' ? 'on' : ''} onClick={() => setTab('results')}>🏆 실시간 결과 ({filteredResults.length})</button>
         <button className={tab === 'classes' ? 'on' : ''} onClick={() => setTab('classes')}>🏫 반 관리 ({classes.length})</button>
       </div>
       {tab === 'classes' && <Classes teacher={teacher} classes={classes} onChange={refreshClasses} />}
+      {tab === 'classroom' && <ClassroomTeacher classes={classes} students={students} />}
       {tab === 'students' && <Students rows={filteredStudents} classOf={classOf} />}
       {tab === 'results' && <Results rows={filteredResults} classOf={classOf} />}
     </div>
