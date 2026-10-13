@@ -100,7 +100,7 @@ export default function Title() {
             </div>
             <div className="field">
               <label>인원</label>
-              <input className="input" type="number" min={1} max={10} value={members} onChange={(e) => setMembers(Number(e.target.value) || 1)} />
+              <input className="input" type="number" min={1} max={10} value={members} onChange={(e) => setMembers(Math.min(10, Math.max(1, Math.round(Number(e.target.value)) || 1)))} />
             </div>
             <div className="row" style={{ justifyContent: 'flex-end' }}>
               <button className="btn ghost" onClick={() => setTeamForm(false)}>뒤로</button>

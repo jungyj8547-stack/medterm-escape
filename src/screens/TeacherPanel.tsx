@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ROOMS, TERM_BY_ID } from '../data/loadData';
 import { formatTime } from '../engine/scoring';
 import { isFirebaseConfigured } from '../firebase/config';
@@ -23,10 +23,12 @@ import {
 import { toast } from '../components/Toast';
 import { askConfirm } from '../components/ConfirmDialog';
 import ClassroomTeacher from './ClassroomTeacher';
+import { csvRow } from '../engine/csv';
 
 /** 진행자 페이지의 교수자 영역: 로그인 → 반 관리 / 학생 현황 / 결과 */
 export default function TeacherPanel() {
   const [teacher, setTeacher] = useState<TeacherProfile | null | undefined>(undefined);
+  const authPending = useRef(false);
 
   useEffect(() => {
     if (!isFirebaseConfigured) {
@@ -34,8 +36,10 @@ export default function TeacherPanel() {
       return;
     }
     return watchTeacherAuth(async (user) => {
+      if (authPending.current) return;
       if (!user) return setTeacher(null);
-      setTeacher(await currentTeacher(user));
+      const profile = await currentTeacher(user).catch(() => null);
+      if (!authPending.current) setTeacher(profile);
     });
   }, []);
 
@@ -48,11 +52,11 @@ export default function TeacherPanel() {
     );
   }
   if (teacher === undefined) return <div className="panel muted">확인 중…</div>;
-  if (!teacher) return <TeacherAuth onLogin={setTeacher} />;
+  if (!teacher) return <TeacherAuth onLogin={setTeacher} onBusy={(busy) => { authPending.current = busy; }} />;
   return <Dashboard teacher={teacher} onLogout={() => setTeacher(null)} />;
 }
 
-function TeacherAuth({ onLogin }: { onLogin: (t: TeacherProfile) => void }) {
+function TeacherAuth({ onLogin, onBusy }: { onLogin: (t: TeacherProfile) => void; onBusy: (busy: boolean) => void }) {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,6 +66,7 @@ function TeacherAuth({ onLogin }: { onLogin: (t: TeacherProfile) => void }) {
   const [error, setError] = useState<string | null>(null);
 
   const submit = async () => {
+    onBusy(true);
     setBusy(true);
     setError(null);
     try {
@@ -71,6 +76,7 @@ function TeacherAuth({ onLogin }: { onLogin: (t: TeacherProfile) => void }) {
     } catch (e) {
       setError(friendlyError(e));
     } finally {
+      onBusy(false);
       setBusy(false);
     }
   };
@@ -201,7 +207,7 @@ function Students({ rows, classOf }: { rows: StudentRow[]; classOf: (id: string)
   };
   const exportCsv = () => {
     const head = '학번,별명,반,통과 병동 수,최고 층,총점,별 합계,약한 단어 수';
-    const lines = rows.map((s) => { const m = summary(s); return [s.studentId, s.nickname, classOf(s.classId), m.cleared, m.top, m.total, m.stars, m.weakCount].join(','); });
+    const lines = rows.map((s) => { const m = summary(s); return csvRow([s.studentId, s.nickname, classOf(s.classId), m.cleared, m.top, m.total, m.stars, m.weakCount]); });
     const blob = new Blob(['﻿' + [head, ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `students-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(a.href);
   };
@@ -248,11 +254,11 @@ function Results({ rows, classOf }: { rows: ResultRow[]; classOf: (id: string) =
   const filtered = rows.filter((r) => !roomFilter || r.roomOrder === roomFilter);
   // 리더보드: 학생별(또는 팀별) 병동당 최고 점수 합
   const board = useMemo(() => {
-    const map = new Map<string, { name: string; cls: string; best: Record<string, number>; latest: string }>();
+    const map = new Map<string, { id: string; name: string; cls: string; best: Record<string, number>; latest: string }>();
     for (const r of filtered) {
-      const key = r.mode === 'team' && r.team ? `team:${r.team}` : r.studentId;
+      const key = r.mode === 'team' && r.team ? `team:${r.classId}:${r.team}` : r.studentId;
       const name = r.mode === 'team' && r.team ? `👥 ${r.team}` : r.nickname;
-      const e = map.get(key) ?? { name, cls: classOf(r.classId), best: {}, latest: r.date };
+      const e = map.get(key) ?? { id: key, name, cls: classOf(r.classId), best: {}, latest: r.date };
       e.best[r.roomId] = Math.max(e.best[r.roomId] ?? 0, r.score);
       if (r.date > e.latest) e.latest = r.date;
       map.set(key, e);
@@ -261,7 +267,7 @@ function Results({ rows, classOf }: { rows: ResultRow[]; classOf: (id: string) =
   }, [filtered, classOf]);
   const exportCsv = () => {
     const head = '학번,별명,반,병동,점수,별,시간(초),힌트,오답,모드,팀,틀린 단어,일시';
-    const lines = rows.map((r) => [r.studentId, r.nickname, classOf(r.classId), r.roomName, r.score, r.stars, r.timeUsedSec, r.hintsUsed, r.wrong, r.mode, r.team ?? '', (r.wrongTerms ?? []).map((id) => TERM_BY_ID[id]?.term ?? id).join(' / '), r.date].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','));
+    const lines = filtered.map((r) => csvRow([r.studentId, r.nickname, classOf(r.classId), r.roomName, r.score, r.stars, r.timeUsedSec, r.hintsUsed, r.wrong, r.mode, r.team ?? '', (r.wrongTerms ?? []).map((id) => TERM_BY_ID[id]?.term ?? id).join(' / '), r.date]));
     const blob = new Blob(['﻿' + [head, ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `results-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(a.href);
   };
@@ -278,7 +284,7 @@ function Results({ rows, classOf }: { rows: ResultRow[]; classOf: (id: string) =
             {ROOMS.map((r) => <option key={r.id} value={r.order}>{r.floor} {r.name}</option>)}
           </select>
         </div>
-        <button className="btn small" onClick={exportCsv} disabled={!rows.length}>CSV 내보내기</button>
+        <button className="btn small" onClick={exportCsv} disabled={!filtered.length}>CSV 내보내기</button>
       </div>
       <div className="table-wrap">
         {view === 'board' ? (
@@ -287,7 +293,7 @@ function Results({ rows, classOf }: { rows: ResultRow[]; classOf: (id: string) =
             <tbody>
               {board.length === 0 && <tr><td colSpan={5} className="muted center">아직 결과가 없습니다. 학생이 탈출하면 여기에 바로 나타납니다.</td></tr>}
               {board.map((e, i) => (
-                <tr key={e.name + e.cls} className={i === 0 ? 'top' : ''}><td>{i + 1}</td><td><b>{e.name}</b></td><td className="small">{e.cls}</td><td>{e.rooms}</td><td className="mono">{e.total}</td></tr>
+                <tr key={e.id} className={i === 0 ? 'top' : ''}><td>{i + 1}</td><td><b>{e.name}</b></td><td className="small">{e.cls}</td><td>{e.rooms}</td><td className="mono">{e.total}</td></tr>
               ))}
             </tbody>
           </table>
