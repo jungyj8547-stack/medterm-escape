@@ -6,11 +6,14 @@ import { teamStandings, type LessonScore, type TeamPlan } from '../engine/classr
 import { friendlyError } from '../firebase/app';
 import TeamCard from './TeamCard';
 import Certificate from './Certificate';
-import { ensureStudentClass } from '../firebase/student';
+import { ensureStudentClass, studentMemberId } from '../firebase/student';
+import { askConfirm } from './ConfirmDialog';
 
 export default function ClassroomStudent() {
   const student = useGame(s => s.student);
   const startLesson = useGame(s => s.startLesson);
+  const session = useGame(s => s.session);
+  const goto = useGame(s => s.goto);
   const [plan, setPlan] = useState<TeamPlan | null>(null);
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [score, setScore] = useState<Score | null>(null);
@@ -41,12 +44,13 @@ export default function ClassroomStudent() {
     return () => { a(); b(); };
   }, [student?.uid, lesson?.id]);
   if (!student) return null;
-  const teamId = plan?.assignments[student.uid]?.teamId;
+  const memberId = studentMemberId(student);
+  const teamId = plan?.assignments[memberId]?.teamId;
   const card = plan?.cards.find(c => c.id === teamId);
-  const enrolled = !!lesson?.members[student.uid];
+  const enrolled = !!lesson?.members[memberId];
   const board = lesson ? lesson.status === 'closed' ? lesson.board : teamStandings(lesson.teams, points) : [];
   const standing = board.find(t => t.teamId === teamId);
-  const finalRank = lesson?.individualRanks.find(r => r.uid === student.uid)?.rank;
+  const finalRank = lesson?.individualRanks.find(r => r.uid === memberId)?.rank;
   const liveRank = score?.escaped ? 1 + points.filter(p => p.escaped && (p.score > score.score || (p.score === score.score && p.timeUsedSec < score.timeUsedSec))).length : null;
   const rank = lesson?.status === 'closed' ? finalRank : liveRank;
   const teamIndex = board.findIndex(t => t.teamId === teamId);
@@ -69,7 +73,11 @@ export default function ClassroomStudent() {
     {lesson && <>
       <b>{room?.floor} {room?.name} · {lesson.status === 'closed' ? '수업 마감' : '수업 진행 중'}</b>
       <p className="small muted">이번 수업은 이 병동 하나를 탈출하면 끝납니다. 개인 복습 기록과 수업 점수는 별도로 관리됩니다.</p>
-      {enrolled && !score && lesson.status === 'active' && <button className="btn ok" disabled={!scoreLoaded} onClick={() => startLesson(lesson.roomId, { id: lesson.id, classId: student.classId, teamId: lesson.members[student.uid], teamName: card?.name ?? '우리 팀' })}>{scoreLoaded ? '지정 병동 수업 참여' : '이번 수업 참여 기록 확인 중…'}</button>}
+      {enrolled && !score && lesson.status === 'active' && <button className="btn ok" disabled={!scoreLoaded} onClick={async () => {
+        if (session?.lesson?.id === lesson.id) { goto(session.phase === 'escape' ? 'room' : session.phase === 'learn' ? 'learn' : session.phase === 'debrief' ? 'debrief' : 'briefing'); return; }
+        if (session && session.phase !== 'debrief' && !await askConfirm('진행 중인 다른 병동을 종료하고 이번 수업에 참여할까요?', { okLabel: '수업 참여' })) return;
+        startLesson(lesson.roomId, { id: lesson.id, classId: student.classId, teamId: lesson.members[memberId], teamName: card?.name ?? '우리 팀' });
+      }}>{!scoreLoaded ? '이번 수업 참여 기록 확인 중…' : session?.lesson?.id === lesson.id ? '지정 병동 이어하기' : '지정 병동 수업 참여'}</button>}
       {!enrolled && <p className="muted">이번 수업 시작 전에 팀 배정을 받지 않아 참여 명단에 없습니다. 교수자에게 문의하세요.</p>}
       {(score || (enrolled && lesson.status === 'closed')) && <div className="row" style={{ flexWrap: 'wrap' }}><span className="tag">내 점수 {score?.score ?? 0}점</span><span className="tag">개인 {rank ? `${rank}위` : score ? '미탈출' : '미완료'}</span><span className="tag">우리 팀 {teamIndex >= 0 ? `${teamIndex + 1}위` : '집계 중'}</span></div>}
       {standing && <p>팀 평균 <b>{standing.average.toFixed(1)}점</b> · 총점 {standing.total}점 · {standing.completed}/{standing.members}명 완료</p>}
