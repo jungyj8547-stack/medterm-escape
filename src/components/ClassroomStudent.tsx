@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { ROOM_BY_ID } from '../data/loadData';
 import { watchLesson, watchPlan, watchMyLessonScore, watchLessonPoints, drawTeam, type Lesson, type Score } from '../firebase/classroom';
@@ -71,10 +71,12 @@ export default function ClassroomStudent() {
       <p className="small muted">이번 수업은 이 병동 하나를 탈출하면 끝납니다. 개인 복습 기록과 수업 점수는 별도로 관리됩니다.</p>
       {enrolled && !score && lesson.status === 'active' && <button className="btn ok" disabled={!scoreLoaded} onClick={() => startLesson(lesson.roomId, { id: lesson.id, classId: student.classId, teamId: lesson.members[student.uid], teamName: card?.name ?? '우리 팀' })}>{scoreLoaded ? '지정 병동 수업 참여' : '이번 수업 참여 기록 확인 중…'}</button>}
       {!enrolled && <p className="muted">이번 수업 시작 전에 팀 배정을 받지 않아 참여 명단에 없습니다. 교수자에게 문의하세요.</p>}
-      {score && <div className="row" style={{ flexWrap: 'wrap' }}><span className="tag">내 점수 {score.score}점</span><span className="tag">개인 {rank ? `${rank}위` : '미탈출'}</span><span className="tag">우리 팀 {teamIndex >= 0 ? `${teamIndex + 1}위` : '집계 중'}</span></div>}
+      {(score || (enrolled && lesson.status === 'closed')) && <div className="row" style={{ flexWrap: 'wrap' }}><span className="tag">내 점수 {score?.score ?? 0}점</span><span className="tag">개인 {rank ? `${rank}위` : score ? '미탈출' : '미완료'}</span><span className="tag">우리 팀 {teamIndex >= 0 ? `${teamIndex + 1}위` : '집계 중'}</span></div>}
       {standing && <p>팀 평균 <b>{standing.average.toFixed(1)}점</b> · 총점 {standing.total}점 · {standing.completed}/{standing.members}명 완료</p>}
       {lesson.status === 'active' && <p className="small muted">진행 중 순위는 바뀔 수 있습니다. 교수자가 수업을 마감하면 최종 순위와 인증서가 확정됩니다.</p>}
       {lesson.status === 'closed' && score?.escaped && <Certificate student={student} lesson={lesson} score={score} />}
     </>}
   </div>;
 }
+
+
