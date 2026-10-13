@@ -77,7 +77,7 @@ function Board() {
       toast('팀 이름을 입력하세요');
       return;
     }
-    const e: Entry = { id: `${Date.now()}`, team: team.trim(), code: code.trim().toUpperCase(), at: new Date().toISOString(), ...d };
+    const e: Entry = { id: crypto.randomUUID(), team: team.trim(), code: code.trim().toUpperCase(), at: new Date().toISOString(), ...d };
     setEntries([...entries, e]);
     setCode('');
     toast(`${e.team} · ${e.score}점 등록`);
