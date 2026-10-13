@@ -30,12 +30,16 @@ import type { RoomResult } from '../types';
 
 export interface StudentProfile {
   uid: string;
+  memberId?: string;
   studentId: string;
   nickname: string;
   classId: string;
   className: string;
   teacherUid: string;
 }
+
+/** Stable classroom identity survives PIN reset and the new authentication UID. */
+export const studentMemberId = (student: { uid: string; memberId?: string }) => student.memberId ?? student.uid;
 
 export interface CloudProgress {
   unlocked: string[];
@@ -94,21 +98,23 @@ export async function registerStudent(input: { studentId: string; nickname: stri
     throw new Error('반 코드를 찾을 수 없습니다. 교수자에게 확인하세요.');
   }
 
+  const userRef = doc(db, 'users', studentId);
+  const existing = resetPending ? await getDoc(userRef).catch(() => null) : null;
   const profile: StudentProfile = {
     uid,
+    memberId: existing?.exists() ? existing.data().memberId ?? existing.data().uid : uid,
     studentId,
     nickname: input.nickname.trim() || studentId,
     classId: cls.id,
     className: cls.name,
     teacherUid: cls.teacherUid,
   };
-  const userRef = doc(db, 'users', studentId);
-  const existing = resetPending ? await getDoc(userRef).catch(() => null) : null;
   const prevProgress = existing?.exists() ? existing.data().progress : undefined;
   await setDoc(
     userRef,
     {
       uid,
+      memberId: profile.memberId,
       studentId,
       nickname: profile.nickname,
       classId: cls.id,
@@ -144,7 +150,7 @@ export async function loadProfile(studentId: string): Promise<StudentProfile | n
   const snap = await getDoc(doc(db, 'users', normalizeId(studentId)));
   if (!snap.exists()) return null;
   const d = snap.data();
-  return { uid: d.uid, studentId: d.studentId, nickname: d.nickname, classId: d.classId, className: d.className, teacherUid: d.teacherUid };
+  return { uid: d.uid, memberId: d.memberId ?? d.uid, studentId: d.studentId, nickname: d.nickname, classId: d.classId, className: d.className, teacherUid: d.teacherUid };
 }
 
 export async function loadProgress(studentId: string): Promise<CloudProgress | null> {
