@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { ROOM_BY_ID } from '../data/loadData';
-import { watchLesson, watchPlan, watchMyLessonScore, watchLessonPoints, drawTeam, type Lesson, type Score } from '../firebase/classroom';
+import { watchLesson, watchPlan, watchSavedRoom, watchMyLessonScore, watchLessonPoints, drawTeam, participationTeams, type Lesson, type Score } from '../firebase/classroom';
 import { teamStandings, type LessonScore, type TeamPlan } from '../engine/classroom';
 import { friendlyError } from '../firebase/app';
 import TeamCard from './TeamCard';
@@ -21,17 +21,19 @@ export default function ClassroomStudent() {
   const [points, setPoints] = useState<LessonScore[]>([]);
   const [error, setError] = useState('');
   const [drawing, setDrawing] = useState(false);
+  const [savedRoomId, setSavedRoomId] = useState('');
   useEffect(() => {
     if (!student) return;
     setPlan(null); setLesson(null); setError('');
     const fail = (e: Error) => setError(friendlyError(e));
     let cancelled = false;
-    let a: (() => void) | undefined, b: (() => void) | undefined;
+    let a: (() => void) | undefined, b: (() => void) | undefined, c: (() => void) | undefined;
     void ensureStudentClass(student).then(() => {
       if (cancelled) return;
       a = watchPlan(student.classId, setPlan, fail); b = watchLesson(student.classId, setLesson, fail);
+      c = watchSavedRoom(student.classId, setSavedRoomId, fail);
     }).catch(fail);
-    return () => { cancelled = true; a?.(); b?.(); };
+    return () => { cancelled = true; a?.(); b?.(); c?.(); };
   }, [student?.classId, student?.uid]);
   useEffect(() => {
     setScore(null);
@@ -48,7 +50,7 @@ export default function ClassroomStudent() {
   const teamId = plan?.assignments[memberId]?.teamId;
   const card = plan?.cards.find(c => c.id === teamId);
   const enrolled = !!lesson?.members[memberId];
-  const board = lesson ? lesson.status === 'closed' ? lesson.board : teamStandings(lesson.teams, points) : [];
+  const board = lesson ? lesson.status === 'closed' ? lesson.board : teamStandings(participationTeams(lesson), points) : [];
   const standing = board.find(t => t.teamId === teamId);
   const finalRank = lesson?.individualRanks.find(r => r.uid === memberId)?.rank;
   const liveRank = score?.escaped ? 1 + points.filter(p => p.escaped && (p.score > score.score || (p.score === score.score && p.timeUsedSec < score.timeUsedSec))).length : null;
@@ -62,14 +64,15 @@ export default function ClassroomStudent() {
     {plan && !card && <>
       <p>카드 한 장을 뽑아 우리 반의 팀을 정해보세요. 한 번 배정된 팀은 다시 로그인해도 유지됩니다.</p>
       <TeamCard hidden />
-      <button className="btn primary" disabled={drawing || lesson?.status === 'active'} onClick={async () => {
+      <button className="btn primary" disabled={drawing} onClick={async () => {
         setDrawing(true); setError('');
         try { await drawTeam(student); } catch (e) { setError(friendlyError(e)); } finally { setDrawing(false); }
       }}>{drawing ? '카드를 뽑고 있어요…' : '나의 팀 카드 뽑기'}</button>
-      {lesson?.status === 'active' && <p className="muted">수업이 시작되어 카드 뽑기가 마감되었습니다. 교수자에게 알려주세요.</p>}
+      {lesson?.status === 'active' && <p className="muted">지금 카드를 뽑으면 진행 중인 우리 반 수업에 합류할 수 있습니다.</p>}
     </>}
     {card && <><TeamCard card={card} /><p className="center">친구들과 <strong>{card.name}</strong>으로 활동합니다.</p></>}
     {card && !lesson && <p className="muted">팀 배정 완료! 교수자가 수업 병동을 지정할 때까지 기다려주세요.</p>}
+    {savedRoomId && (!lesson || lesson.status === 'closed') && <p className="small muted">저장된 다음 수업 병동: {ROOM_BY_ID[savedRoomId]?.name} · 교수자가 새 수업을 시작하면 참여할 수 있습니다.</p>}
     {lesson && <>
       <b>{room?.floor} {room?.name} · {lesson.status === 'closed' ? '수업 마감' : '수업 진행 중'}</b>
       <p className="small muted">이번 수업은 이 병동 하나를 탈출하면 끝납니다. 개인 복습 기록과 수업 점수는 별도로 관리됩니다.</p>
@@ -78,7 +81,8 @@ export default function ClassroomStudent() {
         if (session && session.phase !== 'debrief' && !await askConfirm('진행 중인 다른 병동을 종료하고 이번 수업에 참여할까요?', { okLabel: '수업 참여' })) return;
         startLesson(lesson.roomId, { id: lesson.id, classId: student.classId, teamId: lesson.members[memberId], teamName: card?.name ?? '우리 팀' });
       }}>{!scoreLoaded ? '이번 수업 참여 기록 확인 중…' : session?.lesson?.id === lesson.id ? '지정 병동 이어하기' : '지정 병동 수업 참여'}</button>}
-      {!enrolled && <p className="muted">이번 수업 시작 전에 팀 배정을 받지 않아 참여 명단에 없습니다. 교수자에게 문의하세요.</p>}
+      {!enrolled && card && lesson.status === 'active' && <button className="btn" onClick={async () => { try { await drawTeam(student); } catch(e) { setError(friendlyError(e)); } }}>현재 수업에 합류하기</button>}
+      {!enrolled && lesson.status === 'closed' && <p className="muted">이 수업은 마감되었습니다. 다음 수업에서는 배정된 팀으로 참여할 수 있습니다.</p>}
       {(score || (enrolled && lesson.status === 'closed')) && <div className="row" style={{ flexWrap: 'wrap' }}><span className="tag">내 점수 {score?.score ?? 0}점</span><span className="tag">개인 {rank ? `${rank}위` : score ? '미탈출' : '미완료'}</span><span className="tag">우리 팀 {teamIndex >= 0 ? `${teamIndex + 1}위` : '집계 중'}</span></div>}
       {standing && <p>팀 평균 <b>{standing.average.toFixed(1)}점</b> · 총점 {standing.total}점 · {standing.completed}/{standing.members}명 완료</p>}
       {lesson.status === 'active' && <p className="small muted">진행 중 순위는 바뀔 수 있습니다. 교수자가 수업을 마감하면 최종 순위와 인증서가 확정됩니다.</p>}
