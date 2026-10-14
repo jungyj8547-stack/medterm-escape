@@ -37,7 +37,14 @@ export default function ClassroomTeacher({ classes, students }: { classes: Class
   const scoreKey = JSON.stringify(scores);
   useEffect(() => {
     if (!lesson || lesson.status !== 'active') return;
-    void publishLessonBoard(classId, lesson, scores).catch(e => setError(friendlyError(e)));
+    // 학생 합류·점수마다 반 문서를 바로 쓰면 학생 카드 뽑기와 충돌하므로 1.5초 모아서 한 번만 갱신한다 (2026-10-14 부하 점검)
+    const timer = window.setTimeout(() => {
+      void publishLessonBoard(classId, lesson, scores).catch(e => {
+        if ((e as { code?: string })?.code === 'aborted') return; // 다음 변경 때 다시 갱신되므로 조용히 넘긴다
+        setError(friendlyError(e));
+      });
+    }, 1500);
+    return () => window.clearTimeout(timer);
   }, [classId, lesson?.id, lesson?.status, scoreKey, JSON.stringify(lesson?.members)]);
   const standings = useMemo(() => lesson ? teamStandings(participationTeams(lesson), scores) : [], [lesson, scores]);
   const sortedScores = [...scores].sort((a, b) => b.score - a.score || a.timeUsedSec - b.timeUsedSec);
