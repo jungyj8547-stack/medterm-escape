@@ -5,10 +5,9 @@ import { SCORE } from '../engine/scoring';
 
 interface Props {
   code: string;
-  onEscaped: () => void;
 }
 
-export default function Keypad({ code, onEscaped }: Props) {
+export default function Keypad({ code }: Props) {
   const keypadAttempt = useGame((s) => s.keypadAttempt);
   const fails = useGame((s) => s.session?.keypadFails ?? 0);
   const [input, setInput] = useState('');
@@ -30,7 +29,6 @@ export default function Keypad({ code, onEscaped }: Props) {
     if (keypadAttempt(input, code)) {
       setState('ok');
       sfx.unlock();
-      window.setTimeout(onEscaped, 900);
     } else {
       sfx.wrong();
       setState('err');

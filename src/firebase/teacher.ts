@@ -33,6 +33,7 @@ export interface ClassInfo {
   createdAt?: unknown;
 }
 export interface StudentRow {
+  memberId?: string;
   studentId: string;
   nickname: string;
   classId: string;

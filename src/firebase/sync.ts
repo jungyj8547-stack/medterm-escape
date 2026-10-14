@@ -9,6 +9,7 @@ import { ROOMS } from '../data/loadData';
 import { isFirebaseConfigured } from './config';
 import { loadProgress, saveProgress, pushResult, watchAuth, logoutStudent, type CloudProgress } from './student';
 import type { RoomResult } from '../types';
+import { fb } from './app';
 
 let unsubStore: (() => void) | null = null;
 let unsubAuth: (() => void) | null = null;
@@ -35,14 +36,22 @@ export function applyProgress(cloud: CloudProgress) {
 }
 
 /** 로그인 직후 호출 */
-export async function startSync() {
+export async function startSync({ preserveSession = false }: { preserveSession?: boolean } = {}) {
   if (!isFirebaseConfigured) return;
   const student = useGame.getState().student;
   if (!student) return;
   stopSync();
+  const savedSession = preserveSession ? useGame.getState().session : null;
+  await fb().auth.authStateReady();
+  if (fb().auth.currentUser?.uid !== student.uid) {
+    useGame.getState().setStudent(null);
+    applyProgress(EMPTY);
+    return;
+  }
 
   const cloud = await loadProgress(student.studentId).catch(() => null);
   applyProgress(cloud ?? EMPTY);
+  if (savedSession && cloud) useGame.setState({ session: savedSession });
   lastResultDate = useGame.getState().session?.result?.date ?? null;
 
   unsubStore = useGame.subscribe((state, prev) => {

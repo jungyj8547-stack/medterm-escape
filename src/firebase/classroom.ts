@@ -1,6 +1,6 @@
 import { collection, doc, onSnapshot, runTransaction } from 'firebase/firestore';
 import { fb } from './app';
-import type { StudentProfile } from './student';
+import { studentMemberId, type StudentProfile } from './student';
 import type { RoomResult } from '../types';
 import { lessonTeams, makeTeamPlan, teamStandings, type ClassLesson, type LessonScore, type TeamPlan } from '../engine/classroom';
 
@@ -28,21 +28,22 @@ export async function configureTeams(classId: string, total: number, count: numb
   });
 }
 export async function drawTeam(student: StudentProfile) {
+  const memberId = studentMemberId(student);
   return runTransaction(fb().db, async tx => {
     const [ps, cs, us] = await Promise.all([
       tx.get(planRef(student.classId)), tx.get(classRef(student.classId)), tx.get(doc(fb().db, 'users', student.studentId)),
     ]);
-    if (!us.exists() || us.data().uid !== student.uid || us.data().classId !== student.classId)
+    if (!us.exists() || us.data().uid !== student.uid || us.data().classId !== student.classId || (us.data().memberId ?? us.data().uid) !== memberId)
       throw new Error('학생 계정의 반 정보를 확인해주세요.');
     if (!ps.exists()) throw new Error('교수자가 아직 카드 뽑기를 준비하지 않았습니다.');
     const plan = ps.data() as TeamPlan;
-    if (plan.assignments[student.uid]) return plan.assignments[student.uid].teamId;
+    if (plan.assignments[memberId]) return plan.assignments[memberId].teamId;
     if (cs.data()?.lesson?.status === 'active') throw new Error('수업이 시작되어 팀 배정이 마감되었습니다. 교수자에게 문의하세요.');
     if (plan.nextIndex >= plan.slots.length) throw new Error('설정된 총인원이 모두 배정되었습니다. 교수자에게 문의하세요.');
     const teamId = plan.slots[plan.nextIndex];
     tx.update(planRef(student.classId), {
       nextIndex: plan.nextIndex + 1,
-      assignments: { ...plan.assignments, [student.uid]: { teamId } },
+      assignments: { ...plan.assignments, [memberId]: { teamId } },
     });
     return teamId;
   });
@@ -69,22 +70,23 @@ export function watchLessonPoints(classId: string, lessonId: string, cb: (scores
     s => cb(s.docs.map(d => d.data() as LessonScore)), error);
 }
 export function watchMyLessonScore(student: StudentProfile, lessonId: string, cb: (score: Score | null) => void, error: (e: Error) => void) {
-  return onSnapshot(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', student.uid),
+  return onSnapshot(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', studentMemberId(student)),
     s => cb(s.exists() ? s.data() as Score : null), error);
 }
 export async function saveLessonScore(student: StudentProfile, lessonId: string, teamId: string, result: RoomResult) {
-  const ref = doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', student.uid);
+  const memberId = studentMemberId(student);
+  const ref = doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', memberId);
   return runTransaction(fb().db, async tx => {
     const [cs, old] = await Promise.all([tx.get(classRef(student.classId)), tx.get(ref)]);
     if (old.exists()) return;
     const lesson = cs.data()?.lesson as Lesson | undefined;
     if (!lesson || lesson.id !== lessonId || lesson.status !== 'active') throw new Error('수업이 마감되어 결과를 제출할 수 없습니다.');
-    if (lesson.roomId !== result.roomId || lesson.members[student.uid] !== teamId) throw new Error('수업 또는 팀 정보가 일치하지 않습니다.');
-    const score: Score = { uid: student.uid, nickname: student.nickname, lessonId, teamId,
+    if (lesson.roomId !== result.roomId || lesson.members[memberId] !== teamId) throw new Error('수업 또는 팀 정보가 일치하지 않습니다.');
+    const score: Score = { uid: memberId, nickname: student.nickname, lessonId, teamId,
       roomId: result.roomId, score: result.escaped ? result.score : 0, timeUsedSec: result.timeUsedSec,
       escaped: result.escaped, date: result.date };
     tx.set(ref, score);
-    tx.set(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'points', student.uid), {
+    tx.set(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'points', memberId), {
       uid: score.uid, teamId: score.teamId, score: score.score, timeUsedSec: score.timeUsedSec, escaped: score.escaped,
     });
   });

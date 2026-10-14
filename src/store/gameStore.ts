@@ -321,6 +321,7 @@ export const useGame = create<GameState>()(
       abandonRoom: () => set({ session: null, screen: 'lobby' }),
       clearWeak: (termId) =>
         set((s) => {
+            if (s.session?.lesson) return { session: { ...s.session, classWeak: (s.session.classWeak ?? []).filter(id => id !== termId) } };
           const weak = { ...s.weak };
           delete weak[termId];
           return { weak };
@@ -345,14 +346,27 @@ export const useGame = create<GameState>()(
         try {
           const d = JSON.parse(json);
           if (!d || d.v !== 1 || !Array.isArray(d.unlocked)) return false;
+          const roomIds = new Set(ROOMS.map(r => r.id));
+          const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
+          const flags = (value: unknown) => record(value) && Object.values(value).every(flag => flag === true);
+          if (!d.unlocked.every((id: unknown) => typeof id === 'string' && roomIds.has(id))) return false;
+          if (d.allUnlocked !== undefined && typeof d.allUnlocked !== 'boolean') return false;
+          if (!flags(d.weak ?? {}) || !flags(d.learnedRooms ?? {}) || !record(d.bestResults ?? {})) return false;
+          for (const [id, result] of Object.entries(d.bestResults ?? {})) {
+            if (!roomIds.has(id) || !record(result) || result.roomId !== id || typeof result.escaped !== 'boolean') return false;
+            if (!Number.isInteger(result.score) || (result.score as number) < 0 || (result.score as number) > 2400) return false;
+            if (!Number.isInteger(result.stars) || (result.stars as number) < 1 || (result.stars as number) > 3) return false;
+            if (typeof result.timeUsedSec !== 'number' || !Number.isFinite(result.timeUsedSec) || result.timeUsedSec < 0 || result.timeUsedSec > ESCAPE_SECONDS) return false;
+          }
+          if (d.mode === 'team' && (!record(d.team) || typeof d.team.name !== 'string' || !d.team.name.trim() || !Number.isInteger(d.team.members) || (d.team.members as number) < 1 || (d.team.members as number) > 10)) return false;
           set({
-            unlocked: d.unlocked,
+            unlocked: uniq([ROOMS[0]?.id ?? 'r1', ...d.unlocked]),
             allUnlocked: !!d.allUnlocked,
             bestResults: d.bestResults ?? {},
             weak: d.weak ?? {},
             learnedRooms: d.learnedRooms ?? {},
             mode: d.mode === 'team' ? 'team' : 'solo',
-            team: d.team ?? null,
+            team: d.mode === 'team' ? d.team : null,
             session: null,
             screen: 'lobby',
           });

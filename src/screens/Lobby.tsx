@@ -64,7 +64,7 @@ export default function Lobby() {
           </div>
 
           {floorsDesc.map((room) => {
-            const unlocked = s.allUnlocked || s.unlocked.includes(room.id);
+            const unlocked = s.allUnlocked || s.unlocked.includes(room.id) || (s.session?.roomId === room.id && !!s.session.lesson && s.session.phase !== 'debrief');
             const best = s.bestResults[room.id];
             const inProgress = s.session?.roomId === room.id && s.session.phase !== 'debrief';
             return (

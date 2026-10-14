@@ -8,6 +8,7 @@ import { sfx } from '../audio/sfx';
 import { askConfirm } from '../components/ConfirmDialog';
 import ConfirmHost from '../components/ConfirmDialog';
 import TeacherPanel from './TeacherPanel';
+import { csvRow } from '../engine/csv';
 
 interface Entry {
   id: string;
@@ -76,7 +77,7 @@ function Board() {
       toast('팀 이름을 입력하세요');
       return;
     }
-    const e: Entry = { id: `${Date.now()}`, team: team.trim(), code: code.trim().toUpperCase(), at: new Date().toISOString(), ...d };
+    const e: Entry = { id: crypto.randomUUID(), team: team.trim(), code: code.trim().toUpperCase(), at: new Date().toISOString(), ...d };
     setEntries([...entries, e]);
     setCode('');
     toast(`${e.team} · ${e.score}점 등록`);
@@ -88,7 +89,7 @@ function Board() {
 
   const exportCsv = () => {
     const head = '팀,병동,점수,시간(초),별,코드,등록시각';
-    const lines = entries.map((e) => [e.team, ROOMS[e.roomOrder - 1]?.name ?? e.roomOrder, e.score, e.timeUsedSec, e.stars, e.code, e.at].join(','));
+    const lines = rows.map((e) => csvRow([e.team, ROOMS[e.roomOrder - 1]?.name ?? e.roomOrder, e.score, e.timeUsedSec, e.stars, e.code, e.at]));
     const blob = new Blob(['﻿' + [head, ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -263,7 +264,7 @@ function BigTimer() {
         <button className="btn small" onClick={() => reset(18 * 60)}>학습 18:00</button>
         <button className="btn small" onClick={() => reset(40 * 60)}>탈출 40:00</button>
         <span className="row small">
-          <input className="input" type="number" min={1} max={120} style={{ width: 80 }} value={custom} onChange={(e) => setCustom(Number(e.target.value) || 1)} />
+          <input className="input" type="number" min={1} max={120} style={{ width: 80 }} value={custom} onChange={(e) => setCustom(Math.min(120, Math.max(1, Math.round(Number(e.target.value)) || 1)))} />
           분
           <button className="btn small" onClick={() => reset(custom * 60)}>설정</button>
         </span>

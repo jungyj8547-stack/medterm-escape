@@ -10,6 +10,7 @@ import Avatar from '../components/Avatar';
 import Confetti from '../components/Confetti';
 import { saveLessonScore } from '../firebase/classroom';
 import { friendlyError } from '../firebase/app';
+import { askConfirm } from '../components/ConfirmDialog';
 
 export default function Debrief() {
   const session = useGame((s) => s.session)!;
@@ -21,6 +22,7 @@ export default function Debrief() {
   const abandonRoom = useGame((s) => s.abandonRoom);
   const room = ROOM_BY_ID[session.roomId];
   const student = useGame(s => s.student);
+  const weak = useGame(s => s.weak);
   const [submitted, setSubmitted] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [saving, setSaving] = useState(false);
@@ -36,7 +38,7 @@ export default function Debrief() {
   const idx = ROOMS.findIndex((x) => x.id === room.id);
   const nextRoom = ROOMS[idx + 1];
 
-  const reviewIds = Array.from(new Set([...session.wrongTerms, ...session.hintedTerms])).filter((id) => TERM_BY_ID[id]);
+  const reviewIds = Array.from(new Set([...session.wrongTerms, ...session.hintedTerms, ...room.terms.filter(t => session.lesson ? session.classWeak?.includes(t.id) : weak[t.id]).map(t => t.id)])).filter((id) => TERM_BY_ID[id]);
   useEffect(() => {
     if (escaped) {
       const t = window.setTimeout(() => music.fanfare(), 80);
@@ -107,7 +109,7 @@ export default function Debrief() {
 
           <div style={{ marginBottom: 18 }}>
             <b>복습이 필요한 단어 {reviewIds.length}개</b>
-            <div className="small muted" style={{ marginBottom: 8 }}>틀렸거나 힌트를 사용한 단어입니다.</div>
+            <div className="small muted" style={{ marginBottom: 8 }}>모르겠다고 표시했거나, 틀렸거나 힌트를 사용한 단어입니다.</div>
             {reviewIds.length === 0 ? (
               <div className="muted small">없음 — 완벽합니다! 🎉</div>
             ) : (
@@ -120,7 +122,10 @@ export default function Debrief() {
           </div>
 
           <div className="row" style={{ justifyContent: 'flex-end', gap: 10 }}>
-            <button className="btn ghost" disabled={!!session.lesson && !submitted} onClick={() => { abandonRoom(); if (session.lesson) goto('title'); }}>{session.lesson ? '내 수업 결과·순위 보기' : '안내도로'}</button>
+            <button className="btn ghost" disabled={!!session.lesson && saving} onClick={async () => {
+              if (session.lesson && !submitted && !await askConfirm('결과가 저장되지 않았습니다. 수업 화면으로 돌아갈까요?', { okLabel: '돌아가기' })) return;
+              abandonRoom(); if (session.lesson) goto('title');
+            }}>{session.lesson ? '내 수업 결과·순위 보기' : '안내도로'}</button>
             <button className="btn" onClick={() => goto('review')}>🃏 복습 카드</button>
             {!escaped && !session.lesson && (
               <button className="btn primary" onClick={() => { sfx.click(); retry(); }}>🔁 재도전 (타이머 리셋)</button>

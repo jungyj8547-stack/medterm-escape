@@ -57,7 +57,7 @@ function Screens() {
 
   // 로그인된 학생이면 클라우드 동기화 재개
   useEffect(() => {
-    if (useGame.getState().student) void startSync();
+    if (useGame.getState().student) void startSync({ preserveSession: true });
   }, []);
 
   // 브라우저 자동재생 정책: 첫 클릭/키 입력에서 오디오를 깨운다

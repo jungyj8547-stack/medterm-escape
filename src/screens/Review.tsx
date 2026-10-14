@@ -6,7 +6,8 @@ import { sfx } from '../audio/sfx';
 
 export default function Review() {
   const session = useGame((s) => s.session)!;
-  const weak = useGame((s) => s.weak);
+  const personalWeak = useGame((s) => s.weak);
+  const weak = session.lesson ? Object.fromEntries((session.classWeak ?? []).map(id => [id, true])) : personalWeak;
   const clearWeak = useGame((s) => s.clearWeak);
   const goto = useGame((s) => s.goto);
   const room = ROOM_BY_ID[session.roomId];

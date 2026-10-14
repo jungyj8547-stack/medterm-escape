@@ -7,6 +7,10 @@ service cloud.firestore {
     function inviteOk() {
       return request.resource.data.inviteCode == get(/databases/$(database)/documents/config/teacher).data.inviteCode;
     }
+    function stableMember(data) { return ('memberId' in data) ? data.memberId : data.uid; }
+    function classroomMember() {
+      return stableMember(get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data);
+    }
 
     function classTeacher(classId) {
       return isTeacher() && get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid;
@@ -48,14 +52,14 @@ service cloud.firestore {
         allow read: if stateId == 'state' && (classTeacher(classId) || classStudent(classId));
         allow create, update: if classTeacher(classId);
         allow update: if stateId == 'state' && classStudent(classId)
-          && !(request.auth.uid in resource.data.assignments)
+          && !(classroomMember() in resource.data.assignments)
           && resource.data.nextIndex < resource.data.slots.size()
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nextIndex', 'assignments'])
           && request.resource.data.nextIndex == resource.data.nextIndex + 1
           && request.resource.data.assignments.size() == resource.data.assignments.size() + 1
-          && request.resource.data.assignments.diff(resource.data.assignments).affectedKeys().hasOnly([request.auth.uid])
-          && request.resource.data.assignments[request.auth.uid].keys().hasOnly(['teamId'])
-          && request.resource.data.assignments[request.auth.uid].teamId == resource.data.slots[resource.data.nextIndex]
+          && request.resource.data.assignments.diff(resource.data.assignments).affectedKeys().hasOnly([classroomMember()])
+          && request.resource.data.assignments[classroomMember()].keys().hasOnly(['teamId'])
+          && request.resource.data.assignments[classroomMember()].teamId == resource.data.slots[resource.data.nextIndex]
           && (!('lesson' in get(/databases/$(database)/documents/classes/$(classId)).data)
             || get(/databases/$(database)/documents/classes/$(classId)).data.lesson.status != 'active');
       }
@@ -64,7 +68,7 @@ service cloud.firestore {
         allow create, update: if classTeacher(classId);
         match /points/{uid} {
           allow read: if classTeacher(classId) || classStudent(classId);
-          allow create: if classStudent(classId) && uid == request.auth.uid
+          allow create: if classStudent(classId) && uid == classroomMember()
             && request.resource.data.keys().hasOnly(['uid', 'teamId', 'score', 'timeUsedSec', 'escaped'])
             && request.resource.data.uid == uid
             && request.resource.data.teamId == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.teamId
@@ -73,8 +77,8 @@ service cloud.firestore {
             && request.resource.data.escaped == getAfter(/databases/$(database)/documents/classes/$(classId)/lessons/$(lessonId)/scores/$(uid)).data.escaped;
         }
         match /scores/{uid} {
-          allow read: if classTeacher(classId) || (classStudent(classId) && uid == request.auth.uid);
-          allow create: if classStudent(classId) && uid == request.auth.uid
+          allow read: if classTeacher(classId) || (classStudent(classId) && uid == classroomMember());
+          allow create: if classStudent(classId) && uid == classroomMember()
             && request.resource.data.keys().hasOnly(['uid', 'nickname', 'lessonId', 'teamId', 'roomId', 'score', 'timeUsedSec', 'escaped', 'date'])
             && request.resource.data.uid == uid
             && request.resource.data.lessonId == lessonId
@@ -104,8 +108,8 @@ service cloud.firestore {
         || resource.data.teacherUid == request.auth.uid
         || get(/databases/$(database)/documents/logins/$(studentId)).data.resetPending == true
       );
-      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
-      allow update: if signedIn() && (
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && stableMember(request.resource.data) == request.auth.uid;
+      allow update: if signedIn() && stableMember(request.resource.data) == stableMember(resource.data) && (
         resource.data.uid == request.auth.uid
         || (get(/databases/$(database)/documents/logins/$(studentId)).data.resetPending == true && request.resource.data.uid == request.auth.uid)
         || (isTeacher() && resource.data.teacherUid == request.auth.uid)

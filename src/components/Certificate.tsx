@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { StudentProfile } from '../firebase/student';
+import { studentMemberId, type StudentProfile } from '../firebase/student';
 import type { Lesson, Score } from '../firebase/classroom';
 import { ROOM_BY_ID } from '../data/loadData';
 import './Certificate.css';
 
 export default function Certificate({ student, lesson, score }: { student: StudentProfile; lesson: Lesson; score: Score }) {
   const [kind, setKind] = useState<'personal' | 'team' | null>(null);
-  const me = lesson.individualRanks.find(r => r.uid === student.uid);
+  const me = lesson.individualRanks.find(r => r.uid === studentMemberId(student));
   const teamIndex = lesson.board.findIndex(t => t.teamId === score.teamId);
   const team = lesson.board[teamIndex];
   const rank = kind === 'team' ? teamIndex + 1 : me?.rank;
