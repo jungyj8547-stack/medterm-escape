@@ -58,6 +58,12 @@ const ANIMALS = [
   ['펭귄', 'penguin', '#a9d7f0'], ['곰', 'bear', '#dabaa3'],
   ['여우', 'fox', '#f8b17f'], ['판다', 'panda', '#c9d5d8'],
   ['강아지', 'dog', '#e8c48e'], ['병아리', 'chick', '#f7dc75'],
+  ['코알라', 'koala', '#b9c7dd'], ['호랑이', 'tiger', '#f8bc77'],
+  ['사자', 'lion', '#edc374'], ['젖소', 'cow', '#c5d9d0'],
+  ['돼지', 'pig', '#f5b6c4'], ['개구리', 'frog', '#b3da99'],
+  ['부엉이', 'owl', '#d1b898'], ['고슴도치', 'hedgehog', '#d1b7a7'],
+  ['다람쥐', 'squirrel', '#e2bd96'], ['수달', 'otter', '#cda88e'],
+  ['돌고래', 'dolphin', '#9ed9e8'], ['거북이', 'turtle', '#b1d5b6'],
 ] as const;
 
 /** One balanced deck per class. Draws consume one slot atomically in Firestore. */
