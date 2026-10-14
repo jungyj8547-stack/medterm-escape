@@ -7,6 +7,7 @@ import SoundControl from '../components/SoundControl';
 import { askConfirm } from '../components/ConfirmDialog';
 import StudentLogin from '../components/StudentLogin';
 import ClassroomStudent from '../components/ClassroomStudent';
+import SoloAchievements from '../components/SoloAchievements';
 import { isFirebaseConfigured } from '../firebase/config';
 
 export default function Title() {
@@ -49,6 +50,7 @@ export default function Title() {
 
         {(student || !skipLogin) && <StudentLogin onDone={() => undefined} />}
         {student && <ClassroomStudent />}
+        <SoloAchievements />
         {isFirebaseConfigured && !student && !skipLogin && (
           <div className="center" style={{ marginBottom: 16 }}>
             <button className="btn small ghost" onClick={() => setSkipLogin(true)}>로그인 없이 해보기 (기록은 이 브라우저에만 저장)</button>
@@ -78,18 +80,18 @@ export default function Title() {
           </div>
         )}
 
-        {!teamForm ? (
-          <div className="mode-grid">
+        {!teamForm || !!student ? (
+          <div className="mode-grid" style={student ? { gridTemplateColumns: '1fr' } : undefined}>
             <button className="mode-card" onClick={startSolo}>
               <div className="emoji">🧑‍⚕️</div>
               <h3>개인 플레이</h3>
               <p className="muted small">{student ? '혼자 학습하고 탈출합니다. 진행은 내 계정에 저장됩니다.' : '혼자 학습하고 탈출합니다. 진행 상황은 이 브라우저에 저장됩니다.'}</p>
             </button>
-            <button className="mode-card team" onClick={() => setTeamForm(true)}>
+            {!student && <button className="mode-card team" onClick={() => setTeamForm(true)}>
               <div className="emoji">👥</div>
               <h3>함께 플레이 · 한 기기</h3>
               <p className="muted small">한 기기로 팀이 함께 풉니다. 탈출 후 결과 코드를 진행자에게 제출합니다.</p>
-            </button>
+            </button>}
           </div>
         ) : (
           <div className="panel stack">
