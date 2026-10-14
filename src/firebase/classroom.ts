@@ -38,7 +38,22 @@ export async function configureTeams(classId: string, total: number, count: numb
     tx.set(planRef(classId), plan);
   });
 }
-export async function drawTeam(student: StudentProfile) {
+/** 반 전체가 같은 문서를 동시에 고치므로 충돌하면 무작위 대기 후 자동 재시도한다 (2026-10-14 부하 점검). */
+const DRAW_RETRYABLE = new Set(['aborted', 'unavailable', 'deadline-exceeded', 'failed-precondition', 'permission-denied']);
+const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+export async function drawTeam(student: StudentProfile, attempts = 12): Promise<string> {
+  for (let i = 0; ; i++) {
+    try {
+      return await drawTeamOnce(student);
+    } catch (e) {
+      const code = (e as { code?: string })?.code ?? '';
+      if (!DRAW_RETRYABLE.has(code)) throw e;
+      if (i >= attempts - 1) throw new Error('지금 카드를 뽑는 학생이 많아 배정이 밀리고 있어요. 잠시 후 다시 눌러주세요.');
+      await sleep(250 + Math.random() * 750 * Math.min(i + 1, 6));
+    }
+  }
+}
+async function drawTeamOnce(student: StudentProfile) {
   const memberId = studentMemberId(student);
   return runTransaction(fb().db, async tx => {
     const [ps, cs, us] = await Promise.all([
