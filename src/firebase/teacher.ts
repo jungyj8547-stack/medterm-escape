@@ -20,6 +20,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { fb } from './app';
+import type { RoomResult } from '../types';
 
 export interface TeacherProfile {
   uid: string;
@@ -39,7 +40,7 @@ export interface StudentRow {
   classId: string;
   className: string;
   uid: string;
-  progress: { unlocked: string[]; bestResults: Record<string, { score: number; stars: number; timeUsedSec: number; escaped: boolean }>; weak: Record<string, true> };
+  progress: { unlocked: string[]; bestResults: Record<string, RoomResult>; weak: Record<string, true> };
   updatedAt?: { toDate?: () => Date };
 }
 export interface ResultRow {
