@@ -20,7 +20,7 @@ export function watchLesson(classId: string, cb: (l: Lesson | null) => void, err
   return onSnapshot(classRef(classId), s => cb(s.exists() ? (s.data().lesson ?? null) : null), error);
 }
 export function watchSavedRoom(classId: string, cb: (roomId: string) => void, error: (e: Error) => void) {
-  return onSnapshot(classRef(classId), s => cb(s.data()?.scheduledRoomId ?? s.data()?.lesson?.roomId ?? ''), error);
+  return onSnapshot(classRef(classId), s => cb(s.data()?.scheduledRoomId ?? ''), error);
 }
 export async function saveClassRoom(classId: string, roomId: string) {
   if (!/^r[1-8]$/.test(roomId)) throw new Error('병동을 확인해주세요.');
@@ -61,10 +61,12 @@ export async function drawTeam(student: StudentProfile) {
   });
 }
 export async function startClassLesson(classId: string, roomId: string) {
+  if (!/^r[1-8]$/.test(roomId)) throw new Error('병동을 확인해주세요.');
   await runTransaction(fb().db, async tx => {
     const [ps, cs] = await Promise.all([tx.get(planRef(classId)), tx.get(classRef(classId))]);
     if (!ps.exists()) throw new Error('먼저 조 편성을 설정해주세요.');
     if (cs.data()?.lesson?.status === 'active') throw new Error('진행 중인 수업을 먼저 마감해주세요.');
+    if (cs.data()?.scheduledRoomId !== roomId) throw new Error('병동을 먼저 저장해주세요. 다른 화면에서 병동이 바뀌었다면 다시 확인하세요.');
     const plan = ps.data() as TeamPlan;
     const lesson: Lesson = { id: crypto.randomUUID(), roomId, status: 'active', planId: plan.id,
       createdAt: new Date().toISOString(), teams: lessonTeams(plan), board: [],
