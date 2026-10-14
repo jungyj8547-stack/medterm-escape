@@ -15,6 +15,7 @@ let unsubStore: (() => void) | null = null;
 let unsubAuth: (() => void) | null = null;
 let saveTimer = 0;
 let lastResultDate: string | null = null;
+let completionDirty = false;
 
 function snapshot(): CloudProgress {
   const s = useGame.getState();
@@ -63,9 +64,11 @@ export async function startSync({ preserveSession = false }: { preserveSession?:
       state.weak !== prev.weak ||
       state.learnedRooms !== prev.learnedRooms;
     if (changed) {
+      completionDirty ||= state.bestResults !== prev.bestResults;
       window.clearTimeout(saveTimer);
       saveTimer = window.setTimeout(() => {
-        saveProgress(st.studentId, snapshot()).catch(() => undefined);
+        const publish = completionDirty; completionDirty = false;
+        saveProgress(st.studentId, snapshot(), publish).catch(() => undefined);
       }, 1500);
     }
     // 새 탈출 결과 → results 에 기록
@@ -98,6 +101,7 @@ export function stopSync() {
   unsubAuth?.();
   unsubAuth = null;
   window.clearTimeout(saveTimer);
+  completionDirty = false;
 }
 
 /** 내 클라우드 기록을 완전히 지우고 처음부터 (학생 본인이 요청할 때) */

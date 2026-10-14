@@ -21,6 +21,24 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data.uid == request.auth.uid
         && get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data.classId == classId;
     }
+    function completedRoom(r) {
+      return r.escaped == true && r.score is int && r.score >= 0 && r.score <= 2400
+        && r.timeUsedSec is int && r.timeUsedSec >= 0 && r.timeUsedSec <= 2400
+        && r.stars is int && r.stars >= 1 && r.stars <= 3;
+    }
+    function completionValid(data) {
+      let user = get(/databases/$(database)/documents/users/$(get(/databases/$(database)/documents/studentClasses/$(request.auth.uid)).data.studentId)).data;
+      let b = user.progress.bestResults;
+      return data.keys().hasOnly(['memberId', 'nickname', 'totalScore', 'totalTimeSec', 'stars', 'completedAt', 'roomCount'])
+        && data.memberId == stableMember(user) && data.nickname == user.nickname
+        && data.nickname is string && data.nickname.size() >= 1 && data.nickname.size() <= 20
+        && data.roomCount == 8 && data.completedAt is string && data.completedAt.size() <= 40
+        && completedRoom(b.r1) && completedRoom(b.r2) && completedRoom(b.r3) && completedRoom(b.r4)
+        && completedRoom(b.r5) && completedRoom(b.r6) && completedRoom(b.r7) && completedRoom(b.r8)
+        && data.totalScore == b.r1.score+b.r2.score+b.r3.score+b.r4.score+b.r5.score+b.r6.score+b.r7.score+b.r8.score
+        && data.totalTimeSec == b.r1.timeUsedSec+b.r2.timeUsedSec+b.r3.timeUsedSec+b.r4.timeUsedSec+b.r5.timeUsedSec+b.r6.timeUsedSec+b.r7.timeUsedSec+b.r8.timeUsedSec
+        && data.stars == b.r1.stars+b.r2.stars+b.r3.stars+b.r4.stars+b.r5.stars+b.r6.stars+b.r7.stars+b.r8.stars;
+    }
 
     match /studentClasses/{uid} {
       allow read: if signedIn() && request.auth.uid == uid;
@@ -47,6 +65,21 @@ service cloud.firestore {
       allow read: if signedIn();
       allow create: if isTeacher() && request.resource.data.teacherUid == request.auth.uid;
       allow update, delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow update: if classStudent(classId)
+        && resource.data.lesson.status == 'active'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lesson'])
+        && request.resource.data.lesson.diff(resource.data.lesson).affectedKeys().hasOnly(['members'])
+        && !(classroomMember() in resource.data.lesson.members)
+        && request.resource.data.lesson.members.size() == resource.data.lesson.members.size() + 1
+        && request.resource.data.lesson.members.diff(resource.data.lesson.members).affectedKeys().hasOnly([classroomMember()])
+        && resource.data.lesson.planId == getAfter(/databases/$(database)/documents/classes/$(classId)/teamDraw/state).data.id
+        && request.resource.data.lesson.members[classroomMember()] == getAfter(/databases/$(database)/documents/classes/$(classId)/teamDraw/state).data.assignments[classroomMember()].teamId;
+
+      match /completions/{memberId} {
+        allow read: if classTeacher(classId) || classStudent(classId);
+        allow create, update: if classStudent(classId) && memberId == classroomMember() && completionValid(request.resource.data);
+        allow delete: if classStudent(classId) && memberId == classroomMember();
+      }
 
       match /teamDraw/{stateId} {
         allow read: if stateId == 'state' && (classTeacher(classId) || classStudent(classId));
@@ -59,9 +92,7 @@ service cloud.firestore {
           && request.resource.data.assignments.size() == resource.data.assignments.size() + 1
           && request.resource.data.assignments.diff(resource.data.assignments).affectedKeys().hasOnly([classroomMember()])
           && request.resource.data.assignments[classroomMember()].keys().hasOnly(['teamId'])
-          && request.resource.data.assignments[classroomMember()].teamId == resource.data.slots[resource.data.nextIndex]
-          && (!('lesson' in get(/databases/$(database)/documents/classes/$(classId)).data)
-            || get(/databases/$(database)/documents/classes/$(classId)).data.lesson.status != 'active');
+          && request.resource.data.assignments[classroomMember()].teamId == resource.data.slots[resource.data.nextIndex];
       }
       match /lessons/{lessonId} {
         allow read: if classTeacher(classId) || classStudent(classId);

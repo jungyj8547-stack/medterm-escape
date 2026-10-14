@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { completionFor, completionStandings } from '../src/engine/completion';
+import type { RoomResult } from '../src/types';
+import {makeTeamPlan} from '../src/engine/classroom';
+const ids = Array.from({ length: 8 }, (_, i) => `r${i+1}`);
+const best = Object.fromEntries(ids.map(roomId => [roomId, { roomId, escaped: true, score: 1800, stars: 3, timeUsedSec: 300, hintsUsed: 0, wrong: 0, speedCorrect: 0, date: '2026-10-14T00:00:00.000Z' }])) as Record<string, RoomResult>;
+const c = completionFor(ids, best)!;assert.equal(c.totalScore,14400);assert.equal(c.totalTimeSec,2400);assert.equal(c.stars,24);
+assert.equal(completionFor(ids, { ...best, r8: { ...best.r8, escaped: false } }),null);
+assert.equal(completionFor(ids, { ...best, r8: { ...best.r8, score: 2500 } }),null);
+const board=completionStandings([{...c,memberId:'b',nickname:'B'},{...c,memberId:'a',nickname:'A'},{...c,totalTimeSec:2500,memberId:'c',nickname:'C'}]);
+assert.deepEqual(board.map(e=>e.rank),[1,1,3]);assert.equal(board[0].memberId,'a');
+assert.equal(completionFor(ids,{}),null);console.log('Completion: eligibility, aggregate, invalid record, time tie-break and shared ranks passed');
+const plan=makeTeamPlan(50,20);assert.equal(new Set(plan.cards.map(c=>c.animal)).size,20);assert.equal(new Set(plan.cards.map(c=>c.name)).size,20);assert.equal(plan.slots.length,50);assert.ok(Math.max(...plan.cards.map(c=>c.capacity))-Math.min(...plan.cards.map(c=>c.capacity))<=1);console.log('20 distinct animal teams, unique names and balanced deck passed');

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGame } from '../store/gameStore';
 import { isFirebaseConfigured } from '../firebase/config';
-import { loginStudent, registerStudent } from '../firebase/student';
+import { loginStudent, registerStudent, updateNickname } from '../firebase/student';
 import { friendlyError } from '../firebase/app';
 import { startSync, signOutStudent, resetMyProgress } from '../firebase/sync';
 import { sfx } from '../audio/sfx';
@@ -18,17 +18,20 @@ export default function StudentLogin({ onDone }: { onDone: () => void }) {
   const [joinCode, setJoinCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState(false);
 
   if (!isFirebaseConfigured) return null;
 
   if (student) {
     return (
-      <div className="panel row between" style={{ marginBottom: 16 }}>
+      <div className="panel stack" style={{ marginBottom: 16 }}>
+      <div className="row between">
         <div>
           <b>👤 {student.nickname}</b> <span className="muted small">({student.studentId})</span>
           <div className="small muted">🏫 {student.className} · 진행 기록이 자동 저장됩니다</div>
         </div>
         <div className="row">
+          <button className="btn small" onClick={() => { setNickname(student.nickname); setError(null); setEditingName(!editingName); }}>내 별명 바꾸기</button>
           <button
             className="btn small ghost"
             onClick={async () => {
@@ -50,6 +53,9 @@ export default function StudentLogin({ onDone }: { onDone: () => void }) {
             로그아웃
           </button>
         </div>
+      </div>
+      {editingName && <div className="stack"><label className="field">내 별명 (최대 12자)<input className="input" value={nickname} maxLength={12} onChange={e => setNickname(e.target.value)} /></label><div className="row"><button className="btn primary" disabled={busy || !nickname.trim()} onClick={async () => { setBusy(true); setError(null); try { setStudent(await updateNickname(student, nickname)); setEditingName(false); } catch (e) { setError(friendlyError(e)); } finally { setBusy(false); } }}>별명 저장</button><button className="btn ghost" disabled={busy} onClick={() => { setEditingName(false); setError(null); }}>취소</button></div><p className="small muted">내 계정과 완주 인증서의 이름을 바꿉니다. 팀 배정과 점수는 유지됩니다.</p></div>}
+      {error && <div className="feedback bad">{error}</div>}
       </div>
     );
   }

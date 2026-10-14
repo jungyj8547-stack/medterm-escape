@@ -24,6 +24,7 @@ import { toast } from '../components/Toast';
 import { askConfirm } from '../components/ConfirmDialog';
 import ClassroomTeacher from './ClassroomTeacher';
 import { csvRow } from '../engine/csv';
+import { completionFor, completionStandings } from '../engine/completion';
 
 /** 진행자 페이지의 교수자 영역: 로그인 → 반 관리 / 학생 현황 / 결과 */
 export default function TeacherPanel() {
@@ -244,6 +245,16 @@ function Students({ rows, classOf }: { rows: StudentRow[]; classOf: (id: string)
           </tbody>
         </table>
       </div>
+      <h3>🏅 개인 완주 랭킹 · 반별</h3>
+      <p className="small muted">8개 병동을 모두 탈출한 학생의 개인 최고 점수 합계입니다. 수업 점수와 별도로 계산하며, 같은 총점은 합계 사용 시간순, 총점·시간이 같으면 공동 순위입니다.</p>
+      {Array.from(new Set(rows.map(s => s.classId))).map(classId => {
+        const members = rows.filter(s => s.classId === classId);
+        const board = completionStandings(members.flatMap(s => {
+          const c = completionFor(ROOMS.map(r => r.id), s.progress?.bestResults ?? {});
+          return c ? [{ ...c, memberId: s.memberId ?? s.uid, nickname: s.nickname }] : [];
+        }));
+        return <div key={classId}><b>{classOf(classId)}</b><div className="table-wrap"><table className="board"><thead><tr><th>순위</th><th>학생</th><th>학번</th><th>완주 총점</th><th>합계 시간</th></tr></thead><tbody>{board.map(e => <tr key={e.memberId}><td>{e.rank}위</td><td>{e.nickname}</td><td>{members.find(s => (s.memberId ?? s.uid) === e.memberId)?.studentId}</td><td>{e.totalScore.toLocaleString()}</td><td>{formatTime(e.totalTimeSec)}</td></tr>)}{!board.length && <tr><td colSpan={5}>아직 완주자가 없습니다.</td></tr>}</tbody></table></div></div>;
+      })}
     </div>
   );
 }

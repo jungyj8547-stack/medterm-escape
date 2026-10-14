@@ -5,6 +5,7 @@ import { formatTime } from '../engine/scoring';
 import { music } from '../audio/music';
 import Avatar from '../components/Avatar';
 import Confetti from '../components/Confetti';
+import SoloAchievements from '../components/SoloAchievements';
 
 /** 옥상 헬기장 — 최종 탈출 엔딩 */
 export default function Ending() {
@@ -87,6 +88,7 @@ export default function Ending() {
             </table>
           </div>
 
+          {allCleared && <SoloAchievements />}
           <div className="row" style={{ justifyContent: 'center', marginTop: 20 }}>
             <button className="btn" onClick={() => goto('lobby')}>🏥 안내도로</button>
             <button className="btn primary" onClick={() => goto('title')}>🏠 타이틀로</button>

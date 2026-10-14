@@ -27,6 +27,7 @@ import {
 import { fb } from './app';
 import { STUDENT_EMAIL_DOMAIN } from './config';
 import type { RoomResult } from '../types';
+import { publishCompletion } from './completion';
 
 export interface StudentProfile {
   uid: string;
@@ -161,9 +162,23 @@ export async function loadProgress(studentId: string): Promise<CloudProgress | n
   return { unlocked: p.unlocked ?? [], bestResults: p.bestResults ?? {}, weak: p.weak ?? {}, learnedRooms: p.learnedRooms ?? {} };
 }
 
-export async function saveProgress(studentId: string, progress: CloudProgress): Promise<void> {
+export async function updateNickname(student: StudentProfile, nickname: string): Promise<StudentProfile> {
+  const name = nickname.trim();
+  if (!name || name.length > 12) throw new Error('별명은 1~12자로 입력하세요.');
+  await updateDoc(doc(fb().db, 'users', student.studentId), { nickname: name, updatedAt: serverTimestamp() });
+  const next = { ...student, nickname: name };
+  const saved = await loadProgress(student.studentId);
+  if (saved) await publishCompletion(next, saved);
+  return next;
+}
+
+export async function saveProgress(studentId: string, progress: CloudProgress, syncCompletion = true): Promise<void> {
   const { db } = fb();
   await updateDoc(doc(db, 'users', normalizeId(studentId)), { progress, updatedAt: serverTimestamp() });
+  if (syncCompletion) {
+    const student = await loadProfile(studentId);
+    if (student) await publishCompletion(student, progress);
+  }
 }
 
 export async function pushResult(profile: StudentProfile, r: RoomResult, extra: { roomOrder: number; roomName: string; wrongTerms: string[]; mode: string; team: string | null }) {
