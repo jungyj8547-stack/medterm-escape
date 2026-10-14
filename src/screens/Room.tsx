@@ -159,7 +159,7 @@ export default function RoomScreen() {
             ))}
           {active === 'records' && <OddOneOut items={puzzles.odd} roomId={room.id} onSolved={() => solved('records')} />}
           {active === 'speaker' && <SpeedRound items={puzzles.speed} onClose={() => setActive(null)} />}
-          {active === 'door' && <Keypad code={puzzles.code} onEscaped={() => goto('debrief')} />}
+          {active === 'door' && <Keypad code={puzzles.code} />}
         </Modal>
       )}
     </div>
