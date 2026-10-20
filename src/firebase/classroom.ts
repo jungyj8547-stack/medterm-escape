@@ -1,4 +1,4 @@
-import { collection, doc, onSnapshot, runTransaction, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, runTransaction, updateDoc, writeBatch } from 'firebase/firestore';
 import { fb } from './app';
 import { studentMemberId, type StudentProfile } from './student';
 import type { RoomResult } from '../types';
@@ -38,10 +38,11 @@ export async function configureTeams(classId: string, total: number, count: numb
     tx.set(planRef(classId), plan);
   });
 }
-/** 반 전체가 같은 문서를 동시에 고치므로 충돌하면 무작위 대기 후 자동 재시도한다 (2026-10-14 부하 점검). */
+/** 반 전체가 같은 문서를 동시에 고치므로 충돌하면 무작위 대기 후 자동 재시도한다 (2026-10-14 부하 점검).
+ *  120명 동시 클릭 시 12회(약 40초)로는 부족해 30회·대기 상한 3초(약 90초)로 늘렸다 (2026-10-20 부하 점검). */
 const DRAW_RETRYABLE = new Set(['aborted', 'unavailable', 'deadline-exceeded', 'failed-precondition', 'permission-denied']);
 const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
-export async function drawTeam(student: StudentProfile, attempts = 12): Promise<string> {
+export async function drawTeam(student: StudentProfile, attempts = 30): Promise<string> {
   for (let i = 0; ; i++) {
     try {
       return await drawTeamOnce(student);
@@ -49,7 +50,7 @@ export async function drawTeam(student: StudentProfile, attempts = 12): Promise<
       const code = (e as { code?: string })?.code ?? '';
       if (!DRAW_RETRYABLE.has(code)) throw e;
       if (i >= attempts - 1) throw new Error('지금 카드를 뽑는 학생이 많아 배정이 밀리고 있어요. 잠시 후 다시 눌러주세요.');
-      await sleep(250 + Math.random() * 750 * Math.min(i + 1, 6));
+      await sleep(300 + Math.random() * Math.min(3000, 500 * (i + 1)));
     }
   }
 }
@@ -101,23 +102,38 @@ export function watchMyLessonScore(student: StudentProfile, lessonId: string, cb
   return onSnapshot(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', studentMemberId(student)),
     s => cb(s.exists() ? s.data() as Score : null), error);
 }
+/** 점수 제출. 반 문서를 트랜잭션 읽기 집합에 넣으면 교수자 순위판 갱신·다른 학생 합류와 충돌해 동시 제출이 실패하므로
+ *  (2026-10-20 부하 점검: 44명 동시 제출 시 11명만 저장) 반 문서는 일반 읽기로 확인만 하고 내 점수 문서 2개만 배치로 쓴다.
+ *  수업 상태·팀 일치는 firestore.rules가 커밋 시점에 다시 검증한다. */
+const SAVE_RETRYABLE = new Set(['aborted', 'unavailable', 'deadline-exceeded', 'failed-precondition']);
 export async function saveLessonScore(student: StudentProfile, lessonId: string, teamId: string, result: RoomResult) {
   const memberId = studentMemberId(student);
-  const ref = doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'scores', memberId);
-  return runTransaction(fb().db, async tx => {
-    const [cs, old] = await Promise.all([tx.get(classRef(student.classId)), tx.get(ref)]);
-    if (old.exists()) return;
-    const lesson = cs.data()?.lesson as Lesson | undefined;
-    if (!lesson || lesson.id !== lessonId || lesson.status !== 'active') throw new Error('수업이 마감되어 결과를 제출할 수 없습니다.');
-    if (lesson.roomId !== result.roomId || lesson.members[memberId] !== teamId) throw new Error('수업 또는 팀 정보가 일치하지 않습니다.');
-    const score: Score = { uid: memberId, nickname: student.nickname, lessonId, teamId,
-      roomId: result.roomId, score: result.escaped ? result.score : 0, timeUsedSec: result.timeUsedSec,
-      escaped: result.escaped, date: result.date };
-    tx.set(ref, score);
-    tx.set(doc(fb().db, 'classes', student.classId, 'lessons', lessonId, 'points', memberId), {
+  const db = fb().db;
+  const ref = doc(db, 'classes', student.classId, 'lessons', lessonId, 'scores', memberId);
+  if ((await getDoc(ref)).exists()) return;
+  const lesson = (await getDoc(classRef(student.classId))).data()?.lesson as Lesson | undefined;
+  if (!lesson || lesson.id !== lessonId || lesson.status !== 'active') throw new Error('수업이 마감되어 결과를 제출할 수 없습니다.');
+  if (lesson.roomId !== result.roomId || lesson.members[memberId] !== teamId) throw new Error('수업 또는 팀 정보가 일치하지 않습니다.');
+  const score: Score = { uid: memberId, nickname: student.nickname, lessonId, teamId,
+    roomId: result.roomId, score: result.escaped ? result.score : 0, timeUsedSec: result.timeUsedSec,
+    escaped: result.escaped, date: result.date };
+  for (let i = 0; ; i++) {
+    const batch = writeBatch(db);
+    batch.set(ref, score);
+    batch.set(doc(db, 'classes', student.classId, 'lessons', lessonId, 'points', memberId), {
       uid: score.uid, teamId: score.teamId, score: score.score, timeUsedSec: score.timeUsedSec, escaped: score.escaped,
     });
-  });
+    try {
+      await batch.commit();
+      return;
+    } catch (e) {
+      const code = (e as { code?: string })?.code ?? '';
+      // 같은 학생이 두 번 제출한 경우(이미 생성됨)는 성공으로 본다
+      if (code === 'permission-denied' && (await getDoc(ref)).exists()) return;
+      if (!SAVE_RETRYABLE.has(code) || i >= 4) throw e;
+      await sleep(300 + Math.random() * 1000);
+    }
+  }
 }
 export async function publishLessonBoard(classId: string, lesson: Lesson, scores: Score[], close = false) {
   await runTransaction(fb().db, async tx => {
