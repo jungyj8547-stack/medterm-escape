@@ -13,10 +13,19 @@ function out(c: AudioContext): AudioNode {
   return sfxMaster;
 }
 
+/** 화면이 뒤로 가면(다른 탭·홈 화면·화면 잠금) 오디오 전체를 멈추고, 돌아오면 다시 켠다 (2026-10-20: 백그라운드에서 BGM이 계속 나던 문제) */
+let background = false;
+export function setAudioBackground(hidden: boolean) {
+  background = hidden;
+  if (!ctx) return;
+  if (hidden) void ctx.suspend().catch(() => undefined);
+  else void ctx.resume().catch(() => undefined);
+}
+
 export function getAudioContext(): AudioContext | null {
   try {
     if (!ctx) ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-    if (ctx.state === 'suspended') void ctx.resume();
+    if (ctx.state === 'suspended' && !background) void ctx.resume();
     return ctx;
   } catch {
     return null;
@@ -24,6 +33,7 @@ export function getAudioContext(): AudioContext | null {
 }
 
 function tone(freq: number, dur: number, type: OscillatorType = 'sine', gain = 0.12, when = 0, slideTo?: number) {
+  if (background) return;
   const c = getAudioContext();
   if (!c || muted) return;
   const o = c.createOscillator();
@@ -40,6 +50,7 @@ function tone(freq: number, dur: number, type: OscillatorType = 'sine', gain = 0
 }
 
 function noise(dur: number, gain = 0.15, when = 0, freq = 2000) {
+  if (background) return;
   const c = getAudioContext();
   if (!c || muted) return;
   const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
