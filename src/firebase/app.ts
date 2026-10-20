@@ -29,6 +29,7 @@ export function friendlyError(e: unknown): string {
     'auth/too-many-requests': '시도가 너무 많습니다. 잠시 후 다시 해주세요.',
     'auth/network-request-failed': '네트워크 연결을 확인해 주세요.',
     'auth/invalid-email': '형식이 올바르지 않습니다.',
+    'auth/missing-email': '이메일 주소를 입력하세요.',
     'permission-denied': '권한이 없습니다. 반 코드나 가입 코드를 확인해 주세요.',
   };
   if (map[code]) return map[code];

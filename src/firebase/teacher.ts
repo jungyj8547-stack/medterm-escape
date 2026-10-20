@@ -4,7 +4,7 @@
  *  - classes/{id}    : { name, teacherUid, joinCode }
  *  - users, results  : teacherUid == 내 uid 인 문서만 읽기
  */
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, type User } from 'firebase/auth';
 import {
   addDoc,
   collection,
@@ -100,6 +100,13 @@ export async function loginTeacher(email: string, password: string): Promise<Tea
     throw new Error('교수자 계정이 아닙니다.');
   }
   return { uid: cred.user.uid, email: snap.data().email, name: snap.data().name };
+}
+
+/** 교수자 비밀번호 찾기: Firebase가 가입 이메일로 재설정 링크를 보낸다. 가입되지 않은 이메일도 보안상 같은 안내를 한다 (2026-10-20) */
+export async function sendTeacherPasswordReset(email: string) {
+  const address = email.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) throw new Error('가입할 때 쓴 이메일 주소를 입력하세요.');
+  await sendPasswordResetEmail(fb().auth, address);
 }
 
 export async function currentTeacher(user: User): Promise<TeacherProfile | null> {
