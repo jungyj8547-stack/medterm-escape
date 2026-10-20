@@ -40,7 +40,8 @@ export default function ClassroomTeacher({ classes, students }: { classes: Class
     // 학생 합류·점수마다 반 문서를 바로 쓰면 학생 카드 뽑기와 충돌하므로 1.5초 모아서 한 번만 갱신한다 (2026-10-14 부하 점검)
     const timer = window.setTimeout(() => {
       void publishLessonBoard(classId, lesson, scores).catch(e => {
-        if ((e as { code?: string })?.code === 'aborted') return; // 다음 변경 때 다시 갱신되므로 조용히 넘긴다
+        // 학생 합류·제출과 겹쳐 생기는 충돌(aborted, failed-precondition 등)은 다음 변경 때 다시 갱신되므로 조용히 넘긴다 (2026-10-20)
+        if (['aborted', 'failed-precondition', 'unavailable', 'deadline-exceeded'].includes((e as { code?: string })?.code ?? '')) return;
         setError(friendlyError(e));
       });
     }, 1500);
