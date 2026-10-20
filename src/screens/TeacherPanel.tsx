@@ -12,6 +12,7 @@ import {
   logoutTeacher,
   registerTeacher,
   resetStudentPin,
+  sendTeacherPasswordReset,
   watchResults,
   watchStudents,
   watchTeacherAuth,
@@ -65,6 +66,21 @@ function TeacherAuth({ onLogin, onBusy }: { onLogin: (t: TeacherProfile) => void
   const [invite, setInvite] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
+
+  const forgot = async () => {
+    setBusy(true);
+    setError(null);
+    setResetSent(false);
+    try {
+      await sendTeacherPasswordReset(email);
+      setResetSent(true);
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const submit = async () => {
     onBusy(true);
@@ -99,9 +115,16 @@ function TeacherAuth({ onLogin, onBusy }: { onLogin: (t: TeacherProfile) => void
         </>
       )}
       {error && <div className="feedback bad">{error}</div>}
+      {resetSent && <div className="feedback ok">가입된 이메일이면 비밀번호 재설정 메일을 보냈습니다. 메일함(스팸함 포함)에서 링크를 열어 새 비밀번호를 정한 뒤 로그인하세요.</div>}
       <button className="btn primary" disabled={busy || !email || password.length < 6} onClick={submit}>
         {busy ? '확인 중…' : mode === 'login' ? '로그인' : '가입'}
       </button>
+      {mode === 'login' && (
+        <div className="row between">
+          <span className="small muted">비밀번호를 잊었다면 이메일만 입력하고 오른쪽 버튼을 누르세요.</span>
+          <button className="btn small ghost" disabled={busy || !email} onClick={forgot}>비밀번호 찾기 (재설정 메일)</button>
+        </div>
+      )}
     </div>
   );
 }
