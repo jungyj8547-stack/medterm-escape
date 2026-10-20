@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGame } from './store/gameStore';
-import { sfx, getAudioContext } from './audio/sfx';
+import { sfx, getAudioContext, setAudioBackground } from './audio/sfx';
 import { music } from './audio/music';
 import Title from './screens/Title';
 import Lobby from './screens/Lobby';
@@ -72,6 +72,21 @@ function Screens() {
     return () => {
       window.removeEventListener('pointerdown', unlock);
       window.removeEventListener('keydown', unlock);
+    };
+  }, []);
+
+  // 다른 탭·홈 화면·화면 잠금으로 넘어가면 소리를 멈추고, 돌아오면 다시 켠다 (타이머는 계속 간다)
+  useEffect(() => {
+    const sync = () => setAudioBackground(document.visibilityState === 'hidden');
+    const hide = () => setAudioBackground(true);
+    document.addEventListener('visibilitychange', sync);
+    window.addEventListener('pagehide', hide);
+    window.addEventListener('pageshow', sync);
+    sync();
+    return () => {
+      document.removeEventListener('visibilitychange', sync);
+      window.removeEventListener('pagehide', hide);
+      window.removeEventListener('pageshow', sync);
     };
   }, []);
 
